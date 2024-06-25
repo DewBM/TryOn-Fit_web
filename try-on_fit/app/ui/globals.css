@@ -7,9 +7,9 @@
   /* --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255; */
 
-  --main: #F9F0EA;
-  --button: #4D2D18;
-  --button-hover: #4D2D1866; 
+  --main-lighter: #F9F0EA;
+  --main-dark: #4D2D18;
+  --main-light: #4D2D1866; 
 
 }
 
@@ -22,7 +22,7 @@
 } */
 
 body {
-
+  
 }
 
 /* @layer utilities {
