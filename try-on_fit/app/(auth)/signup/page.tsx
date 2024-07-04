@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Button from "@/app/components/Button";
 import Link from "next/link";
@@ -10,6 +11,77 @@ import signupimg from "../../../public/imgSignup1.jpg";
 import { useState } from "react";
 
 function page() {
+  async function signup(formData: FormData) {
+    const [errors, setErrors] = useState({
+      firstName: formData.get("First Name"),
+      lastName: formData.get("Last Name"),
+      gender: formData.get("Gender"),
+      email: formData.get("Email"),
+      phoneNumber: formData.get("Phone Number"),
+      address: formData.get("Address"),
+      password: formData.get("Password"),
+      verifyPassword: formData.get("Verification Password"),
+    });
+    const validateForm = () => {
+      const errorsObj = { ...errors };
+
+      if (!errorsObj.firstName) {
+        errors.firstName = "First name is required";
+      }
+
+      if (!errorsObj.lastName) {
+        errors.lastName = "Last name is required";
+      }
+
+      if (!errorsObj.email) {
+        errors.email = "Email is required";
+      } else {
+        errors.email = "Invalid email address";
+      }
+
+      if (!errorsObj.phoneNumber) {
+        errors.phoneNumber = "Phone number is required";
+      }
+
+      if (!errorsObj.address) {
+        errors.address = "Address is required";
+      }
+
+      if (!formData.get("password")) {
+        errorsObj.password = "Password is required";
+      } else if (String(formData.get("password")).length < 8) {
+        errorsObj.password = "Password must be at least 8 characters";
+      }
+
+      if (!errorsObj.verifyPassword) {
+        errors.verifyPassword = "Verify password is required";
+      } else if (errorsObj.verifyPassword !== errorsObj.password) {
+        errors.verifyPassword = "Passwords do not match";
+      }
+
+      setErrors(errorsObj);
+    };
+
+    validateForm();
+    const params = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(Object.fromEntries(formData)),
+    };
+    try {
+      const response = await fetch("http://localhost:8080/signup", params);
+      if (response.ok) {
+        const json = await response.json();
+        console.log(json);
+      } else {
+        console.error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
   return (
     <Layout>
       <div className="grid  lg:grid-cols-12 mb-0  rounded mx-8 ">
@@ -23,7 +95,7 @@ function page() {
 
         <div className="lg:col-span-4 lg:col-start-6">
           <form
-            action=""
+            action={signup}
             className="bg-main-lighter shadow-md  px-4  pb-2 grid  gap-x-2.5 gap-y-1 sm:grid-cols-4 rounded-r-lg 
 
   "

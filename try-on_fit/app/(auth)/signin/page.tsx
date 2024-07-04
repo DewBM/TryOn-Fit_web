@@ -49,7 +49,7 @@ export default function Signin() {
             className=" rounded-l-lg mx-auto my-auto lg:col-span-3"
           />
         </div>
-        <div className="lg:col-span-3 lg:col-start-7">
+        <div className="lg:col-span-3 lg:col-start-">
           <form
             action={signin}
             className="bg-main-lighter shadow-md rounded px-8 pt-6 pb-8 mb-4"
