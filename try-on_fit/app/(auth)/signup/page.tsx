@@ -89,14 +89,14 @@ function page() {
           <Image
             src={signupimg}
             alt="Auth Image"
-            className=" rounded-l-lg  my-auto lg:col-span-3"
+            className=" rounded-l-lg shadow-xl my-auto lg:col-span-3"
           />
         </div>
 
         <div className="lg:col-span-4 lg:col-start-6">
           <form
             action={signup}
-            className="bg-main-lighter shadow-md  px-4  pb-2 grid  gap-x-2.5 gap-y-1 sm:grid-cols-4 rounded-r-lg 
+            className="bg-main-lighter shadow-xl  px-4  pb-2 grid  gap-x-2.5 gap-y-1 sm:grid-cols-4 rounded-r-lg 
 
   "
           >
@@ -169,16 +169,19 @@ function page() {
                 showEyeIcon={false}
               />
             </div>
-            <div className="sm:col-span-4 px-0 mt-0">
-              <Button type="submit" className="py-1.5 mr-0 mt-1 px-40">
+            <div className="sm:col-span-4 mb-0 px-0 mt-0">
+              <Button type="submit" className="py-1.5 ml-6 m-0 mt-1 px-44">
                 Sign Up
               </Button>
             </div>
 
-            <div className="sm:col-span-4 font-medium leading-6 text-sm	mb-0">
+            <div className="sm:col-span-4 font-medium ml-7 mt-0 m-0 leading-6 text-sm	mb-5">
               <p>
-                Do you have an account ?{" "}
-                <Link className="underline text-main-dark" href="">
+                Do you have an account?&nbsp;
+                <Link
+                  className="underline text-main-dark"
+                  href="http://localhost:8080/signin"
+                >
                   Login
                 </Link>
               </p>
