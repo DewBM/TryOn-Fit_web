@@ -55,7 +55,7 @@ export default function Signin() {
             action={signin}
             className="bg-main-lighter shadow-xl rounded-r-lg px-8 pt-6 pb-8 mb-1"
           >
-            <div className=" sm:col-span-4 text-4xl font-extrabold 	mb-4">
+            <div className=" sm:col-span-4 text-4xl font-extrabold 	mb-3">
               <h1>Sign In</h1>
             </div>
 
@@ -81,8 +81,8 @@ export default function Signin() {
                 Froget password ?
               </Link>
             </div>
-            <div className="sm:col-span-4 px-0 mt-3">
-              <Button type="submit" className="py-1.5 ml-3  px-28 m-0">
+            <div className="sm:col-span-4 px-0  ml-4">
+              <Button type="submit" className="py-1 ml-3 m-0 px-24 ">
                 Sign In
               </Button>
             </div>
