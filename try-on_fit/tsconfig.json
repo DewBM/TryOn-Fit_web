@@ -21,6 +21,8 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/SearchIcon.jsx", "app/components/SearchBar.jsx", "app/components/NavigationBar.jsx"],
+
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/Footer.tsx"],
+
   "exclude": ["node_modules"]
 }
