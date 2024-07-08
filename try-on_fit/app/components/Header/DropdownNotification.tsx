@@ -15,7 +15,12 @@ const DropdownNotification = () => {
             setDropdownOpen(!dropdownOpen);
           }}
           href="#"
-          className="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
+          className="relative flex h-8.5 w-8.5 items-center justify-center rounded-full  border-[0.5px] border-stroke bg-main-lighter hover:text-main-dark dark:border-main-dark dark:bg-main-dark dark:text-main-lighter"
+          style={{
+            padding: "10px",
+            backgroundColor: "var(--main-light-background)",
+            boxShadow: "var(--main-drop-shadow)",
+          }}
         >
           <span
             className={`absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1 ${
