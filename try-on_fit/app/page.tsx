@@ -1,17 +1,14 @@
-'use client'
-import Image from "next/image";
-import Footer from "./components/Footer"
-
-import NavBar from "./components/NavBar";
+//import NavBar from "./components/NavBar";
+import EmpNavBar from "./components/EmpNavBar";
 import { useState } from "react";
+import Header from "./components/Header/index";
 
 export default function Home() {
- 
   return (
     <>
-    <div>
-      <Footer />
-    </div>
+      <div>
+        <Header />
+      </div>
     </>
   );
 }
