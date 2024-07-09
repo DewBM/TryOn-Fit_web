@@ -13,12 +13,12 @@ export default function Home() {
     <div>
       <NavBar />
       <div className="  h-[100vh]">
-      <div className=" flex flex-row justify-between  pt-[25vh] pl-11">
+      <div className=" flex flex-row flex-wrap pr-[20px]  pt-[25vh] gap-3 pl-[40px]">
  
     <div ><Card /></div>
-    {/* <div><Card /></div> 
+     <div><Card /></div> 
     <div ><Card /></div>
-    <div><Card /></div>  */}
+    <div><Card /></div>  
 </div>
 
       </div>

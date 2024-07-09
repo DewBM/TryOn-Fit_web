@@ -4,7 +4,7 @@ import image from "next/image"
 import ItemCard from "./Helper/ItemCard"
 export default function Product(){
   return(
-    <Card className=" w-[20vw] h-[50vh] py-4 bg-main-lighter ">
+    <Card className=" w-60  py-4 bg-main-lighter ">
      
       <CardBody className="overflow-visible pt-2">
         <Image
@@ -15,7 +15,7 @@ export default function Product(){
         />
       </CardBody>
       <CardHeader className="pb-0 pt-0 px-4 flex-col items-center">
-        <ItemCard name="Brown Summer Coat" price="$70000" />
+        <ItemCard name="Brown Summer Coat" price="$70000"/>
        
        </CardHeader>
     </Card>
