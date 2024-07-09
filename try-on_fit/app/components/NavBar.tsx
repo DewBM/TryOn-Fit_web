@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Button} from "@nextui-org/react";
-import Logo from "./Logo.jsx"
+//import Logo from "./Logo.jsx"
 import {SearchIcon} from "./SearchIcon.jsx";
 
 import Image from "next/image"
