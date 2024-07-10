@@ -1,12 +1,11 @@
 export default function Layout({
-   children
+  children,
 }: Readonly<{
-   children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-   return (
-      <div className="min-h-screen flex justify-center items-center">
-         <div className="w-2/5"></div>
-         <div className="">{children}</div>
-      </div>
-   )
+  return (
+    <div className="min-h-screen flex justify-center items-center">
+      <div className="">{children}</div>
+    </div>
+  );
 }

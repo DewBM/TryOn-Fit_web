@@ -7,10 +7,9 @@
   /* --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255; */
 
-  --main-lighter: #F9F0EA;
-  --main-dark: #4D2D18;
-  --main-light: #4D2D1866; 
-
+  --main-lighter: #f9f0ea;
+  --main-dark: #4d2d18;
+  --main-light: #4d2d1866;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -22,7 +21,6 @@
 } */
 
 body {
-  
 }
 
 /* @layer utilities {
@@ -30,3 +28,39 @@ body {
     text-wrap: balance;
   }
 } */
+
+.wapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* min-height: 200vh; */
+}
+/* Make the NavBar and Footer fixed */
+/* NavBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1; 
+}
+
+Footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1; 
+}
+
+main {
+  overflow-y: auto; 
+  padding-top: 64px; 
+  padding-bottom: 64px; 
+  height: calc(100vh - 128px); 
+} */
+
+//inquery
+.textbox-wrapper label {
+  font-size: 1.5rem; /* or any other font size you prefer */
+}
+
