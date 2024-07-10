@@ -100,8 +100,8 @@ function page() {
 
   "
           >
-            <div className=" sm:col-span-4 text-4xl font-extrabold mt-4 	">
-              <h1>Sign Up</h1>
+            <div className=" sm:col-span-4 text-4xl font-extrabold mt-2 	">
+              <h1>Create an account</h1>
             </div>
 
             {/* mb-4  mt-10 */}
@@ -171,11 +171,11 @@ function page() {
             </div>
             <div className="sm:col-span-4 mb-0 px-0 mt-0">
               <Button type="submit" className="py-1.5 ml-6 m-0 mt-1 px-44">
-                Sign Up
+                Register
               </Button>
             </div>
 
-            <div className="sm:col-span-4 font-medium ml-7 mt-0 m-0 leading-6 text-sm	mb-5">
+            <div className="sm:col-span-4 font-medium ml-7 mt-0 m-0 leading-6 text-sm mb-2">
               <p>
                 Do you have an account?&nbsp;
                 <Link
