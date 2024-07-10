@@ -1,7 +1,6 @@
 'use client'
 import React from "react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Button} from "@nextui-org/react";
-//import Logo from "./Logo.jsx"
 import {SearchIcon} from "./SearchIcon.jsx";
 
 import Image from "next/image"
@@ -39,7 +38,7 @@ export default function NavBar() {
         w-full p-2 rounded-full bg-slate-50 text-black' />
         <button className='absolute right-1 top-1/2 -translate-y-1/2  p-2 bg-black rounded-full '>
          
-        <SearchIcon size={20} strokeWidth={1.5}   />
+        <SearchIcon size={20} strokeWidth={1.5} width={undefined} height={undefined} />
         </button>
     </div>
     <div className="hidden sm:flex pl-10">
