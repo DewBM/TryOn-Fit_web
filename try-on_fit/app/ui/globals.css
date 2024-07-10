@@ -7,12 +7,13 @@
   /* --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255; */
 
-  --main-lighter: #F9F0EA;
-  --main-dark: #4D2D18;
-  --main-light: #4D2D1866; 
-  --main-drop-shadow:'0 4px 6px rgba(0, 0, 0, 0.1)';
-  --main-light-background:#fbf7f2;
-
+  --main-lighter: #f9f0ea;
+  --main-dark: #4d2d18;
+  --main-light: #4d2d1866;
+  --main-drop-shadow: "0 4px 6px rgba(0, 0, 0, 0.1)";
+  --main-light-background: #fbf7f2;
+  --main-darker: #361714;
+  
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -24,7 +25,6 @@
 } */
 
 body {
-  
 }
 
 /* @layer utilities {

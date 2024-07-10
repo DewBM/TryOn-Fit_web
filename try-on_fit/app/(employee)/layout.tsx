@@ -1,0 +1,36 @@
+"use client";
+import React, { useState } from "react";
+import Sidebar from "@/app/components/SideBar";
+import Header from "@/app/components/Header";
+
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  return (
+    <>
+      <div className="flex">
+        <Sidebar sideBarOpen={sidebarOpen} setSideBarOpen={setSidebarOpen} />
+
+        <div
+          className={`relative flex flex-1 flex-col ${
+            sidebarOpen ? "ml-64" : "ml-0"
+          } lg:ml-64`}
+        >
+          <Header sideBarOpen={sidebarOpen} setSideBarOpen={setSidebarOpen} />
+
+          <main>
+            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+              {children}
+            </div>
+          </main>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Layout;
