@@ -1,4 +1,3 @@
-// "use client";
 export default function SelectBox({
   labelName,
   id,
@@ -6,6 +5,7 @@ export default function SelectBox({
   autoComplete,
   options,
   value,
+  onChange,
   className,
 }: {
   labelName: string;
@@ -14,6 +14,7 @@ export default function SelectBox({
   autoComplete: string;
   options: { value: string; label: string }[];
   value: string;
+  onChange: (newValue: string) => void;
   className?: string;
 }) {
   return (
@@ -30,6 +31,7 @@ export default function SelectBox({
           name={name}
           autoComplete={autoComplete}
           value={value}
+          onChange={(e) => onChange(e.target.value)}
           className="block w-full rounded-md border-0 focus:outline-none py-2 pl-1 text-gray-900 ring-1 ring-inset ring-main-light focus:ring-2 focus:ring-inset focus:ring-main-dark sm:text-sm sm:leading-6"
         >
           {options.map((option) => (
