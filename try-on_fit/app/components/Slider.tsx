@@ -4,9 +4,9 @@ import { bannerImages } from './Helper/Banner';
 
 const Slider = () => {
     return (
-        <div className='mx-auto max-w-[700px]'>
+        // <div className='max-w-[2000px] max-h-[1000px]'>
             <ImageSlider images={bannerImages} />
-        </div>
+        // </div>
     );
 };
 
