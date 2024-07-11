@@ -12,7 +12,7 @@ export default function Home() {
 
     <div>
       <NavBar />
-      <Sidebar />
+      {/* <Sidebar /> */}
       <div className="pt-[100vw] w-[600px] h-[700px]">
         <Slider />
       </div>
