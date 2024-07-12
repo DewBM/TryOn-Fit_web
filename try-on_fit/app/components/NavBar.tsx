@@ -26,10 +26,10 @@ export default function NavBar() {
   </div>
     
        <div className="flex items-center justify-between ">
-        <ul className='md:flex hidden items-center space-x-10 text-white font-semibold text-[18px] '>
-          <li ><a className='nav_link ' href="#Homes">New Arrivals</a></li>
-          <li><a className='nav_link' href="#AboutMe">Shop Now!</a></li>
-          <li><a className='nav_link' href="#Services">About Us</a></li>
+        <ul className='md:flex hidden items-center gap-10 text-white font-semibold text-[18px] '>
+          <li ><a className='' href="#Homes">New Arrivals</a></li>
+          <li><a className="" href="#AboutMe">Shop Now!</a></li>
+          <li><a className='' href="#Services">About Us</a></li>
      
           
         </ul>

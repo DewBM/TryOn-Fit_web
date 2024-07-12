@@ -19,14 +19,14 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
     };
 
     return (
-        <div className='w-full h-[700px]  relative overflow-hidden'>
+        <div className='w-full h-[600px]  relative overflow-hidden'>
             <Slider {...settings}>
                 {images.map((image, index) => (
                     <div key={index} >
                         <img
                             src={image}
                             alt={`Slide ${index + 1}`}
-                            className=' object-contain'
+                            className=' object-cover'
                         />
                     </div>
                 ))}

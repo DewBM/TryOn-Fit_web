@@ -10,8 +10,11 @@ export default function LandingLayout({
       <section>
         {/* Include shared UI here e.g. a header or sidebar */}
        <NavBar />
-       <div className="pt-[6.5rem]"></div>
+       
        <div> {children}</div>
+
+    
+      
 
        <Footer />
        
