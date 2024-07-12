@@ -26,7 +26,7 @@ const Sidebar = (props: {
       } lg:translate-x-0`}
     >
       <div className="items-center">
-        <img src="/images/logo.png" className="h-17 w-30 mr-2 pt-4 px-3" />
+        <img src="/images/logo.png" className="h-20 w-25 mr-2 pt-4 px-3" />
       </div>
       <nav className="p-4">
         <ul className="space-y-4">
