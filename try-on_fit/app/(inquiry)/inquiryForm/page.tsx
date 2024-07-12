@@ -55,11 +55,9 @@ export default function Inquiry() {
                   { value: "male", label: "Male" },
                   { value: "other", label: "Other" },
                 ]}
-                autoComplete="off"
-                value="option1"
-                onChange={(newValue) =>
-                  console.log(`Selected value: ${newValue}`)
-                }
+                autoComplete="gender"
+                value=""
+                onChange={(newValue) => console.log(newValue)}
               />
             </div>
             <div className="sm:col-span-1 lg:grid-cols-5 text-lg font-semibold mb-8 mt-8">
@@ -99,11 +97,9 @@ export default function Inquiry() {
                   { value: "male", label: "Male" },
                   { value: "other", label: "Other" },
                 ]}
-                autoComplete="off"
-                value="option1"
-                onChange={(newValue) =>
-                  console.log(`Selected value: ${newValue}`)
-                }
+                autoComplete="gender"
+                value=""
+                onChange={(newValue) => console.log(newValue)}
               />
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-16">
