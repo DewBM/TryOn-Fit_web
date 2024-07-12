@@ -5,7 +5,7 @@ export default function SelectBox({
   autoComplete,
   options,
   value,
-  onChange,
+  onChange, 
   className,
 }: {
   labelName: string;
@@ -14,7 +14,7 @@ export default function SelectBox({
   autoComplete: string;
   options: { value: string; label: string }[];
   value: string;
-  onChange: (newValue: string) => void;
+  onChange: (newValue: string) => void; 
   className?: string;
 }) {
   return (
