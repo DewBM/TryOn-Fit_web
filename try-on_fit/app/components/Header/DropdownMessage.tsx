@@ -21,7 +21,7 @@ const DropdownMessage = () => {
           href="#"
           style={{
             padding: "10px",
-            backgroundColor: "var(--main-light-background)",
+            backgroundColor: "var(--main-background)",
             boxShadow: "var(--main-drop-shadow)",
           }}
         >

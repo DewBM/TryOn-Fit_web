@@ -11,9 +11,8 @@
   --main-dark: #4d2d18;
   --main-light: #4d2d1866;
   --main-drop-shadow: "0 4px 6px rgba(0, 0, 0, 0.1)";
-  --main-light-background: #fbf7f2;
+  --main-background: #faf7f0;
   --main-darker: #361714;
-  
 }
 
 /* @media (prefers-color-scheme: dark) {
