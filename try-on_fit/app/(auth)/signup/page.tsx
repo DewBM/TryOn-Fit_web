@@ -7,7 +7,7 @@ import TextBox from "@/app/components/TextBox";
 import SelectBox from "@/app/components/SelectBox";
 import Layout from "../layout";
 import Image from "next/image";
-import signupimg from "../../../public/imgSignup1.jpg";
+import signupimg from "../../../public/img_signUp.jpg";
 import { useState } from "react";
 
 function page() {
@@ -100,19 +100,19 @@ function page() {
 
   "
           >
-            <div className=" sm:col-span-4 text-4xl font-extrabold mt-2 	">
+            <div className=" sm:col-span-4 text-4xl font-extrabold mt-4	mb-3.5">
               <h1>Create an account</h1>
             </div>
 
             {/* mb-4  mt-10 */}
-            <div className="sm:col-span-2 mt-4">
+            <div className="sm:col-span-2 mt-3">
               <TextBox
                 labelName={"First Name"}
                 id={"signup-Fname"}
                 inputType="text"
               />
             </div>
-            <div className="sm:col-span-2 mt-4">
+            <div className="sm:col-span-2 mt-3">
               <TextBox
                 labelName={"Last Name"}
                 id={"signup-lname"}
@@ -170,7 +170,7 @@ function page() {
               />
             </div>
             <div className="sm:col-span-4 mb-0 px-0 mt-0">
-              <Button type="submit" className="py-1.5 ml-6 m-0 mt-1 px-44">
+              <Button type="submit" className="py-1.5 ml-6 m-1.5 mt-1 px-44">
                 Register
               </Button>
             </div>

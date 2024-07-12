@@ -6,7 +6,7 @@ import Layout from "../layout";
 import Link from "next/link";
 import TextBox from "@/app/components/TextBox";
 import Image from "next/image";
-import signupimg from "../../../public/imhsign05.jpg";
+import signupimg from "../../../public/img_signIn.jpg";
 
 export default function Signin() {
   async function signin(formData: FormData) {
@@ -55,9 +55,8 @@ export default function Signin() {
             action={signin}
             className="bg-main-lighter shadow-xl rounded-r-lg px-8 pt-3 pb-8 mb-1"
           >
-            <div className=" sm:col-span-4 text-4xl font-extrabold 	mb-7">
-              <h1>
-                Log In</h1>
+            <div className=" sm:col-span-4 text-4xl font-extrabold 	mb-5">
+              <h1>Log In</h1>
             </div>
 
             <div className="sm:col-span-4 px-0 mt-1.5">
