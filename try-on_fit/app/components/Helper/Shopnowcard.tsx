@@ -1,28 +1,35 @@
 import React from "react";
-import {Card, CardFooter, Image, Button} from "@nextui-org/react";
+import { Card, CardFooter, Image } from "@nextui-org/react";
+import Button from "../Button";
+import image from "next/image";
 
-export default function Shopnowcard() {
-  return (
-    <div className="w-60  py-4 bg-main-lighter pl-5">
-    <Card
-      isFooterBlurred
-      radius="lg"
-      className="border-none"
-    >
-      <Image
-        alt="Woman listing to music"
-        className="object-cover"
-        height={200}
-        src="https://nextui.org/images/hero-card.jpeg"
-        width={200}
-      />
-       </Card>
-      {/* <CardFooter className="justify-center before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-        
-        <Button className="text-tiny text-white bg-black/20" variant="flat" color="default" radius="lg" size="sm">
-        Discover Collections
-        </Button>
-      </CardFooter> */}
-      </div>
-  );
+interface Props {
+  images: string[];
+  title:String
 }
+
+const Shopnowcard = ({ images ,title}: Props) => {
+  return (
+    <div className="px-10 pt-10 pb-8 rounded-lg bg-main-lighter">
+      <Card radius="lg" className="border-hidden object-contain  pt-6 pb-4 bg-main-dark">
+        {images.map((imgSrc, index) => (
+          <Image
+            key={index}
+            alt={`Card background ${index}`}
+            className="object-contain rounded-lg"
+            src={imgSrc}
+            style={{ width: '270px', height: '200px' }}
+          />
+        ))}
+      </Card>
+
+      <div className="pt-4 flex justify-center">
+        <Button type="submit" className="w-[200px] ml-3">
+      {title}
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default Shopnowcard;

@@ -5,6 +5,8 @@ import Button from "@/app/components/Button";
 import aboutusimg from "../../../public/images/aboutus.png";
 import Shopnowcard from "@/app/components/Helper/Shopnowcard";
 
+
+
 export default function Home() {
   return (
     <div>
@@ -16,8 +18,8 @@ export default function Home() {
       <section>
         <div className="flex flex-col  pt-20 px-20">
           <div className=" flex items-center justify-center ">
-            <div className="items-center align-middle w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center ">
-              <p className="text-2xl font-bold font-sans pt-2">New Arrivals!</p>
+          <div className="items-center align-middle w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center pb-10 shadow-2xl">
+              <p className="text-2xl font-bold font-sans pt-2">New Arrivals</p>
             </div>
           </div>
 
@@ -29,7 +31,7 @@ export default function Home() {
       </section>
 
       <section>
-        <div className=" flex flex-col pt-20 px-20">
+        <div className=" flex flex-col pt-20 px-20 flex-wrap">
           <div className=" flex  flex-col items-center justify-center gap-20 ">
             <div className="items-center align-middle w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center pb-10 shadow-2xl">
               <p className="text-2xl font-bold font-sans pt-2">About us</p>
@@ -56,7 +58,7 @@ export default function Home() {
                 type="submit"
                 className=" w-[200px]  ml-3  "
               >
-                Expolore More!
+                Get More Us!
               </Button></div>
               
             </div>
@@ -69,15 +71,15 @@ export default function Home() {
       <section>
         <div className="flex flex-col  pt-20 px-20">
           <div className=" flex items-center justify-center ">
-            <div className="items-center align-middle w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center ">
+            <div className="items-center align-middle w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center shadow-2xl">
               <p className="text-2xl font-bold font-sans pt-2">Shop Now!</p>
             </div>
           </div>
 
           <div className=" flex flex-wrap justify-between pt-[5rem] pb-[3rem] ">
-            <Shopnowcard />
-            <Shopnowcard />
-            <Shopnowcard />
+          <Shopnowcard images={["/images/women.jpg"]} title={"Women's collection"} />
+          <Shopnowcard images={["/images/men.jpg"]} title={"Men's collection"} />
+          <Shopnowcard images={["/images/kids.jpg"]} title={"Kid's collection"}  />
      
           </div>
         </div>
