@@ -24,7 +24,8 @@ const config: Config = {
         '40': '40',
         '0': '0',
         // add as many as you need
-      }
+      },
+    
     },
   },
   darkMode: "class",
