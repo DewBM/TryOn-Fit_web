@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import SideBarItem from "./SideBarItem";
-import { FiHome, FiSettings, FiBox, FiTag } from "react-icons/fi";
+import { FiHome, FiSettings, FiShoppingBag, FiTag } from "react-icons/fi";
 
 const Sidebar = (props: {
   sideBarOpen: boolean;
@@ -14,7 +14,7 @@ const Sidebar = (props: {
 
   const sidebarItems = [
     { label: "DashBoard", route: "/", icon: <FiHome /> },
-    { label: "Products", route: "/about", icon: <FiBox /> },
+    { label: "Products", route: "/about", icon: <FiShoppingBag /> },
     { label: "Catergories", route: "/notifications", icon: <FiTag /> },
     { label: "Settings", route: "/messages", icon: <FiSettings /> },
   ];
