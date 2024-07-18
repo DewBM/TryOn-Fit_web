@@ -16,22 +16,24 @@ export default function IncrementDecrementButton() {
   };
 
   return (
-    <div className="flex-grow text-center space-x-4 bg-gray-300 rounded-full px-2 py-2 ml-11 mr-11">
+    <div className="flex items-center justify-center space-x-2 bg-gray-300 rounded-full px-4 py-2 mx-2 sm:mx-4 md:mx-6">
       <button
         onClick={decrement}
-        className="text-xl font-bold px-4 focus:outline-none"
+        className="text-xl font-bold px-2 py-1 focus:outline-none sm:px-4"
       >
         -
       </button>
-      <span className="text-lg">{count}</span>
+      <span className="text-lg px-2">{count}</span>
       <button
         onClick={increment}
-        className="text-xl font-bold px-4 focus:outline-none"
+        className="text-xl font-bold px-2 py-1 focus:outline-none sm:px-4"
       >
         +
       </button>
     </div>
   );
 }
+
+
 
 
