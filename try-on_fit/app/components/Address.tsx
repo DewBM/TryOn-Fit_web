@@ -12,7 +12,7 @@ export default function Address({ number, city, town, tele } : { number: string,
     const [editableTele, setEditableTele] = useState(tele);
 
     return (
-        <div className="bg-main-lighter shadow-md rounded p-4 ml-11 mr-11 place-items-start py-7">
+        <div className="bg-main-lighter shadow-md rounded p-4 mx-4 sm:mx-6 md:mx-8 place-items-start py-7">
             <p><b>+Change Your Delivery Details</b></p>
 
             <div className="flex-col mb-4 mt-3 text-left">
@@ -63,7 +63,7 @@ export default function Address({ number, city, town, tele } : { number: string,
                 )}
             </div>
 
-            <Button className="ml-11" type="button">Update</Button>
+            <Button className="mt-4 sm:mt-6 md:mt-8" type="button">Update</Button>
         </div>
     );
 };
