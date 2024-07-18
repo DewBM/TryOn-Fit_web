@@ -7,7 +7,9 @@ export default function LandingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section>
+
+    <section style={{ marginTop: "20px" }}>
+
       {/* Include shared UI here e.g. a header or sidebar */}
       <NavBar />
 
@@ -16,4 +18,6 @@ export default function LandingLayout({
       <Footer />
     </section>
   );
+
 }
+

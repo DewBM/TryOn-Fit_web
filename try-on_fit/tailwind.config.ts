@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-const {nextui} = require("@nextui-org/react");
+const { nextui } = require("@nextui-org/react");
 
 const config: Config = {
   content: [
@@ -18,14 +18,13 @@ const config: Config = {
       colors: {
         "main-dark": "var(--main-dark)",
         "main-light": "var(--main-light)",
-        "main-lighter": "var(--main-lighter)"
+        "main-lighter": "var(--main-lighter)",
       },
       zIndex: {
-        '40': '40',
-        '0': '0',
+        "40": "40",
+        "0": "0",
         // add as many as you need
       },
-    
     },
   },
   darkMode: "class",
