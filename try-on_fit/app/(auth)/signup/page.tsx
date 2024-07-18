@@ -84,12 +84,12 @@ function page() {
   }
   return (
     <Layout>
-      <div className="grid  lg:grid-cols-12 mb-0  rounded mx-8 ">
+      <div className="grid grid-cols-12 mb-0  rounded mx-8 ">
         <div className="lg:col-span-3 lg:col-start-3">
           <Image
             src={signupimg}
             alt="Auth Image"
-            className=" rounded-l-lg shadow-xl my-auto lg:col-span-3"
+            className=" rounded-l-lg shadow-2xl my-auto lg:col-span-3"
           />
         </div>
 
@@ -100,19 +100,19 @@ function page() {
 
   "
           >
-            <div className=" sm:col-span-4 text-4xl font-extrabold mt-4	mb-2.5">
+            <div className=" sm:col-span-4 text-4xl font-extrabold mt-3	mb-3">
               <h1>Create an account</h1>
             </div>
 
             {/* mb-4  mt-10 */}
-            <div className="sm:col-span-2 mt-3">
+            <div className="sm:col-span-2 mt-2">
               <TextBox
                 labelName={"First Name"}
                 id={"signup-Fname"}
                 inputType="text"
               />
             </div>
-            <div className="sm:col-span-2 mt-3">
+            <div className="sm:col-span-2 mt-2">
               <TextBox
                 labelName={"Last Name"}
                 id={"signup-lname"}
@@ -132,7 +132,7 @@ function page() {
                 ]}
                 autoComplete="gender"
                 value=""
-                onChange={(newValue) => console.log(newValue)} 
+                onChange={(newValue) => console.log(newValue)}
               />
             </div>
             <div className="sm:col-span-4">
@@ -160,23 +160,26 @@ function page() {
               <PasswordBox
                 labelName={"Password"}
                 id={"lg-pwd"}
-                showEyeIcon={true}
+                inputType="password"
+                placeholder={false}
               />
             </div>
             <div className="sm:col-span-2">
               <PasswordBox
-                labelName={"Verification Password"}
+                labelName={"Confirm Password"}
                 id={"lg-pwd-verify"}
+                inputType="password"
+                placeholder={true}
                 showEyeIcon={false}
               />
             </div>
-            <div className="sm:col-span-4 mb-0 px-0 mt-0">
-              <Button type="submit" className="py-1.5 ml-6 m-2 b px-44">
+            <div className="sm:col-span-4 mb-0 px-0 mt-0 m-0">
+              <Button type="submit" className="py-1.5 ml-6 px-44 m-0">
                 Register
               </Button>
             </div>
 
-            <div className="sm:col-span-4 font-medium ml-7 mt-0 m-0 leading-6 text-sm mb-2">
+            <div className="sm:col-span-4 font-medium ml-7 mt-0 m-0 leading-6 text-sm mb-3">
               <p>
                 Do you have an account?&nbsp;
                 <Link
