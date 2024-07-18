@@ -1,4 +1,4 @@
-// pages/index.tsx or pages/home.tsx
+
 import { useState } from "react";
 
 import Header from "@/app/components/Header/index";

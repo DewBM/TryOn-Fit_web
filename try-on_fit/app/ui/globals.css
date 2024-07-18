@@ -31,3 +31,16 @@ body {
     text-wrap: balance;
   }
 } */
+
+.customHoverColor:hover {
+  background-color: var(--main-lighter) !important;
+}
+
+.customActiveColor:active {
+  background-color: var(--main-lighter) !important;
+}
+
+.customSelectedColor .nextui-dropdown-item.selected {
+  background-color: var(--main-lighter)!important;
+}
+
