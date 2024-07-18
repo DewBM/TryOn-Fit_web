@@ -26,8 +26,6 @@
 body {
 }
 
-
-
 .customHoverColor:hover {
   background-color: var(--main-lighter) !important;
 }
@@ -37,14 +35,12 @@ body {
 }
 
 .customSelectedColor .nextui-dropdown-item.selected {
-  background-color: var(--main-lighter)!important;
+  background-color: var(--main-lighter) !important;
 }
 
-
- .text-balance {
-    text-align: balance; /* changed text-wrap to text-align */
-
-/////////////////////////////
+.text-balance {
+  text-align: balance;
+}
 
 /* styles/globals.css */
 
@@ -82,7 +78,7 @@ body {
 }
 
 .close {
-  background-color: #red;
+  background-color: red;
   color: #fff;
   padding: 10px 20px;
   border: none;
