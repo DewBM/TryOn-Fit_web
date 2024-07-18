@@ -26,7 +26,21 @@
 body {
 }
 
-/* @layer utilities {
+
+
+.customHoverColor:hover {
+  background-color: var(--main-lighter) !important;
+}
+
+.customActiveColor:active {
+  background-color: var(--main-lighter) !important;
+}
+
+.customSelectedColor .nextui-dropdown-item.selected {
+  background-color: var(--main-lighter)!important;
+}
+
+
  .text-balance {
     text-align: balance; /* changed text-wrap to text-align */
 
