@@ -17,7 +17,7 @@ export default function Inquiry() {
   return (
     <Layout>
       <div className="grid  lg:grid-cols-12 lg:grid-rows-12">
-        <div className="lg:col-span-6 lg:col-start-4 rounded mx-8 bg-main-lighter shadow-xl rounded-r-lg px-8 pt-6 pb-8 mt-10 mb-10 ">
+        <div className="lg:col-span-6 lg:col-start-4 rounded mx-8 bg-main shadow-2xl rounded-r-lg px-8 pt-6 pb-8 mt-10 mb-10 ">
           <form
             // action={}
             className="sm:col-span-1 lg:col-span-4 "
@@ -25,7 +25,7 @@ export default function Inquiry() {
             <div className=" sm:col-span-1 lg:col-span-5 text-3xl font-bold  lg:col-start-2 mb-3">
               <h1>Submit a request assistance</h1>
             </div>
-            <div className=" sm:col-span-1 lg:grid-cols-5 text-base text-red-400	  font-semibold mb-3">
+            <div className=" sm:col-span-1 lg:grid-cols-5 text-base text-red-600 font-semibold mb-3">
               <p>
                 Please complete the form below detailing your request and our
                 support staff will respond as soon as possible
@@ -33,6 +33,7 @@ export default function Inquiry() {
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-11">
               <p>Order Information</p>
+              <hr className="border-b border-#cbd5e1"></hr>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-4 text-lg font-semibold mb-3">
               <TextBox
@@ -43,6 +44,7 @@ export default function Inquiry() {
             </div>
             <div className=" sm:col-span- lg:grid-cols-5 text-xl  font-bold mb-10 mt-11">
               <p>Issue Information</p>
+              <hr className="border-b border-#cbd5e1"></hr>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-4 text-lg  font-bold mb-3">
               <SelectBox
@@ -84,7 +86,7 @@ export default function Inquiry() {
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-16">
               <p>Perfect Solution</p>
-              <hr className="border-b border-main-light"></hr>
+              <hr className="border-b border-#cbd5e1"></hr>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-4 text-lg font-semibold mb-3">
               <SelectBox
@@ -104,7 +106,7 @@ export default function Inquiry() {
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-16">
               <p>Additional Comments</p>
-              <hr className="border-b border-main-light"></hr>
+              <hr className="border-b border-#cbd5e1"></hr>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-4 text-lg font-semibold mb-3">
               <TextBox
