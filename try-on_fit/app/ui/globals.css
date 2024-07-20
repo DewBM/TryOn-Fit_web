@@ -38,6 +38,29 @@ body {
   background-color: var(--main-lighter) !important;
 }
 
+/* styles/customSelect.css */
+
+.custom-select option {
+  background-color: var(--main-lighter) !important;
+  color: black;
+  padding: 10px;
+}
+
+.custom-select:hover,
+.custom-select option:hover {
+  background-color: var(--main-lighter) !important;
+ 
+}
+
+.custom-select:focus {
+  border-color: var(--main-lighter) !important;
+  outline: none;
+}
+
+option:hover {
+  background-color:var(--main-dark) !important;
+ 
+}
 .text-balance {
   text-align: balance;
 }
