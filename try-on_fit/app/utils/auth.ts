@@ -13,7 +13,7 @@ export async function customFetch(endpoint: string, options: RequestInit, sendJW
       // console.log(options);
       let resp = await fetch(url, options);
       console.log(resp);
-      let body = resp.json();
+      let body = await resp.json();
 
       return body;
       // if (resp.ok) {

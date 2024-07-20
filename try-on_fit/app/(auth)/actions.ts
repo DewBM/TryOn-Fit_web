@@ -18,10 +18,11 @@ export default async function signin(prevState: {msg: string}, formData: FormDat
    };
 
    const resp = await customFetch("/auth/signin", params, true);
+   console.log(resp);
    if (resp) {
       if (resp.isSuccess) {
          switch (resp.role) {
-            case "SM":
+            case "ADMIN":
                redirect('/store-manager');
             
             case "SK":
