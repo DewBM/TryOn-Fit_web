@@ -1,4 +1,4 @@
-// import Button from "@/app/components/Button";
+'use client'
 
 import Button from "@/app/components/Button";
 import PasswordBox from "@/app/components/PasswordBox";
@@ -7,39 +7,12 @@ import Link from "next/link";
 import TextBox from "@/app/components/TextBox";
 import Image from "next/image";
 import signupimg from "../../../public/images/img_signIn.jpg";
+import { useFormState } from "react-dom";
+import signin from "../actions";
+import { useActionState } from "react";
 
 export default function Signin() {
-  async function signin(formData: FormData) {
-    "use server";
-
-    // const signinData = Object.fromEntries(formData);
-    const signinData = {
-      username: formData.get("username"),
-      password: formData.get("password"),
-    };
-    console.log(signinData);
-
-    const params = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(signinData),
-    };
-
-    try {
-      const response = await fetch("http://localhost:8080/signin", params);
-      if (response.ok) {
-        const json = await response.json();
-        console.log(json);
-      } else {
-        console.error("Failed to fetch data");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
-
+  const [state, action] = useFormState(signin, {msg: ""});
   return (
     <Layout>
       <div className="grid  lg:grid-cols-8 mb-0  rounded mx-8 ">
@@ -52,7 +25,7 @@ export default function Signin() {
         </div>
         <div className="lg:col-span-2 lg:col-start-5">
           <form
-            action={signin}
+            action={action}
             className="bg-main-lighter shadow-xl rounded-r-lg px-8 pt-3 pb-8 mb-1"
           >
             <div className=" sm:col-span-4 text-4xl font-extrabold 	mb-5">
