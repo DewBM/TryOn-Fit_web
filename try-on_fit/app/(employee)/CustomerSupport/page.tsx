@@ -3,6 +3,7 @@ import Header from "@/app/components/Header/index";
 import CardDataStats from "@/app/components/DashboardCard";
 import { FiMessageSquare, FiCheckSquare } from "react-icons/fi";
 import Ratings from "@/app/components/CustomerRatings";
+import InquiriesLineChart from "@/app/components/charts/InquiriesLineChart";
 
 export default function Home() {
   const ratingData = {
@@ -20,8 +21,8 @@ export default function Home() {
   return (
     <>
       <div className="container mx-auto p-3">
-        <div className="grid grid-cols-12 gap-4">
-          <div className="col-span-8">
+        <div className="grid grid-cols-12 gap-12">
+          <div className="col-span-12 md:col-span-8">
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-8 xl:grid-cols-2 2xl:gap-8">
               <CardDataStats title="Total Inquiries Today" total="80">
                 <div
@@ -54,9 +55,15 @@ export default function Home() {
                 </div>
               </CardDataStats>
             </div>
+            <div className="col-span-8">
+              <div className="pt-6  font-bold text-lg">
+              
+                <InquiriesLineChart />
+              </div>
+            </div>
           </div>
 
-          <div className="col-span-4 pl-4">
+          <div className="col-span-12  md:col-span-4 pl-2">
             <Ratings
               rating={ratingData.rating}
               totalRatings={ratingData.totalRatings}
