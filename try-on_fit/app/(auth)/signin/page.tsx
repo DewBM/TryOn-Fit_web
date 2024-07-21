@@ -2,19 +2,36 @@
 
 import Button from "@/app/components/Button";
 import PasswordBox from "@/app/components/PasswordBox";
-import Layout from "../layout";
 import Link from "next/link";
 import TextBox from "@/app/components/TextBox";
 import Image from "next/image";
 import signupimg from "../../../public/images/img_signIn.jpg";
 import { useFormState } from "react-dom";
 import signin from "../actions";
-import { useActionState } from "react";
+import { LoginSchema } from "@/app/utils/schema";
+import { useForm } from "@conform-to/react";
+import { parseWithZod } from "@conform-to/zod";
+import React from "react";
+
 
 export default function Signin() {
-  const [state, action] = useFormState(signin, {msg: ""});
+  const [lastResult, action] = useFormState(signin, undefined);
+  const [form, fields] = useForm({
+    lastResult,
+
+    onValidate({formData}) {
+      return parseWithZod(formData, {schema: LoginSchema});
+    },
+
+    shouldValidate: 'onBlur',
+    shouldRevalidate: 'onInput'
+  })
+
+
+
+
   return (
-    <Layout>
+    // <Layout>
       <div className="grid  lg:grid-cols-8 mb-0  rounded mx-8 ">
         <div className="lg:col-span-2 lg:col-start-3">
           <Image
@@ -25,8 +42,11 @@ export default function Signin() {
         </div>
         <div className="lg:col-span-2 lg:col-start-5">
           <form
+            id={form.id}
+            onSubmit={form.onSubmit}
             action={action}
             className="bg-main-lighter shadow-xl rounded-r-lg px-8 pt-3 pb-8 mb-1"
+            noValidate
           >
             <div className=" sm:col-span-4 text-4xl font-extrabold 	mb-5">
               <h1>Log In</h1>
@@ -35,16 +55,23 @@ export default function Signin() {
             <div className="sm:col-span-4 px-0 mt-1.5">
               <TextBox
                 labelName={"Username"}
-                id={"lg-uname"}
+                name={fields.username.name}
+                key={fields.username.key as React.Key}
                 inputType="text"
+                defaultValue={fields.username.initialValue as React.HTMLInputTypeAttribute}
               />
+              <div className="text-xs text-red-400">{fields.username.errors}</div>
             </div>
             <div className="sm:col-span-4 mb-0 px-0 mt-2">
               <PasswordBox
                 labelName={"Password"}
-                id={"lg-pwd"}
+                inputType={"password"}
+                name={fields.password.name}
+                key={fields.password.key as React.Key}
+                defaultValue={fields.password.initialValue as React.HTMLInputTypeAttribute}
                 showEyeIcon={true}
               />
+              <div className="text-xs text-red-400">{fields.password.errors}</div>
             </div>
             <div className="sm:col-span-4 font-medium leading-6 text-sm ml-44">
               <Link
@@ -73,6 +100,6 @@ export default function Signin() {
           </form>
         </div>
       </div>
-    </Layout>
+    // </Layout>
   );
 }

@@ -2,8 +2,19 @@
 
 import { redirect } from 'next/navigation'
 import { customFetch } from "../utils/auth";
+import { parseWithZod } from '@conform-to/zod';
+import { LoginSchema } from '../utils/schema';
 
-export default async function signin(prevState: {msg: string}, formData: FormData) {   
+export default async function signin(prevState: unknown, formData: FormData) {
+
+   const submission = parseWithZod(formData, {
+      schema: LoginSchema,
+   });
+
+   if (submission.status !== 'success') {
+      return submission.reply();
+   }
+
    const signinData = {
      username: formData.get("username"),
      password: formData.get("password"),
@@ -39,9 +50,9 @@ export default async function signin(prevState: {msg: string}, formData: FormDat
          }
       }
       else {
-         return {msg: resp.msg}
+         // return {msg: resp.msg}
       }
    }
-   else
-      return {msg: "Server Error"};
- }
+   // else
+      // return {msg: "Server Error"};
+}
