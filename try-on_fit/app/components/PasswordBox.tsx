@@ -6,15 +6,19 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 export default function PasswordBox({
   labelName,
-  id,
   inputType,
+  name,
+  key,
+  defaultValue,
   placeholder,
   showEyeIcon = true,
 }: {
   labelName: string;
-  id: string;
   inputType: React.HTMLInputTypeAttribute;
-  placeholder: boolean;
+  name: string,
+  key: React.Key,
+  defaultValue: React.HTMLInputTypeAttribute;
+  placeholder?: boolean;
   showEyeIcon?: boolean;
 }) {
   const [visible, setVisible] = useState(false);
@@ -30,8 +34,9 @@ export default function PasswordBox({
       <div className="relative mt-2 rounded-md shadow-sm">
         <input
           type={visible ? "text" : inputType}
-          name={labelName.toLowerCase()}
-          id={labelName.toLowerCase()}
+          name={name}
+          key={key}
+          defaultValue={defaultValue}
           className="block w-full rounded-md border-0 focus:outline-none mt py-1.5 pl-4 text-gray-900 ring-1 ring-inset ring-main-light focus:ring-2 focus:ring-inset focus:ring-main-dark sm:text-sm sm:leading-6"
           placeholder={placeholder ? "" : undefined}
         />
