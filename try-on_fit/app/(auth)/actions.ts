@@ -28,7 +28,7 @@ export default async function signin(prevState: unknown, formData: FormData) {
      body: JSON.stringify(signinData),
    };
 
-   const resp = await customFetch("/auth/signin", params, true);
+   const resp = await customFetch("/auth/signin", params);
    console.log(resp);
    if (resp) {
       if (resp.isSuccess) {

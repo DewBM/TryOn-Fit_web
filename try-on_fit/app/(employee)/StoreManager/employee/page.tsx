@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import {
   Table,
@@ -24,8 +24,11 @@ import { PlusIcon } from "@/app/components/PlusIcon";
 import { VerticalDotsIcon } from "@/app/components/VerticalDotsIcon";
 import { ChevronDownIcon } from "@/app/components/ChevronDownIcon";
 import { SearchIcon } from "@/app/components/SearchIcon";
-import { columns, employees } from "@/app/components/data-1";
+import { columns } from "@/app/components/data-1";
 import { capitalize } from "@/app/components/utils";
+import { customFetch } from "@/app/utils/auth";
+import { Console } from "console";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 const INITIAL_VISIBLE_COLUMNS = [
   "employee_name",
@@ -34,9 +37,37 @@ const INITIAL_VISIBLE_COLUMNS = [
   "actions",
 ];
 
-type Employee = (typeof employees)[0];
+// type Employee = (typeof employees)[0];
+
+
+type Employee = {
+  key: React.Key,
+  emp_id: number,
+  first_name: string,
+  last_name: string,
+  employee_name: string,
+  email: string,
+  enrolled_date: Date,
+  role: string,
+  contact_number: string,
+  avatar: "/images/emp-1.jpg"
+}
+
 
 export default function Home() {
+  const [employees, setData] = useState<Employee[]>([]);
+
+  useEffect(() => {
+    const getEmployees = async () => {
+      let employees: Employee[] = await customFetch('/employee', {method: 'GET'});
+      console.log(employees);
+      employees = employees.map(e => {e.employee_name = e.first_name + " " + e.last_name; e.key=e.emp_id; return e;});
+      
+      setData(employees);
+    }
+    getEmployees();
+  }, []);
+
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
