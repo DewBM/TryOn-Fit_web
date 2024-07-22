@@ -18,8 +18,8 @@ function Footer() {
                         </div>
 
 						<p className="text-white font-light text-12px pb-6">
-                        TryonFit is the most famouse clothing strore.you can select every clthings on to your
-                         body mesurements. Not that you can choose any other fashionable design for your choices.lets shops with us.
+                        TryonFit is the most famous clothing store.you can select every clothings on to your
+                         body mesurements. Not that you can choose any other fashionable design as your choices.lets shops with us!
 						
 						</p>
 						<div className="flex gap-6 pb-5">
