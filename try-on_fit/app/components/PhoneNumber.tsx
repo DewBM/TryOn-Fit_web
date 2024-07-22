@@ -4,21 +4,12 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
-const validatePassword = (password: string) => {
-  if (password.length < 8) {
-    return false;
-  }
-  const hasUpperCase = /[A-Z]/.test(password);
-  const hasLowerCase = /[a-z]/.test(password);
-  const hasDigit = /\d/.test(password);
-  const hasSymbol = /[~!@#$%^\*-_=\+[\]{\}\/;:,\.?]/.test(password);
-  if (!(hasUpperCase && hasLowerCase && hasDigit && hasSymbol)) {
-    return false;
-  }
-  return true;
+const validatePhoneNumber = (phoneNumber: string) => {
+  const regex = /^\d{10}$/;
+  return regex.test(phoneNumber);
 };
 
-export default function PasswordBox({
+export default function PhoneNumber({
   labelName,
   inputType,
   name,
@@ -46,11 +37,9 @@ export default function PasswordBox({
     if (onChange) {
       onChange(e);
     }
-    const password = e.target.value;
-    if (!validatePassword(password)) {
-      setErrorMessage(
-        "Password must be at least 8 characters, contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
-      );
+    const phoneNumber = e.target.value;
+    if (!validatePhoneNumber(phoneNumber)) {
+      setErrorMessage("Invalid phone number (must be 10 digits)");
     } else {
       setErrorMessage("");
     }
@@ -74,17 +63,6 @@ export default function PasswordBox({
           placeholder={placeholder ? "" : undefined}
           onChange={handleChange}
         />
-        {showEyeIcon && (
-          <span
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500"
-            onClick={() => setVisible(!visible)}
-          >
-            <FontAwesomeIcon
-              icon={visible ? faEye : faEyeSlash}
-              style={{ color: "var(--main-dark)" }}
-            />
-          </span>
-        )}
       </div>
       {errorMessage && (
         <div className="text-xs text-red-400">{errorMessage}</div>

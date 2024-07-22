@@ -5,7 +5,7 @@ export const LoginSchema = z.object({
   password: z.string().min(1, { message: "password cannot be empty" }),
 });
 
-export const loginSchema = z.object({
+export const SignUpSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   gender: z.string(),

@@ -11,9 +11,10 @@ import Image from "next/image";
 import signupimg from "../../../public/images/img_signUp.jpg";
 import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
-import { loginSchema } from "@/app/utils/schema";
+import { SignUpSchema } from "@/app/utils/schema";
 import { useFormState } from "react-dom";
 import signup from "../actions";
+import PhoneNumber from "@/app/components/PhoneNumber";
 
 export default function Signup() {
   const [lastResult, action] = useFormState(signup, undefined);
@@ -21,13 +22,25 @@ export default function Signup() {
     lastResult,
 
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: loginSchema });
+      return parseWithZod(formData, { schema: SignUpSchema });
     },
 
     shouldValidate: "onBlur",
     shouldRevalidate: "onInput",
   });
-  console.log(fields);
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  const validatePassword = (password: string) => {
+    if (!passwordRegex.test(password)) {
+      return false;
+    }
+    return true;
+  };
+  const validatePhoneNumber = (phoneNumber: string) => {
+    const regex = /^\d{10}$/;
+    return regex.test(phoneNumber);
+  };
   return (
     <Layout>
       <div className="grid grid-cols-12 mb-0 rounded mx-8">
@@ -112,7 +125,7 @@ export default function Signup() {
               <div className="text-xs text-red-400">{fields.email.errors}</div>
             </div>
             <div className="sm:col-span-4">
-              <TextBox
+              <PhoneNumber
                 labelName="Phone Number"
                 name={fields.phoneNumber.name}
                 key={fields.phoneNumber.key as React.Key}
@@ -121,24 +134,15 @@ export default function Signup() {
                   fields.phoneNumber
                     .initialValue as React.HTMLInputTypeAttribute
                 }
+                onChange={(e) => {
+                  const phoneNumber = e.target.value;
+                  if (!validatePhoneNumber(phoneNumber)) {
+                    <div className="text-xs text-red-400">
+                      {fields.phoneNumber.errors}
+                    </div>;
+                  }
+                }}
               />
-              <div className="text-xs text-red-400">
-                {fields.phoneNumber.errors}
-              </div>
-            </div>
-            <div className="sm:col-span-4">
-              <TextBox
-                labelName="Address"
-                name={fields.address.name}
-                key={fields.address.key as React.Key}
-                inputType="text"
-                defaultValue={
-                  fields.address.initialValue as React.HTMLInputTypeAttribute
-                }
-              />
-              <div className="text-xs text-red-400">
-                {fields.address.errors}
-              </div>
             </div>
             <div className="sm:col-span-2">
               <PasswordBox
@@ -150,10 +154,15 @@ export default function Signup() {
                   fields.password.initialValue as React.HTMLInputTypeAttribute
                 }
                 showEyeIcon={true}
+                onChange={(e) => {
+                  const password = e.target.value;
+                  if (!validatePassword(password)) {
+                    <div className="text-xs text-red-400">
+                      {fields.password.errors}
+                    </div>;
+                  }
+                }}
               />
-              <div className="text-xs text-red-400">
-                {fields.password.errors}
-              </div>
             </div>
             <div className="sm:col-span-2">
               <PasswordBox
@@ -166,10 +175,15 @@ export default function Signup() {
                     .initialValue as React.HTMLInputTypeAttribute
                 }
                 showEyeIcon={true}
+                onChange={(e) => {
+                  const passwordConfirm = e.target.value;
+                  if (!validatePassword(passwordConfirm)) {
+                    <div className="text-xs text-red-400">
+                      {fields.passwordConfirm.errors}
+                    </div>;
+                  }
+                }}
               />
-              <div className="text-xs text-red-400">
-                {fields.passwordConfirm.errors}
-              </div>
             </div>
             <div className="sm:col-span-4 mb-0 px-0 mt-0 m-0">
               <Button type="submit" className="py-1.5 ml-6 px-44 m-0">
