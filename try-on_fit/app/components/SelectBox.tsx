@@ -5,7 +5,8 @@ export default function SelectBox({
   autoComplete,
   options,
   value,
-  onChange,
+  // onChange,
+  error,
   className,
 }: {
   labelName: string;
@@ -14,11 +15,12 @@ export default function SelectBox({
   autoComplete: string;
   options: { value: string; label: string }[];
   value: string;
-  onChange: (newValue: string) => void;
+  // onChange: (newValue: string) => void;
+  error?: string;
   className?: string;
 }) {
   return (
-    <div className="sm:col-span-3 text-xm">
+    <div className={`sm:col-span-3 text-xm ${className}`}>
       <label
         htmlFor={labelName.toLowerCase()}
         className="block text-sm font-medium leading-6 text-gray-900 "
@@ -31,7 +33,7 @@ export default function SelectBox({
           name={name}
           autoComplete={autoComplete}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          // onChange={(e) => onChange(e.target.value)}
           className="block w-full rounded-md border-0 focus:outline-none py-2 pl-1 text-gray-900 ring-1 ring-inset ring-main-light focus:ring-2 focus:ring-inset focus:ring-main-dark text-xs sm:leading-6"
         >
           {options.map((option) => (
@@ -40,6 +42,7 @@ export default function SelectBox({
             </option>
           ))}
         </select>
+        {error && <div className="text-red-500">{error}</div>}
       </div>
     </div>
   );
