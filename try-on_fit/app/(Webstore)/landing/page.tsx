@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div>
       <section>
-        <div className="pt-32">
+        <div className="pt-[7.3rem]">
           <Slider />
         </div>
       </section>
@@ -20,10 +20,10 @@ export default function Home() {
               <p className="text-2xl font-bold font-sans pt-2">New Arrivals</p>
             </div>
           </div>
-
-          <div className=" flex flex-wrap gap-[5.5rem] pt-[5rem] pb-[3rem] ">
-            <Product /> <Product /> <Product /> <Product />
-            <Product /> <Product /> <Product /> <Product />
+       
+          <div className=" flex flex-wrap gap-[2rem] pt-[5rem] pb-[3rem] justify-center">
+            <Product /> <Product /> <Product /> <Product /> <Product />
+            <Product /> <Product /> <Product /> <Product /> <Product />
           </div>
         </div>
       </section>
