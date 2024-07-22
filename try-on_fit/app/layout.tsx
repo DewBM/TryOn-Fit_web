@@ -20,15 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}><section style={{ marginTop: "0px" }}>
-
-{/* Include shared UI here e.g. a header or sidebar */}
-<NavBar />
-
-<div style={{ position: "relative", zIndex: -1 }}> {children}</div>
-
-<Footer />
-</section></body>
+      <body className={inter.className}>  {children}</body>
     </html>
   );
 }

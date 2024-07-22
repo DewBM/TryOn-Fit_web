@@ -4,11 +4,13 @@ import Image from "next/image";
 import Button from "./components/Button";
 import aboutusimg from "../public/images/aboutus.png"
 import Shopnowcard from "./components/Helper/Shopnowcard";
-
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
     <div>
+       <NavBar />
       <section>
         <div className="pt-[7.3rem]">
           <Slider />
@@ -88,6 +90,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }
