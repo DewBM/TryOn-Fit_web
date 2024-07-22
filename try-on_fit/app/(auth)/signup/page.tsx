@@ -63,7 +63,6 @@ export default function Signup() {
             <div className="sm:col-span-4 text-4xl font-extrabold mt-3 mb-3">
               <h1>Create an account</h1>
             </div>
-
             <div className="sm:col-span-2 mt-2">
               <TextBox
                 labelName="First Name"
@@ -125,65 +124,51 @@ export default function Signup() {
               <div className="text-xs text-red-400">{fields.email.errors}</div>
             </div>
             <div className="sm:col-span-4">
-              <PhoneNumber
-                labelName="Phone Number"
+              <TextBox
+                labelName={"Phone Number"}
+                inputType={"phoneNumber"}
                 name={fields.phoneNumber.name}
                 key={fields.phoneNumber.key as React.Key}
-                inputType="text"
                 defaultValue={
                   fields.phoneNumber
                     .initialValue as React.HTMLInputTypeAttribute
                 }
-                onChange={(e) => {
-                  const phoneNumber = e.target.value;
-                  if (!validatePhoneNumber(phoneNumber)) {
-                    <div className="text-xs text-red-400">
-                      {fields.phoneNumber.errors}
-                    </div>;
-                  }
-                }}
               />
+              <div className="text-xs text-red-400">
+                {fields.phoneNumber.errors}
+              </div>
             </div>
             <div className="sm:col-span-2">
               <PasswordBox
-                labelName="Password"
+                labelName={"Password"}
+                inputType={"password"}
                 name={fields.password.name}
                 key={fields.password.key as React.Key}
-                inputType="password"
                 defaultValue={
                   fields.password.initialValue as React.HTMLInputTypeAttribute
                 }
                 showEyeIcon={true}
-                onChange={(e) => {
-                  const password = e.target.value;
-                  if (!validatePassword(password)) {
-                    <div className="text-xs text-red-400">
-                      {fields.password.errors}
-                    </div>;
-                  }
-                }}
               />
+              <div className="text-xs text-red-400">
+                {fields.password.errors}
+              </div>
             </div>
+            {/* passwordConfirm */}
             <div className="sm:col-span-2">
               <PasswordBox
-                labelName="Confirm Password"
+                labelName={"Confirm Password"}
+                inputType={"passwordConfirm"}
                 name={fields.passwordConfirm.name}
                 key={fields.passwordConfirm.key as React.Key}
-                inputType="password"
                 defaultValue={
                   fields.passwordConfirm
                     .initialValue as React.HTMLInputTypeAttribute
                 }
                 showEyeIcon={true}
-                onChange={(e) => {
-                  const passwordConfirm = e.target.value;
-                  if (!validatePassword(passwordConfirm)) {
-                    <div className="text-xs text-red-400">
-                      {fields.passwordConfirm.errors}
-                    </div>;
-                  }
-                }}
               />
+              <div className="text-xs text-red-400">
+                {fields.passwordConfirm.errors}
+              </div>
             </div>
             <div className="sm:col-span-4 mb-0 px-0 mt-0 m-0">
               <Button type="submit" className="py-1.5 ml-6 px-44 m-0">
@@ -194,7 +179,6 @@ export default function Signup() {
                 ></Link>
               </Button>
             </div>
-
             <div className="sm:col-span-4 font-medium ml-7 mt-0 m-0 leading-6 text-sm mb-3">
               <p>
                 Do you have an account?&nbsp;
