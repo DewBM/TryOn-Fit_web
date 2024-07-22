@@ -15,8 +15,8 @@ export default function PasswordBox({
 }: {
   labelName: string;
   inputType: React.HTMLInputTypeAttribute;
-  name: string,
-  key: React.Key,
+  name: string;
+  key: React.Key;
   defaultValue: React.HTMLInputTypeAttribute;
   placeholder?: boolean;
   showEyeIcon?: boolean;
