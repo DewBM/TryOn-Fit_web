@@ -8,7 +8,7 @@ export default function LandingLayout({
 }) {
   return (
 
-    <section style={{ marginTop: "20px" }}>
+    <section style={{ marginTop: "0px" }}>
 
       {/* Include shared UI here e.g. a header or sidebar */}
       <NavBar />

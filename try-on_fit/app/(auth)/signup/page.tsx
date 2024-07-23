@@ -11,9 +11,10 @@ import Image from "next/image";
 import signupimg from "../../../public/images/img_signUp.jpg";
 import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
-import { loginSchema } from "@/app/utils/schema";
+import { SignUpSchema } from "@/app/utils/schema";
 import { useFormState } from "react-dom";
 import signup from "../actions";
+import PhoneNumber from "@/app/components/PhoneNumber";
 
 export default function Signup() {
   const [lastResult, action] = useFormState(signup, undefined);
@@ -21,13 +22,25 @@ export default function Signup() {
     lastResult,
 
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: loginSchema });
+      return parseWithZod(formData, { schema: SignUpSchema });
     },
 
     shouldValidate: "onBlur",
     shouldRevalidate: "onInput",
   });
-  console.log(fields);
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  const validatePassword = (password: string) => {
+    if (!passwordRegex.test(password)) {
+      return false;
+    }
+    return true;
+  };
+  const validatePhoneNumber = (phoneNumber: string) => {
+    const regex = /^\d{10}$/;
+    return regex.test(phoneNumber);
+  };
   return (
     <Layout>
       <div className="grid grid-cols-12 mb-0 rounded mx-8">
@@ -50,7 +63,6 @@ export default function Signup() {
             <div className="sm:col-span-4 text-4xl font-extrabold mt-3 mb-3">
               <h1>Create an account</h1>
             </div>
-
             <div className="sm:col-span-2 mt-2">
               <TextBox
                 labelName="First Name"
@@ -113,10 +125,10 @@ export default function Signup() {
             </div>
             <div className="sm:col-span-4">
               <TextBox
-                labelName="Phone Number"
+                labelName={"Phone Number"}
+                inputType={"phoneNumber"}
                 name={fields.phoneNumber.name}
                 key={fields.phoneNumber.key as React.Key}
-                inputType="text"
                 defaultValue={
                   fields.phoneNumber
                     .initialValue as React.HTMLInputTypeAttribute
@@ -126,26 +138,12 @@ export default function Signup() {
                 {fields.phoneNumber.errors}
               </div>
             </div>
-            <div className="sm:col-span-4">
-              <TextBox
-                labelName="Address"
-                name={fields.address.name}
-                key={fields.address.key as React.Key}
-                inputType="text"
-                defaultValue={
-                  fields.address.initialValue as React.HTMLInputTypeAttribute
-                }
-              />
-              <div className="text-xs text-red-400">
-                {fields.address.errors}
-              </div>
-            </div>
             <div className="sm:col-span-2">
               <PasswordBox
-                labelName="Password"
+                labelName={"Password"}
+                inputType={"password"}
                 name={fields.password.name}
                 key={fields.password.key as React.Key}
-                inputType="password"
                 defaultValue={
                   fields.password.initialValue as React.HTMLInputTypeAttribute
                 }
@@ -155,12 +153,13 @@ export default function Signup() {
                 {fields.password.errors}
               </div>
             </div>
+            {/* passwordConfirm */}
             <div className="sm:col-span-2">
               <PasswordBox
-                labelName="Confirm Password"
+                labelName={"Confirm Password"}
+                inputType={"passwordConfirm"}
                 name={fields.passwordConfirm.name}
                 key={fields.passwordConfirm.key as React.Key}
-                inputType="password"
                 defaultValue={
                   fields.passwordConfirm
                     .initialValue as React.HTMLInputTypeAttribute
@@ -180,7 +179,6 @@ export default function Signup() {
                 ></Link>
               </Button>
             </div>
-
             <div className="sm:col-span-4 font-medium ml-7 mt-0 m-0 leading-6 text-sm mb-3">
               <p>
                 Do you have an account?&nbsp;

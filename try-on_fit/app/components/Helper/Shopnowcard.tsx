@@ -10,8 +10,8 @@ interface Props {
 
 const Shopnowcard = ({ images ,title}: Props) => {
   return (
-    <div className="px-10 pt-10 pb-8 rounded-lg bg-main-lighter">
-      <Card radius="lg" className="border-hidden object-contain  pt-6 pb-4 bg-main-dark">
+    <div >
+      <Card radius="lg" className="border-hidden object-contain px-10 pt-10 pb-8 rounded-lg bg-main-lighter">
         {images.map((imgSrc, index) => (
           <Image
             key={index}
@@ -21,13 +21,14 @@ const Shopnowcard = ({ images ,title}: Props) => {
             style={{ width: '270px', height: '200px' }}
           />
         ))}
-      </Card>
+      
 
       <div className="pt-4 flex justify-center">
         <Button type="submit" className="w-[200px] ml-3">
       {title}
         </Button>
       </div>
+      </Card>
     </div>
   );
 };
