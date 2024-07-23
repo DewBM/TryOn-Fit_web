@@ -12,6 +12,7 @@ import {
   Legend,
 } from "chart.js";
 
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -102,6 +103,7 @@ const InventoryLineChart = () => {
         font: {
           size: 16,
         },
+        color: "black", 
       },
     },
     scales: {
