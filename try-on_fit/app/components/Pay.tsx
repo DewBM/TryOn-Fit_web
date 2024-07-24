@@ -3,7 +3,7 @@
 import React from "react";
 import Button from "@/app/components/Button";
 
-export default function Total(
+export default function Pay(
     {subamount , discount} : {subamount: number, discount: number}
 ){
 
@@ -31,7 +31,7 @@ export default function Total(
                         </tr>
                     </tbody>
                 </table>
-                <Button className="sm:mt-0 md:mt-0 w-full sm:w-auto" type="button">Checkout</Button>
+                <Button className="sm:mt-0 md:mt-0 w-full sm:w-auto" type="button">Confirm</Button>
             </div>
         </div>
     )
