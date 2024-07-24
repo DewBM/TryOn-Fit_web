@@ -181,7 +181,7 @@ export default function AddProduct() {
           <div className="bg-main  lg:col-span-4 sm:col-span-2 lg:col-start-7 mb-4 ">
             <fieldset>
               <legend className="block text-sm font-medium leading-6 text-gray-900">
-                Age
+                Age Group
               </legend>
               {/* Add a legend element for the label */}
               <div
@@ -191,8 +191,8 @@ export default function AddProduct() {
                   alignItems: "center",
                 }}
               >
-                <RadioButton label="Male" value="male" name="gender" />
-                <RadioButton label="Female" value="female" name="gender" />
+                <RadioButton label="Adult" value="adult" name="agegroup" />
+                <RadioButton label="Kids" value="kids" name="agegroup" />
               </div>
             </fieldset>
           </div>
