@@ -4,11 +4,11 @@ function Filter() {
   return (
     <div className="flex justify-center">
     <div className="flex flex-col items-center justify-center my-8 w-60 bg-main-lighter">
-        <h1 className='text-3xl font-bold align-middle py-5
+        <h1 className='text-3xl font-bold align-middle pt-10 pb-3
         '>Filter</h1>
         {/* **********brands************** */}
-   <div className="my-8 w-60 pl-6">
-    <div className="text-2xl mx-auto text-start py-4 w-auto text-main-dark font-semibold"
+   <div className="my-4 w-60 pl-6">
+    <div className="text-2xl mx-auto text-start py-2 w-auto text-main-dark font-semibold"
     >Category</div>
     <ul className=' text-left space-y-3 py-1'>
         {[1,2,3,4,5,6,].map((item, idx)=>(
@@ -29,8 +29,8 @@ function Filter() {
     </ul>
    </div>
    {/* *************brands********* */}
-   <div className="my-8 w-60 pl-6">
-    <div className="text-2xl mx-auto text-start py-4 w-auto font-semibold text-main-dark"
+   <div className="my-4 w-60 pl-6">
+    <div className="text-2xl mx-auto text-start py-2 w-auto font-semibold text-main-dark"
     >
         Brands
     </div>
@@ -53,8 +53,8 @@ function Filter() {
     </ul>
    </div>
    {/* *************size********* */}
-   <div className="my-8 w-60 pl-6">
-    <div className="text-2xl mx-auto text-start py-4 w-auto font-semibold text-main-dark"
+   <div className="my-4 w-60 pl-6">
+    <div className="text-2xl mx-auto text-start py-2 w-auto font-semibold text-main-dark"
     >
         Size
     </div>
@@ -77,8 +77,8 @@ function Filter() {
     </ul>
    </div>
     {/* *************Price********* */}
-    <div className="my-8 w-60 pl-6">
-    <div className="text-2xl mx-auto text-start py-4 w-auto font-semibold text-main-dark"
+    <div className="my-4 w-60 pl-6">
+    <div className="text-2xl mx-auto text-start py-2 w-auto font-semibold text-main-dark"
     >
        Price Range
     </div>
