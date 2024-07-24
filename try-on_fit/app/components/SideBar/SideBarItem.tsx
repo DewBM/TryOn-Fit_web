@@ -29,7 +29,7 @@ const SideBarItem = ({ item, pageName, setPageName }: any) => {
         onClick={handleClick}
         className={`${
           isItemActive ? "bg-main-light" : ""
-        }  px-4 py-2 rounded-md flex items-center gap-2.5 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-main-light dark:hover:bg-meta-4`}
+        }  px-7 py-2 rounded-md flex items-center gap-2.5 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-main-light dark:hover:bg-meta-4`}
       >
         {item.icon}
         {item.label}
