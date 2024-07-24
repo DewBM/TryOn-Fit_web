@@ -1,6 +1,6 @@
 import Address from "@/app/components/Address";
 import ConfirmItem from "@/app/components/ConfirmItem";
-import Pay from "@/app/components/pay";
+import Pay from "@/app/components/Pay";
 
 
 export default function CartAddress() {
