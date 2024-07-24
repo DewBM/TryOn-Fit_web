@@ -9,9 +9,23 @@ import RadioButton from "@/app/components/RadioButton";
 import ColorInput from "@/app/components/ColorInput";
 import { useState } from "react";
 import NumberBox from "@/app/components/NumberBox";
+import FlipBox from "@/app/components/FlipBox";
 
 export default function AddProduct() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [size, setSize] = useState<string>(""); // add this state variable
+
+  const [activeSize, setActiveSize] = useState<string>("");
+  const [selectedValue, setSelectedValue] = useState("");
+
+  // const [activeSizes, setActiveSizes] = useState({
+  //   S: false,
+  //   M: false,
+  //   L: false,
+  //   XL: false,
+  //   XXL: false,
+  //   XXXL: false,
+  // });
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -58,14 +72,50 @@ export default function AddProduct() {
     setButtonClickme(buttonClickme === "primary" ? "secondary" : "primary");
   };
 
+  // const handleSizeClick = (size: string) => {
+  //   setSize(size);
+  //   setShowSection(true); // show the section when a size is selected
+  //   setActiveSize(size);
+  // };
+
+  type SizeKey = "S" | "M" | "L" | "XL" | "XXL" | "XXXL";
+
+  const [activeSizes, setActiveSizes] = useState({
+    S: false,
+    M: false,
+    L: false,
+    XL: false,
+    XXL: false,
+    XXXL: false,
+  });
+
+  const handleSizeClick = (size: SizeKey) => {
+    // setSize(size);
+    setShowSection(true);
+    setActiveSizes((prevActiveSizes) => {
+      if (size in prevActiveSizes) {
+        return { ...prevActiveSizes, [size]: !prevActiveSizes[size] };
+      }
+      return prevActiveSizes;
+    });
+  };
+
   return (
-    <div className="grid  lg:grid-cols-12 sm: mb-0  rounded mx-8 ">
+    <div className="grid  lg:grid-cols-11 sm: mb-0  rounded mx-8 ">
       <form
         action="{AddProduct}"
         className="bg-main lg:col-span-9 shadow-xl rounded-r-lg pt-3 pb-8 mb-1 m-2"
         noValidate
       >
-        <div className="grid grid-cols-12">
+        <div className="grid grid-cols-12 ml-10">
+          <div className="bg-main col-span-12 lg:col-span-12 sm:col-span-6 mb-6">
+            <h1
+              className="font-semibold text-3xl
+"
+            >
+              New Product Entry Form
+            </h1>
+          </div>
           <div className="bg-main col-span-3 lg:col-span-3 sm:col-span-2 mb-4 ">
             <TextBox
               labelName="Product ID"
@@ -105,7 +155,8 @@ export default function AddProduct() {
                 { value: "other", label: "Other" },
               ]}
               autoComplete="category"
-              value={"fields.category.value ??"}
+              value={selectedValue}
+              onChange={(newValue) => setSelectedValue(newValue)}
             />
           </div>
           <div className="bg-main  lg:col-span-4 sm:col-span-2 mb-4  ">
@@ -145,14 +196,15 @@ export default function AddProduct() {
               </div>
             </fieldset>
           </div>
-          <div className="bg-main  lg:col-span-4 sm:col-span-2 mb-4  ">
-            <p className="mb-3">Upload an image (optional)</p>
-            <div className="">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
+          <div className="bg-main  lg:col-span-12 sm:col-span-2 mb-20  ">
+            <p
+              className="mb-3 mt-4 text-sm text-neutral-600	
+"
+            >
+              Provide front and back clothing views
+            </p>
+            <div className="lg:col-span-12 sm:col-span-2 lg:col-start-1">
+              <FlipBox />
             </div>
             {selectedImage && (
               <span className="text-teal-500	">
@@ -160,20 +212,20 @@ export default function AddProduct() {
               </span>
             )}
           </div>
-          <div className="bg-main  lg:col-span-8 sm:col-span-2 lg:col-start-1 mb-4 ">
+          <div className="bg-main  lg:col-span-10 sm:col-span-2 lg:col-start-1 mb-4 ">
             <Button
               type="button"
               className="py-1.5 ml-6  m-0"
               onClick={handleButtonClickColor}
             >
-              + color
+              Add color +
             </Button>
             {showColorSection && (
-              <div className="bg-main lg:col-start-1 col-span-8 shadow-xl rounded-r-lg pt-3 pb-8 mb-1 m-2 grid grid-cols-12">
-                <div className="bg-main col-span-8 lg:col-span-4 sm:col-span-2 mb-4 ">
-                  <p>enter color HEX code and check color here </p>
+              <div className="bg-main lg:col-start-1 lg:col-span-12 shadow-xl rounded-r-lg pt-3 pb-8 mb-1 pl-6 grid grid-cols-12 ml-14 mt-3">
+                <div className="bg-main col-span-6 lg:col-span-6 sm:col-span-2 mt-6 text-sm font-normal leading-6 text-gray-900 ">
+                  <p>Enter color HEX code </p>
                 </div>
-                <div className="bg-main  lg:col-span-4 sm:col-span-2 lg:col-start-5 mb-4 ">
+                <div className="bg-main  lg:col-span-5 sm:col-span-2 lg:col-start-7 mb-4 mt-3 ">
                   <ColorInput />
                 </div>
                 <div className="bg-main lg:col-span-10 sm:col-span-4 mb-4 row-span-2 ">
@@ -194,24 +246,73 @@ export default function AddProduct() {
                     defaultValue=""
                   />
                 </div>
-                <div className="bg-main lg:col-span-12 sm:col-span-4 mb-4 row-span-2 ">
-                  <Button
-                    type="button"
-                    className={`py-1 ml-4  m-0 ${
-                      buttonClickme === "primary"
-                        ? "bg-main-light"
-                        : "bg-red-600"
-                    }`}
-                    onClick={handleButtonClick}
-                  >
-                    S
-                  </Button>
+                {/* // </div> */}
+                <div className="bg-main lg:col-span-12 sm:col-span-4 mb-4">
+                  <p className="mb-3 mt-4 text-sm font-medium leading-6 text-gray-900">
+                    Select Sizes
+                  </p>
+                  <div className="flex flex-wrap px-2">
+                    <Button
+                      className={`px-3 py-1 ${
+                        activeSizes.S ? "bg-orange-600" : "bg-green-500"
+                      }`}
+                      type="button"
+                      onClick={() => handleSizeClick("S")}
+                    >
+                      S
+                    </Button>
+                    <Button
+                      className={`px-3 py-1 ${
+                        activeSizes.M ? "bg-orange-600" : "bg-green-500"
+                      }`}
+                      type="button"
+                      onClick={() => handleSizeClick("M")}
+                    >
+                      M
+                    </Button>
+                    <Button
+                      className={`px-3 py-1 ${
+                        activeSizes.L ? "bg-orange-600" : "bg-green-500"
+                      }`}
+                      type="button"
+                      onClick={() => handleSizeClick("L")}
+                    >
+                      L
+                    </Button>
+                    <Button
+                      className={`px-3 py-1 ${
+                        activeSizes.XL ? "bg-orange-600" : "bg-green-500"
+                      }`}
+                      type="button"
+                      onClick={() => handleSizeClick("XL")}
+                    >
+                      XL
+                    </Button>
+
+                    <Button
+                      className={`px-3 py-1 ${
+                        activeSizes.XXL ? "bg-orange-600" : "bg-green-500"
+                      }`}
+                      type="button"
+                      onClick={() => handleSizeClick("XXL")}
+                    >
+                      2XL
+                    </Button>
+                    <Button
+                      className={`px-3 py-1 ${
+                        activeSizes.XXXL ? "bg-orange-600" : "bg-green-500"
+                      }`}
+                      type="button"
+                      onClick={() => handleSizeClick("XXXL")}
+                    >
+                      3XL
+                    </Button>
+                  </div>
                   {showSection && (
-                    // <div>
-                    <div className="bg-main-light lg:col-start-1 col-span-12 shadow-xl rounded-lg pt-3 pb-8 mb-1 m-2 grid grid-cols-12 pl-3">
-                      <div className="bg-main lg:col-span-6 sm:col-span-4 mb-4 row-span-2 ">
+                    <div className="bg-gray-50 lg:col-start-1 col-span-12 shadow-xl rounded-lg pt-3 pb-8 mb-1 mr-6 grid grid-cols-12 pl-3">
+                      <div className="bg-main lg:col-span-8 sm:col-span-4 mb-4 row-span-2 ">
                         <NumberBox
-                          labelName="Add the quantity"
+                          labelName="Enter total quantity"
                           name="quantity"
                           key="quantity"
                           inputType="number"
@@ -225,17 +326,17 @@ export default function AddProduct() {
                           className="py-1 ml-4  m-0"
                           onClick={handleAddMeasurement}
                         >
-                          + mersument
+                          + Measurements
                         </Button>
                       </div>
                       {measurementSections.map((section, index) => (
                         <div
                           key={index}
-                          className="bg-main-lighter lg:col-start-1 col-span-11 shadow-xl rounded-lg  pb-1 mb-1 m-2 grid grid-cols-12 pl-5"
+                          className="bg-neutral-100	 lg:col-start-1 col-span-11 shadow-xl rounded-lg  pb-1 mb-1 m-2 grid grid-cols-12 pl-5"
                         >
                           <div className="bg-main lg:col-span-5 sm:col-span-4 mb-4 row-span-2 lg:col-start-1 m-0">
                             <TextBox
-                              labelName="Measurement"
+                              labelName="Measurement Name"
                               name="mesurement"
                               key="mesurement"
                               inputType="text"
@@ -263,48 +364,57 @@ export default function AddProduct() {
                           </div>
                         </div>
                       ))}
-                      <div className="bg-main lg:col-span-3 sm:col-span-1 mb-4 row-span-2 lg:col-start-5">
+                      <div className="bg-main lg:col-span-3 sm:col-span-1 mb-4 row-span-2 lg:col-start-6 mt-3">
                         <Button
                           type="submit"
-                          className="py-1.5 ml-6 px-4  m-0"
+                          className="py-1 ml-8 px-8 m-0"
                           onClick={handleCloserSubmitButtonClick}
                         >
-                          submit
+                          Add
                         </Button>
                       </div>
-                      <div className="bg-main lg:col-span-3 sm:col-span-1 mb-4 row-span-2 ml-3">
+                      <div className="bg-main lg:col-span-3 sm:col-span-1 mb-4 row-span-2 ml-1 mt-3">
                         <Button
                           type="submit"
-                          className="py-1.5 ml-6 px-4  m-0"
+                          className="py-1 ml-3 px-4  m-0"
                           onClick={handleCloserClancleButtonClick}
                         >
-                          cancle
+                          Remove
                         </Button>
                       </div>
                     </div>
-                    // </div>
                   )}
                 </div>
-                <div className="bg-main lg:col-span-3 sm:col-span-1 mb-4 row-span-2 lg:col-start-5">
+                {/* // </div> */}
+                <div className="bg-main lg:col-span-3 sm:col-span-1 mb-4 row-span-2 lg:col-start-7">
                   <Button
                     type="submit"
-                    className="py-1.5 ml-6 px-4  m-0"
+                    className="py-1 ml-8 px-8 m-0"
                     onClick={handleCloserSubmitButtonClickColor}
                   >
-                    submit
+                    Add
                   </Button>
                 </div>
-                <div className="bg-main lg:col-span-3 sm:col-span-1 mb-4 row-span-2 ml-3">
+                <div className="bg-main lg:col-span-3 sm:col-span-1 mb-4 row-span-2">
                   <Button
                     type="submit"
-                    className="py-1.5 ml-6 px-4  m-0"
+                    className="py-1 ml-3 px-4  m-0"
                     onClick={handleCloserClancleButtonClickColor}
                   >
-                    cancle
+                    Cancle
                   </Button>
                 </div>
               </div>
             )}
+          </div>
+          <div className="bg-main lg:col-span-3 sm:col-span-1 mb-4 row-span-2 lg:col-start-8">
+            <Button
+              type="submit"
+              className="py-2 ml-8  px-14 m-0"
+              onClick={handleCloserSubmitButtonClickColor}
+            >
+              Submit
+            </Button>
           </div>
         </div>
       </form>
