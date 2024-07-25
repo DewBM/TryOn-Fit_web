@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import React from "react";
 import {
   Table,
@@ -15,7 +14,6 @@ import {
   DropdownMenu,
   DropdownItem,
   Chip,
-  User,
   Pagination,
   Selection,
   ChipProps,
@@ -25,24 +23,63 @@ import { PlusIcon } from "@/app/components/PlusIcon";
 import { VerticalDotsIcon } from "@/app/components/VerticalDotsIcon";
 import { ChevronDownIcon } from "@/app/components/ChevronDownIcon";
 import { SearchIcon } from "@/app/components/SearchIcon";
-import { supplierColumns, suppliers, statusOptions } from "@/app/components/data-3";
 import { capitalize } from "@/app/components/utils";
 
+// Sample data for customer inquiries
+const inquiries = [
+  {
+    id: 1,
+    name: "John Doe",
+    email: "john@example.com",
+    status: "open",
+    inquiry: "Product issue",
+    date: "2023-07-15",
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    email: "jane@example.com",
+    status: "closed",
+    inquiry: "Billing question",
+    date: "2023-07-12",
+  },
+];
+
+const columns = [
+  { uid: "inquiry_id", name: "Inquiry ID" },
+  { uid: "inquiry", name: "Inquiry" },
+  { uid: "name", name: "Customer Name" },
+  { uid: "email", name: "Email" },
+  { uid: "order_id", name: "Order ID" },
+  { uid: "status", name: "Status" },
+  { uid: "date", name: "Date" },
+  { uid: "description", name: "Description" },
+  { uid: "actions", name: "Actions" },
+];
+
+const statusOptions = [
+  { uid: "open", name: "Open" },
+  { uid: "closed", name: "Closed" },
+  { uid: "pending", name: "Pending" },
+];
+
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  available: "success",
-  unavailable: "danger",
+  open: "warning",
+  closed: "success",
+  pending: "danger",
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "supplier_name",
-  "contact",
+  "inquiry_id",
+  "inquiry",
   "status",
+  "date",
   "actions",
 ];
 
-type Supplier = (typeof suppliers)[0];
+type Inquiry = (typeof inquiries)[0];
 
-export default function SupplierTable() {
+export default function App() {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -53,42 +90,42 @@ export default function SupplierTable() {
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: "supplier_name",
+    column: "date",
     direction: "ascending",
   });
   const [page, setPage] = React.useState(1);
 
-  const pages = Math.ceil(suppliers.length / rowsPerPage);
+  const pages = Math.ceil(inquiries.length / rowsPerPage);
 
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
-    if (visibleColumns === "all") return supplierColumns;
+    if (visibleColumns === "all") return columns;
 
-    return supplierColumns.filter((column) =>
+    return columns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid)
     );
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredSuppliers = [...suppliers];
+    let filteredInquiries = [...inquiries];
 
     if (hasSearchFilter) {
-      filteredSuppliers = filteredSuppliers.filter((supplier) =>
-        supplier.supplier_name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredInquiries = filteredInquiries.filter((inquiry) =>
+        inquiry.inquiry.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
       statusFilter !== "all" &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredSuppliers = filteredSuppliers.filter((supplier) =>
-        Array.from(statusFilter).includes(supplier.status)
+      filteredInquiries = filteredInquiries.filter((inquiry) =>
+        Array.from(statusFilter).includes(inquiry.status)
       );
     }
 
-    return filteredSuppliers;
-  }, [suppliers, filterValue, statusFilter]);
+    return filteredInquiries;
+  }, [inquiries, filterValue, statusFilter]);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -98,47 +135,34 @@ export default function SupplierTable() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: Supplier, b: Supplier) => {
-      const first = a[sortDescriptor.column as keyof Supplier] as string;
-      const second = b[sortDescriptor.column as keyof Supplier] as string;
+    return [...items].sort((a: Inquiry, b: Inquiry) => {
+      const first = a[sortDescriptor.column as keyof Inquiry] as string;
+      const second = b[sortDescriptor.column as keyof Inquiry] as string;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((supplier: Supplier, columnKey: React.Key) => {
-    const cellValue = supplier[columnKey as keyof Supplier];
+  const renderCell = React.useCallback(
+    (inquiry: Inquiry, columnKey: React.Key) => {
+      const cellValue = inquiry[columnKey as keyof Inquiry];
 
-    switch (columnKey) {
-      case "supplier_name":
-       
-      case "contact":
-        return (
-          <div className="flex flex-col">
-            <p
-              className="text-bold text-small capitalize"
-              style={{ color: "var(--main-darker)" }}
+      switch (columnKey) {
+        case "status":
+          return (
+            <Chip
+              className="capitalize border-none gap-1 text-default-600"
+              color={statusColorMap[inquiry.status]}
+              size="sm"
+              variant="dot"
             >
               {cellValue}
-            </p>
-          </div>
-        );
-      case "status":
-        return (
-          <Chip
-            className="capitalize border-none gap-1 text-default-600"
-            color={statusColorMap[supplier.status]}
-            size="sm"
-            variant="dot"
-          >
-            {cellValue}
-          </Chip>
-        );
-      case "actions":
-        return (
-          <div className="relative flex justify-end items-center gap-2">
-            <div style={{ position: "relative", zIndex: 1 }}>
+            </Chip>
+          );
+        case "actions":
+          return (
+            <div className="relative flex justify-end items-center gap-2">
               <Dropdown className="bg-white border-1 border-default-200">
                 <DropdownTrigger>
                   <Button isIconOnly radius="full" size="sm" variant="light">
@@ -158,12 +182,13 @@ export default function SupplierTable() {
                 </DropdownMenu>
               </Dropdown>
             </div>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+          );
+        default:
+          return cellValue;
+      }
+    },
+    []
+  );
 
   const onRowsPerPageChange = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -192,7 +217,7 @@ export default function SupplierTable() {
               base: "w-full sm:max-w-[44%]",
               inputWrapper: "border-1",
             }}
-            placeholder="Search by name..."
+            placeholder="Search by inquiry..."
             size="sm"
             startContent={<SearchIcon className="text-default-300" />}
             value={filterValue}
@@ -213,6 +238,7 @@ export default function SupplierTable() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
+                className="customSelectedColor"
                 disallowEmptySelection
                 aria-label="Table Columns"
                 closeOnSelect={false}
@@ -221,10 +247,7 @@ export default function SupplierTable() {
                 onSelectionChange={setStatusFilter}
               >
                 {statusOptions.map((status) => (
-                  <DropdownItem
-                    className="customHoverColor customActiveColor capitalize"
-                    key={status.uid}
-                  >
+                  <DropdownItem key={status.uid} className="capitalize">
                     {capitalize(status.name)}
                   </DropdownItem>
                 ))}
@@ -250,7 +273,7 @@ export default function SupplierTable() {
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
               >
-                {supplierColumns.map((column) => (
+                {columns.map((column) => (
                   <DropdownItem
                     className="customHoverColor customActiveColor capitalize"
                     key={column.uid}
@@ -271,7 +294,7 @@ export default function SupplierTable() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {suppliers.length} suppliers
+            Total {inquiries.length} inquiries
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -293,7 +316,7 @@ export default function SupplierTable() {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    suppliers.length,
+    inquiries.length,
     hasSearchFilter,
   ]);
 
@@ -308,7 +331,7 @@ export default function SupplierTable() {
           isDisabled={hasSearchFilter}
           page={page}
           total={pages}
-          variant="customHoverColor"
+          variant="flat"
           onChange={setPage}
         />
         <span className="text-small text-default-400">
@@ -325,12 +348,11 @@ export default function SupplierTable() {
       wrapper: ["max-h-[382px]", "max-w-3xl"],
       th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
       td: [
-        
         "group-data-[first=true]:first:before:rounded-none",
         "group-data-[first=true]:last:before:rounded-none",
-        
+
         "group-data-[middle=true]:before:rounded-none",
-        
+
         "group-data-[last=true]:first:before:rounded-none",
         "group-data-[last=true]:last:before:rounded-none",
       ],
@@ -342,7 +364,7 @@ export default function SupplierTable() {
     <Table
       isCompact
       removeWrapper
-      aria-label="Example table with custom cells, pagination and sorting"
+      aria-label="Customer Inquiry Table"
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
       checkboxesProps={{
@@ -364,13 +386,13 @@ export default function SupplierTable() {
           <TableColumn
             key={column.uid}
             align={column.uid === "actions" ? "center" : "start"}
-            
+            allowsSorting={column.sortable}
           >
             {column.name}
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No suppliers found"} items={sortedItems}>
+      <TableBody emptyContent={"No inquiries found"} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

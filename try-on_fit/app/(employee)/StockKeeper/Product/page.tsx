@@ -353,7 +353,7 @@ export default function Home() {
       bottomContentPlacement="outside"
       checkboxesProps={{
         classNames: {
-          wrapper: "after:bg-foreground after:text-background text-background",
+          wrapper: "after:bg-main-dark after:text-background text-background",
         },
       }}
       classNames={classNames}
