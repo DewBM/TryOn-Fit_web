@@ -4,19 +4,9 @@ import CardDataStats from "@/app/components/DashboardCard";
 import { FiMessageSquare, FiCheckSquare } from "react-icons/fi";
 import Ratings from "@/app/components/CustomerRatings";
 import InquiriesLineChart from "@/app/components/charts/InquiriesLineChart";
-
+import FeedbackCard from "@/app/components/CustomerFeedbacks";
 export default function Home() {
-  const ratingData = {
-    rating: 4.5,
-    totalRatings: 1600,
-    ratingDistribution: {
-      5: 1180,
-      4: 200,
-      3: 100,
-      2: 80,
-      1: 20,
-    },
-  };
+  
 
   return (
     <>
@@ -64,11 +54,7 @@ export default function Home() {
           </div>
 
           <div className="col-span-12  md:col-span-4 pl-2">
-            <Ratings
-              rating={ratingData.rating}
-              totalRatings={ratingData.totalRatings}
-              ratingDistribution={ratingData.ratingDistribution}
-            />
+          <FeedbackCard /> 
           </div>
         </div>
       </div>
