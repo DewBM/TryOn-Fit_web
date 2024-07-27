@@ -29,6 +29,7 @@ import { capitalize } from "@/app/components/utils";
 import { customFetch } from "@/app/utils/auth";
 import { Console } from "console";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import EmpAddForm from "./emp_add";
 
 const INITIAL_VISIBLE_COLUMNS = [
   "employee_name",
@@ -37,7 +38,6 @@ const INITIAL_VISIBLE_COLUMNS = [
   "actions",
 ];
 
-// type Employee = (typeof employees)[0];
 
 type Employee = {
   key: React.Key;
@@ -55,19 +55,25 @@ type Employee = {
 export default function Home() {
   const [employees, setData] = useState<Employee[]>([]);
 
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const openAddDialog = () => setIsAddDialogOpen(true);
+  const closeAddDialog = ()=> setIsAddDialogOpen(false);
+
   useEffect(() => {
     const getEmployees = async () => {
       let employees: Employee[] = await customFetch("/employee", {
         method: "GET",
       });
       console.log(employees);
-      employees = employees.map((e) => {
-        e.employee_name = e.first_name + " " + e.last_name;
-        e.key = e.emp_id;
-        return e;
-      });
-
-      setData(employees);
+      if (employees) {
+        employees = employees.map((e) => {
+          e.employee_name = e.first_name + " " + e.last_name;
+          e.key = e.emp_id;
+          return e;
+        });
+        
+        setData(employees);
+      }
     };
     getEmployees();
   }, []);
@@ -253,8 +259,9 @@ export default function Home() {
             </Dropdown>
             <Button
               className="bg-main-dark text-white"
-              endContent={<PlusIcon />}
+              endContent={<PlusIcon width={undefined} height={undefined} />}
               size="sm"
+              onClick={openAddDialog}
             >
               Add New
             </Button>
@@ -276,6 +283,7 @@ export default function Home() {
             </select>
           </label>
         </div>
+        <EmpAddForm isOpen={isAddDialogOpen} onClose={closeAddDialog}></EmpAddForm>
       </div>
     );
   }, [
@@ -286,6 +294,7 @@ export default function Home() {
     onRowsPerPageChange,
     employees.length,
     hasSearchFilter,
+    isAddDialogOpen
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -299,7 +308,7 @@ export default function Home() {
           isDisabled={hasSearchFilter}
           page={page}
           total={pages}
-          variant="customHoverColor"
+          // variant="customHoverColor"
           onChange={setPage}
         />
         <span className="text-small text-default-400">
