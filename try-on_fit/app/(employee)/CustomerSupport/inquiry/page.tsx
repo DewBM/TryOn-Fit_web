@@ -173,12 +173,7 @@ export default function App() {
                   <DropdownItem className="customHoverColor customActiveColor">
                     View
                   </DropdownItem>
-                  <DropdownItem className="customHoverColor customActiveColor">
-                    Edit
-                  </DropdownItem>
-                  <DropdownItem className="customHoverColor customActiveColor">
-                    Delete
-                  </DropdownItem>
+                  
                 </DropdownMenu>
               </Dropdown>
             </div>
