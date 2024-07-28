@@ -16,15 +16,17 @@ const FlipBox = () => {
     <div className="grid grid-cols-12">
       <style>
         {`
-         .flip-box {
+          .flip-box {
             background-color: transparent;
-            width: 300px;
-            height: 200px;
+            width: 350px;
+            height: 250px;
             border: 1px solid #f1f1f1;
             perspective: 1000px;
+            border-radius: 8px;
+            overflow: hidden;
           }
 
-         .flip-box-inner {
+          .flip-box-inner {
             position: relative;
             width: 100%;
             height: 100%;
@@ -33,33 +35,51 @@ const FlipBox = () => {
             transform-style: preserve-3d;
           }
 
-         .flip-box:hover .flip-box-inner {
+          .flip-box:hover .flip-box-inner {
             transform: rotateY(180deg);
+            border-radius: 8px;
           }
 
-         .flip-box-front,.flip-box-back {
+          .flip-box-front, .flip-box-back {
             position: absolute;
             width: 100%;
             height: 100%;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
           }
 
-         .flip-box-front {
-            background: linear-gradient(to top left, #ffcc99 0%, #ffffff 100%);
-            color: balck; 
-            font-weight: bold; 
-             transform: rotateY(0deg);
-           }
+          .flip-box-front {
+            background: white;
+            color: #8C572C;
+            font-size: 16px;
+            text-shadow: -0.5px -0.5px 0 #FFFFFF,
+                0.5px -0.5px 0 #FFFFFF,
+                0.5px 0.5px 0 #FFFFFF,
+                -0.5px 0.5px 0 #FFFFFF;
+            transform: rotateY(0deg);
+            border: 2px solid #C1BBB3;
+            border-radius: 8px;
+            text-shadow: 0 0 0 2px #fff;
+          }
 
-         .flip-box-back {
-            background: linear-gradient(to top left, #ffcc99 0%, #ffffff 100%);
-            color:black; 
-            font-weight: bold; 
+          .flip-box-back {
+            background: white;
+            color: #8C572C;
+            font-size: 16px;
+            text-shadow: -0.5px -0.5px 0 #FFFFFF,
+                0.5px -0.5px 0 #FFFFFF,
+                0.5px 0.5px 0 #FFFFFF,
+                -0.5px 0.5px 0 #FFFFFF;
             transform: rotateY(180deg);
+            border: 1px solid #C1BBB3 ;
+            border-radius: 8px;
+            outline: 2px solid #fff;
           }
 
-         .file-input-container {
+          .file-input-container {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -67,16 +87,23 @@ const FlipBox = () => {
             padding: 10px;
           }
 
-         .image-container {
+          .image-container {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Add this property */
+            object-fit: cover;
+            overflow: hidden;
           }
 
-         .image-container img {
+          .image-container img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Add this property */
+            object-fit: contain;
+          }
+
+          .flip-box-front img, .flip-box-back img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
           }
         `}
       </style>
@@ -86,7 +113,7 @@ const FlipBox = () => {
             <table>
               <thead>
                 <tr>
-                  <td>Front Side</td>
+                  <td>Front View</td>
                 </tr>
               </thead>
             </table>
@@ -100,7 +127,7 @@ const FlipBox = () => {
             <table>
               <thead>
                 <tr>
-                  <td>Back Side</td>
+                  <td>Rear View</td>
                 </tr>
               </thead>
             </table>
@@ -112,29 +139,33 @@ const FlipBox = () => {
           </div>
         </div>
       </div>
-      <div className="lg:col-span-6  lg:col-star ">
-        <label className="mb-2 lg:col-start-8 font-medium">Font side</label>
-        {/* <span>{frontImage ? frontImage.name : "No file selected"}</span> */}
-        <div className="file-input-container lg:col-start-6">
-          <input
-            className="mb-3"
-            type="file"
-            accept="image/*"
-            onChange={handleFrontImageChange}
-          />
-        </div>
-
-        <label className="container mb-2 lg:col-start-6 font-medium">
-          Back side
+      <div className="file-input-container lg:col-start-8 lg:col-span-4 mt-36">
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFrontImageChange}
+          className="hidden"
+          id="front-image-input"
+        />
+        <label
+          htmlFor="front-image-input"
+          className="bg-orange-900		 text-white mb-6 font-bold px-2 py-2 text-sm rounded-lg hover:bg-main-light cursor-pointer"
+        >
+          Upload Front Side
         </label>
-        {/* <span>{backImage ? backImage.name : "No file selected"}</span> */}
-        <div className="file-input-container lg:col-start-9">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleBackImageChange}
-          />
-        </div>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleBackImageChange}
+          className="hidden"
+          id="back-image-input"
+        />
+        <label
+          htmlFor="back-image-input"
+          className="bg-orange-900	 text-white font-bold px-2 py-2 text-sm rounded-lg hover:bg-main-light cursor-pointer"
+        >
+          Upload Rear Side
+        </label>
       </div>
     </div>
   );
