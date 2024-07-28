@@ -1,32 +1,117 @@
-//import NavBar from "./components/NavBar";
-import EmpNavBar from "./components/EmpNavBar";
-import { useState } from "react";
-import Header from "./components/Header/index";
-import Sidebar from "./components/SideBar";
+'use client'
+import React from "react";
+import Image from "next/image";
+import Button from "../app/components/Button";
+import aboutusimg from "../public/images/aboutus.png";
+import Shopnowcard from "../app/components/Helper/Shopnowcard";
+import Slider from "../app/components/Slider";
 import NavBar from "./components/NavBar";
-import Product from "./components/Product"
-import Slider from "./components/Slider";
+import Footer from "./components/Footer";
+import { useRouter } from "next/navigation"; // Import from 'next/router' instead of 'next/navigation'
+import Product from "./components/Product";
 
-export default function Home() {
+function Home() {
+  const router = useRouter();
+
+  const handlewomencollection = () => {
+    router.push("womenscollection"); 
+  };
+
+  const handlemenscollection = () => {
+    router.push("menscollection"); 
+  };
+
+  const handlekidscollections = () => {
+    router.push("kidscollection"); 
+  };
+
   return (
-
     <div>
       <NavBar />
-      {/* <Sidebar /> */}
-      <div className="pt-[100vw] w-[600px] h-[700px]">
-        <Slider />
-      </div>
-      {/* <div className="  h-[100vh]">
-      <div className=" flex flex-row flex-wrap pr-[20px]  pt-[25vh] gap-3 pl-[40px]">
-     <div><Product/></div>
-     <div><Product/></div>
-     <div><Product/></div>
-     <div><Product/></div>
-     <div><Product/></div>
-     
-    </div>
-    </div> */}
-    </div>
 
+      <section>
+        <div className="pt-[7.3rem]">
+          <Slider />
+        </div>
+      </section>
+
+      <section>
+        <div className="flex flex-col pt-20 px-20">
+          <div className="flex items-center justify-center">
+            <div className="items-center align-middle w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center pb-10 shadow-2xl">
+              <p className="text-2xl font-bold font-sans pt-2">New Arrivals</p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-[2rem] pt-[5rem] pb-[3rem] justify-center">
+            <Product /> <Product /> <Product /> <Product /> <Product />
+            <Product /> <Product /> <Product /> <Product /> <Product />
+            <Product /> <Product />
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="flex flex-col pt-20 px-20 flex-wrap">
+          <div className="flex flex-col items-center justify-center gap-20">
+            <div className="items-center align-middle w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center pb-10 shadow-2xl">
+              <p className="text-2xl font-bold font-sans pt-2">About us</p>
+            </div>
+
+            <div className="flex flex-row w-[900px] h-[400px] bg-main-lighter rounded-xl">
+              <div className="w-[40%]">
+                <Image
+                  src={aboutusimg}
+                  alt=""
+                  className="h-[400px] rounded-l-lg shadow-xl mx-auto"
+                />
+              </div>
+              <div className="w-[60%] text-wrap pt-10 px-5">
+                <p className="text-light text-balance item-center text-[18px]">
+                  At TryOnFit, we believe that every individual deserves to feel confident and stylish in their own skin. Founded in [Year], our team of fashion enthusiasts, tech innovators, and customer service professionals are dedicated to bringing you the latest trends and timeless classics in a way that’s easy, accessible, and tailored just for you
+                </p>
+                <div className="flex justify-start pt-10">
+                  <Button type="submit" className="w-[200px] ml-3">
+                    Get More Us!
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="flex flex-col pt-20 px-20">
+          <div className="flex items-center justify-center">
+            <div className="items-center align-middle w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center shadow-2xl">
+              <p className="text-2xl font-bold font-sans pt-2">Shop Now!</p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap justify-between pt-[5rem] pb-[3rem]">
+            <Shopnowcard
+              images={["/images/women.jpg"]}
+              title={"Women's collection"}
+              onClick={handlewomencollection}
+            />
+            <Shopnowcard
+              images={["/images/men.jpg"]}
+              title={"Men's collection"}
+              onClick={handlemenscollection}
+            />
+            <Shopnowcard
+              images={["/images/kids.jpg"]}
+              title={"Kid's collection"}
+              onClick={handlekidscollections}
+            />
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
   );
 }
+
+export default Home;
