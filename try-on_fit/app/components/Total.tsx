@@ -31,7 +31,7 @@ export default function Total(
                         </tr>
                     </tbody>
                 </table>
-                <Button className="sm:mt-0 md:mt-0 w-full sm:w-auto" type="button">Checkout</Button>
+                <Button className="sm:mt-0 md:mt-0 w-full sm:w-auto" type="button">&nbsp;&nbsp;&nbsp;Check Out&nbsp;&nbsp;&nbsp;</Button>
             </div>
         </div>
     )
