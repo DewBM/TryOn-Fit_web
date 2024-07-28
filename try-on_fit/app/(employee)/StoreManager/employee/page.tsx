@@ -27,9 +27,8 @@ import { SearchIcon } from "@/app/components/SearchIcon";
 import { columns } from "@/app/components/data-1";
 import { capitalize } from "@/app/components/utils";
 import { customFetch } from "@/app/utils/auth";
-import { Console } from "console";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import EmpAddForm from "./emp_add";
+import DeleteModal from "@/app/components/DeleteModal";
 
 const INITIAL_VISIBLE_COLUMNS = [
   "employee_name",
@@ -37,7 +36,6 @@ const INITIAL_VISIBLE_COLUMNS = [
   "phone_number",
   "actions",
 ];
-
 
 type Employee = {
   key: React.Key;
@@ -56,8 +54,9 @@ export default function Home() {
   const [employees, setData] = useState<Employee[]>([]);
 
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const openAddDialog = () => setIsAddDialogOpen(true);
-  const closeAddDialog = ()=> setIsAddDialogOpen(false);
+  const closeAddDialog = () => setIsAddDialogOpen(false);
 
   useEffect(() => {
     const getEmployees = async () => {
@@ -71,7 +70,7 @@ export default function Home() {
           e.key = e.emp_id;
           return e;
         });
-        
+
         setData(employees);
       }
     };
@@ -176,7 +175,10 @@ export default function Home() {
                     <DropdownItem className="customHoverColor customActiveColor">
                       Edit
                     </DropdownItem>
-                    <DropdownItem className="customHoverColor customActiveColor">
+                    <DropdownItem
+                      className="customHoverColor customActiveColor"
+                      onClick={() => setIsDeleteModalOpen(true)}
+                    >
                       Delete
                     </DropdownItem>
                   </DropdownMenu>
@@ -283,7 +285,10 @@ export default function Home() {
             </select>
           </label>
         </div>
-        <EmpAddForm isOpen={isAddDialogOpen} onClose={closeAddDialog}></EmpAddForm>
+        <EmpAddForm
+          isOpen={isAddDialogOpen}
+          onClose={closeAddDialog}
+        ></EmpAddForm>
       </div>
     );
   }, [
@@ -294,7 +299,7 @@ export default function Home() {
     onRowsPerPageChange,
     employees.length,
     hasSearchFilter,
-    isAddDialogOpen
+    isAddDialogOpen,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -308,7 +313,6 @@ export default function Home() {
           isDisabled={hasSearchFilter}
           page={page}
           total={pages}
-          // variant="customHoverColor"
           onChange={setPage}
         />
         <span className="text-small text-default-400">
@@ -338,46 +342,52 @@ export default function Home() {
   );
 
   return (
-    <Table
-      isCompact
-      removeWrapper
-      aria-label="Employee table with custom cells, pagination and sorting"
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      checkboxesProps={{
-        classNames: {
-          wrapper: "after:bg-main-dark after:text-background text-background",
-        },
-      }}
-      classNames={classNames}
-      selectedKeys={selectedKeys}
-      selectionMode="multiple"
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-            allowsSorting={column.sortable}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={"No employees found"} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <>
+      <Table
+        isCompact
+        removeWrapper
+        aria-label="Employee table with custom cells, pagination and sorting"
+        bottomContent={bottomContent}
+        bottomContentPlacement="outside"
+        checkboxesProps={{
+          classNames: {
+            wrapper: "after:bg-main-dark after:text-background text-background",
+          },
+        }}
+        classNames={classNames}
+        selectedKeys={selectedKeys}
+        selectionMode="multiple"
+        sortDescriptor={sortDescriptor}
+        topContent={topContent}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
+      >
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === "actions" ? "center" : "start"}
+              allowsSorting={column.sortable}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody emptyContent={"No employees found"} items={sortedItems}>
+          {(item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+      />
+    </>
   );
 }

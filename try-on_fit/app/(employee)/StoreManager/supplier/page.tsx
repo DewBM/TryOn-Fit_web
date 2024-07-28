@@ -25,8 +25,13 @@ import { PlusIcon } from "@/app/components/PlusIcon";
 import { VerticalDotsIcon } from "@/app/components/VerticalDotsIcon";
 import { ChevronDownIcon } from "@/app/components/ChevronDownIcon";
 import { SearchIcon } from "@/app/components/SearchIcon";
-import { supplierColumns, suppliers, statusOptions } from "@/app/components/data-3";
+import {
+  supplierColumns,
+  suppliers,
+  statusOptions,
+} from "@/app/components/data-3";
 import { capitalize } from "@/app/components/utils";
+import DeleteModal from "@/app/components/DeleteModal";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   available: "success",
@@ -57,6 +62,7 @@ export default function SupplierTable() {
     direction: "ascending",
   });
   const [page, setPage] = React.useState(1);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const pages = Math.ceil(suppliers.length / rowsPerPage);
 
@@ -107,63 +113,69 @@ export default function SupplierTable() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((supplier: Supplier, columnKey: React.Key) => {
-    const cellValue = supplier[columnKey as keyof Supplier];
+  const renderCell = React.useCallback(
+    (supplier: Supplier, columnKey: React.Key) => {
+      const cellValue = supplier[columnKey as keyof Supplier];
 
-    switch (columnKey) {
-      case "supplier_name":
-       
-      case "contact":
-        return (
-          <div className="flex flex-col">
-            <p
-              className="text-bold text-small capitalize"
-              style={{ color: "var(--main-darker)" }}
+      switch (columnKey) {
+        case "supplier_name":
+
+        case "contact":
+          return (
+            <div className="flex flex-col">
+              <p
+                className="text-bold text-small capitalize"
+                style={{ color: "var(--main-darker)" }}
+              >
+                {cellValue}
+              </p>
+            </div>
+          );
+        case "status":
+          return (
+            <Chip
+              className="capitalize border-none gap-1 text-default-600"
+              color={statusColorMap[supplier.status]}
+              size="sm"
+              variant="dot"
             >
               {cellValue}
-            </p>
-          </div>
-        );
-      case "status":
-        return (
-          <Chip
-            className="capitalize border-none gap-1 text-default-600"
-            color={statusColorMap[supplier.status]}
-            size="sm"
-            variant="dot"
-          >
-            {cellValue}
-          </Chip>
-        );
-      case "actions":
-        return (
-          <div className="relative flex justify-end items-center gap-2">
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <Dropdown className="bg-white border-1 border-default-200">
-                <DropdownTrigger>
-                  <Button isIconOnly radius="full" size="sm" variant="light">
-                    <VerticalDotsIcon className="text-default-400" />
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu>
-                  <DropdownItem className="customHoverColor customActiveColor">
-                    View
-                  </DropdownItem>
-                  <DropdownItem className="customHoverColor customActiveColor">
-                    Edit
-                  </DropdownItem>
-                  <DropdownItem className="customHoverColor customActiveColor">
-                    Delete
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+            </Chip>
+          );
+        case "actions":
+          return (
+            <div className="relative flex justify-end items-center gap-2">
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <Dropdown className="bg-white border-1 border-default-200">
+                  <DropdownTrigger>
+                    <Button isIconOnly radius="full" size="sm" variant="light">
+                      <VerticalDotsIcon className="text-default-400" />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu>
+                    <DropdownItem className="customHoverColor customActiveColor">
+                      View
+                    </DropdownItem>
+                    <DropdownItem className="customHoverColor customActiveColor">
+                      Edit
+                    </DropdownItem>
+                    <DropdownItem
+                      className="customHoverColor customActiveColor"
+                      onClick={() => setIsDeleteModalOpen(true)}
+                    >
+                      Delete
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </div>
             </div>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+          );
+        default:
+          return cellValue;
+      }
+    },
+    []
+  );
 
   const onRowsPerPageChange = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -308,7 +320,6 @@ export default function SupplierTable() {
           isDisabled={hasSearchFilter}
           page={page}
           total={pages}
-          variant="customHoverColor"
           onChange={setPage}
         />
         <span className="text-small text-default-400">
@@ -325,12 +336,11 @@ export default function SupplierTable() {
       wrapper: ["max-h-[382px]", "max-w-3xl"],
       th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
       td: [
-        
         "group-data-[first=true]:first:before:rounded-none",
         "group-data-[first=true]:last:before:rounded-none",
-        
+
         "group-data-[middle=true]:before:rounded-none",
-        
+
         "group-data-[last=true]:first:before:rounded-none",
         "group-data-[last=true]:last:before:rounded-none",
       ],
@@ -339,46 +349,51 @@ export default function SupplierTable() {
   );
 
   return (
-    <Table
-      isCompact
-      removeWrapper
-      aria-label="Example table with custom cells, pagination and sorting"
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      checkboxesProps={{
-        classNames: {
-          wrapper: "after:bg-main-dark after:text-background text-background",
-        },
-      }}
-      classNames={classNames}
-      selectedKeys={selectedKeys}
-      selectionMode="multiple"
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-            
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={"No suppliers found"} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <>
+      <Table
+        isCompact
+        removeWrapper
+        aria-label="Example table with custom cells, pagination and sorting"
+        bottomContent={bottomContent}
+        bottomContentPlacement="outside"
+        checkboxesProps={{
+          classNames: {
+            wrapper: "after:bg-main-dark after:text-background text-background",
+          },
+        }}
+        classNames={classNames}
+        selectedKeys={selectedKeys}
+        selectionMode="multiple"
+        sortDescriptor={sortDescriptor}
+        topContent={topContent}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
+      >
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === "actions" ? "center" : "start"}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody emptyContent={"No suppliers found"} items={sortedItems}>
+          {(item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+      />
+    </>
   );
 }
