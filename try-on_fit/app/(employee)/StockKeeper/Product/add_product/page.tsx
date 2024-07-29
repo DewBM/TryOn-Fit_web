@@ -347,7 +347,11 @@ export default function AddProduct() {
               </div>
               <div className="bg-main lg:col-span-12 sm:col-span-4 mb-4">
                 <p className="mb-3 mt-4 text-sm font-medium leading-6 text-gray-900">
-                  Select Sizes
+                  Select sizes and Enter the desired quantities
+                </p>
+                <p className="mb-3 mt-1 block ml-1 text-sm font-medium leading-6 text-red-500">
+                  (Please click the appropriate button to enter desired
+                  quantity)
                 </p>
                 <div className="flex flex-wrap px-2">
                   <Button
@@ -378,7 +382,7 @@ export default function AddProduct() {
                     L
                   </Button>
                   <Button
-                    className={`px-3 py-1 ${
+                    className={`px-3 py-1 border-2 bo ${
                       activeSizes.XL ? "bg-emerald-700" : "bg-yellow-800"
                     }`}
                     type="button"
