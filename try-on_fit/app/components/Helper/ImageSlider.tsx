@@ -10,7 +10,7 @@ interface ImageSliderProps {
 const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
   const settings = {
     dots: true,
-    speed: 6000,
+    speed: 8000,
     slidesToShow: 1,
     slidesToScroll: 1,
     initialSlide: 0,

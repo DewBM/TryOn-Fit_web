@@ -22,7 +22,7 @@ export default function NavBar() {
       router.push('FitOn')
      }
   return (
-    <div className={`fixed w-[100%] bg-black `}>
+    <div className="relative w-[100%] bg-black  " style={{zIndex:+1 }}>
       <div className="flex items-center  h-[16vh] justify-between  px-8 ">
         <div className="pr-[100px]">  <Image
     src="/images/logo.png"
