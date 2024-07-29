@@ -5,7 +5,7 @@ import Button from "@/app/components/Button";
 import aboutusimg from "../../../public/images/aboutus.png";
 import Shopnowcard from "@/app/components/Helper/Shopnowcard";
 
-export default function Home() {
+ function Landing() {
   return (
     <div>
       <section>
@@ -90,3 +90,4 @@ export default function Home() {
     </div>
   );
 }
+export default Landing;

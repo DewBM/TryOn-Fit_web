@@ -9,7 +9,7 @@ function page() {
   return (
     <div className="flex flex-col w-full">
         <NavBar />
-        <div className="w-full h-16 pt-[7.3rem]">
+        <div className="w-full h-16 ">
         <Image
                   src={kidscolleimg}
                   alt=""

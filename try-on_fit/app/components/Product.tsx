@@ -5,7 +5,7 @@ import image from "next/image"
 import ItemCard from "./Helper/ItemCard"
 export default function Product(){
   return(
-    <Card className=" w-80  py-4 bg-main-lighter flex justify-center "style={{ zIndex: -1 }}>
+    <Card className=" w-80  py-4 bg-main-lighter flex justify-center ">
      
       <CardBody className="overflow-visible pt-2">
         <Image
@@ -22,8 +22,8 @@ export default function Product(){
        <div className=" pt-5 flex flex-row gap-10">
         
 
-        <button className=" flex rounded-3xl  bg-main-dark text-white px-7 py-2 justify-start cursor-pointer text-xs"> Add to Fiton</button>
-        <button className=" flex rounded-3xl bg-main-dark text-white px-7 py-2 justify-start cursor-pointer text-xs"> Add to Cart</button>
+        <button className=" flex rounded-2xl border border-main-dark strock-1 px-2 py-1 justify-start cursor-pointer text-xs hover:bg-main-light"> Add to Fiton</button>
+        <button className=" flex rounded-2xl border border-main-dark strock-1 px-2 py-1 justify-start cursor-pointer text-xs hover:bg-main-light"> Add to Cart</button>
        </div>
        </CardHeader>
     </Card>
