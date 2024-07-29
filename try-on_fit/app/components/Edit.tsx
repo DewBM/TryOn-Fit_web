@@ -8,7 +8,7 @@ export default function EditButton() {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push('/CartItem.tsx');
+    router.push('/cart/cartcheckout');
   };
 
   return (
