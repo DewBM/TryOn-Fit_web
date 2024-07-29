@@ -5,6 +5,7 @@ import Header from "@/app/components/Header/index";
 import CardDataStats from "@/app/components/DashboardCard";
 import { FiBox, FiLayers, FiAlertCircle } from "react-icons/fi";
 import InventoryLineChart from "@/app/components/charts/InventoryLineChart";
+import DoughnutChart from "@/app/components/charts/DoughnutChart";
 
 export default function Home() {
   return (
@@ -49,6 +50,7 @@ export default function Home() {
       </div>
       <div className="mt-4 grid grid-cols-2 gap-4 md:mt-4 md:gap-6 2xl:mt-7.5 2xl:gap-7.5 pt-4">
         <InventoryLineChart />
+        <DoughnutChart />
       </div>
     </>
   );
