@@ -35,7 +35,7 @@ export default function Pay(
                         </tr>
                     </tbody>
                 </table>
-                <Button className="sm:mt-0 md:mt-0 w-full sm:w-auto" type="button">Confirm-Payment</Button>
+                <Button className="sm:mt-0 md:mt-0 w-full sm:w-auto" type="button"> &nbsp;&nbsp;&nbsp;Confirm-Payment &nbsp;&nbsp;&nbsp;</Button>
             </div>
         </div>
     )
