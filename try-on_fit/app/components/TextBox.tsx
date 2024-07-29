@@ -1,13 +1,21 @@
-import { HTMLInputTypeAttribute } from "react";
+import React, { HTMLInputTypeAttribute } from "react";
 
 export default function TextBox({
   labelName,
-  id,
+  // id,
+  name,
   inputType,
+  key,
+  defaultValue,
+  placeholder = null,
 }: {
   labelName: String;
-  id: String;
+  // id: String;
+  name: string;
   inputType: React.HTMLInputTypeAttribute;
+  key: React.Key;
+  defaultValue: React.HTMLInputTypeAttribute;
+  placeholder?: string | null;
 }) {
   return (
     <div>
@@ -20,8 +28,11 @@ export default function TextBox({
       <div className="relative mt-2 rounded-md shadow-sm">
         <input
           type={inputType}
-          name={labelName.toLowerCase()}
-          id={labelName.toLowerCase()}
+          name={name}
+          // id={labelName.toLowerCase()}
+          key={key}
+          defaultValue={defaultValue}
+          placeholder={placeholder ?? ""}
           className="block w-full rounded-md border-0 focus:outline-none mt py-1.5 pl-4 text-gray-900 ring-1 ring-inset ring-main-light focus:ring-2 focus:ring-inset focus:ring-main-dark sm:text-sm sm:leading-6"
         />
       </div>

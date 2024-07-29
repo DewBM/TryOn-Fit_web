@@ -21,7 +21,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       >
         <Header sideBarOpen={sidebarOpen} setSideBarOpen={setSidebarOpen} />
 
-        <main className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+        <main className="mx-16 max-w-screen-2xl p-4 md:p-6 2xl:p-10">
           {children}
         </main>
       </div>
