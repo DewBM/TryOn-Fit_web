@@ -4,15 +4,15 @@ import React from "react";
 import Button from "@/app/components/Button";
 
 export default function Pay(
-    {subamount , discount} : {subamount: number, discount: number}
+    {subamount , discount, delivery} : {subamount: number, discount: number, delivery: number}
 ){
 
-    const total = subamount - discount;
+    const total = subamount - discount + delivery ;
 
     return(
         <div>
             <div id="order-summary" className="flex flex-col items-center h-full p-4 sm:p-6 md:p-8">
-                <table className="table-auto w-full mb-2 sm:mb-4 md:mb-6">
+                <table className="table-auto w-full mb-2 sm:mb-4 md:mb-0">
                     <tbody>
                         <tr>
                             <td className="px-4 py-2">Sub Total:</td>
@@ -23,6 +23,10 @@ export default function Pay(
                             <td className="px-4 py-2 text-right text-red-500">-Rs.{discount}</td>
                         </tr>
                         <tr>
+                            <td className="px-4 py-2">Delivery Charge :</td>
+                            <td className="px-4 py-2 text-right">Rs.{delivery}</td>
+                        </tr>
+                        <tr>
                             <td colSpan={2} className="border-t-4 border-black font-bold py-2"></td>
                         </tr>
                         <tr>
@@ -31,7 +35,7 @@ export default function Pay(
                         </tr>
                     </tbody>
                 </table>
-                <Button className="sm:mt-0 md:mt-0 w-full sm:w-auto" type="button">Confirm</Button>
+                <Button className="sm:mt-0 md:mt-0 w-full sm:w-auto" type="button">Confirm-Payment</Button>
             </div>
         </div>
     )
