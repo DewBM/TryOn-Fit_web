@@ -5,6 +5,7 @@ import DeleteButton from "./DeleteButton";
 import AvailabilityStatus from "./AvailabilityStatus";
 
 export default function CartItem({
+
   name, color, price, size, status, isSelected, onCheckboxChange
 } : {name: String, 
      color: String, 
@@ -15,7 +16,9 @@ export default function CartItem({
      onCheckboxChange: () => void
     }
 ) 
+
 {
+
   return (
     <div className="bg-white shadow-md rounded p-4 md:p-6 mb-10 mx-2">
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 items-center">
@@ -27,6 +30,7 @@ export default function CartItem({
             checked={isSelected}
             onChange={onCheckboxChange}
           />
+
         </div>
 
         <div className="col-span-1 flex justify-start items-center mb-4 md:mb-0">
@@ -41,15 +45,21 @@ export default function CartItem({
           <b><AvailabilityStatus status={status} /></b>
         </div>
 
+
         <div className="col-span-1 flex justify-center items-center mb-4 md:mb-0">
           <IncrementDecrementButton />
         </div>
+
 
         <div className="col-span-1 flex justify-center items-center mb-4 md:mb-0">
           <DeleteButton />
         </div>
 
       </div>
+
     </div>
+
   );
+
+  
 }

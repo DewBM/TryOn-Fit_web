@@ -7,6 +7,7 @@ import Pay from "@/app/components/Pay";
 import AddAddressModal from "@/app/components/AddAddressModal";
 import EditAddressModal from "@/app/components/EditAddressModal";
 import NavBar from "@/app/components/NavBar";
+import Footer from "@/app/components/Footer";
 
 
 export default function CartAddress() {
@@ -30,13 +31,13 @@ export default function CartAddress() {
     <NavBar/>
 
     <div className="bg-slate-50 p-4 sm:p-6 md:p-8">
-      <div id="page" className="flex flex-col md:flex-row w-full pt-40">
+      <div id="page" className="flex flex-col md:flex-row w-full pt-20 md:pt-40">
 
         <div className="w-full md:w-3/5 md:ml-20 md:mr-20">
 
-          <div className="bg-white shadow-md rounded px-4 py-6 mb-20 mx-4 sm:px-6 sm:mx-6 md:mx-8 md:px-8 md:items-center2">
+          <div className="bg-white shadow-md rounded px-4 py-6 mb-20 mx-4 sm:mx-6 md:mx-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-              <p className="text-lg mb-5 items-center">
+              <p className="text-lg mb-5 md:mb-0">
                 <b>Shipping Address</b>
               </p>
 
@@ -114,6 +115,8 @@ export default function CartAddress() {
       />
 
     </div>
+
+    <Footer/>
     </>
 
   );
