@@ -8,10 +8,17 @@ import AvailabilityStatus from "./AvailabilityStatus";
 
 export default function CartItem({
   name, color, price, size, status
-} : {name: String, color: String, price: String, size: String, status: 'available' | 'unavailable'}
-) {
+} : {name: String, 
+     color: String, 
+     price: String, 
+     size: String, 
+     status: 'available' | 'unavailable'
+    }
+) 
+{
   return (
-    <div className="bg-white shadow-md rounded p-4 md:p-6 mb-10 mx-2">
+
+    <div className="bg-seashell shadow-md rounded p-4 md:p-6 mb-10 mx-2">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
 
         <div className="flex justify-center items-center mb-4 md:mb-0">

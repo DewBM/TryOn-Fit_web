@@ -19,6 +19,9 @@ const config: Config = {
         "main-dark": "var(--main-dark)",
         "main-light": "var(--main-light)",
         "main-lighter": "var(--main-lighter)",
+        saddlebrown: "#4D2D18",
+        seashell: "#F9F0EA",
+        
       },
       zIndex: {
         "40": "40",
