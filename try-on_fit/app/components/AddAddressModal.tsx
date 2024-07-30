@@ -15,7 +15,8 @@ export default function AddAddressModal({ isOpen, onClose }: AddAddressModalProp
 
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-saddlebrown bg-opacity-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-saddlebrown bg-opacity-50 backdrop-blur">
+      
     <div className="bg-white rounded-lg p-6 w-200">
 
       <h2 className="text-xl font-bold mb-4">Add new Shipping Address</h2>
@@ -63,6 +64,7 @@ export default function AddAddressModal({ isOpen, onClose }: AddAddressModalProp
         <div className="flex justify-end">
 
           <button type="button" className="bg-white font-bold text-saddlebrown border-1 m-5 p-2 rounded-lg border-saddlebrown" onClick={onClose}>Cancel</button>
+
           <Button>&nbsp;&nbsp;&nbsp;Save&nbsp;&nbsp;&nbsp;</Button>
 
         </div>
