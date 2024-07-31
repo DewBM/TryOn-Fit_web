@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 interface CardReviewsProps {
   title: string;
@@ -7,7 +7,7 @@ interface CardReviewsProps {
   children: React.ReactNode;
 }
 
-const CardReviews: React.FC<CardReviewsProps> = ({ title, total, children }) => {
+const CardReviews: React.FC<CardReviewsProps> = ({ title, total, children }): ReactElement => {
   return (
     <div className="p-4 bg-main-lighter text-black rounded-lg shadow-md">
       <div className="text-center">

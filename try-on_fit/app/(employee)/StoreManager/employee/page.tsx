@@ -159,6 +159,7 @@ export default function Home() {
         case "phone_number":
           return <div>{cellValue}</div>;
         case "actions":
+        /// inizialise the functions
           return (
             <div className="relative flex justify-end items-center gap-2">
               <div style={{ position: "relative", zIndex: 1 }}>
