@@ -6,29 +6,37 @@ import SelectBox from "@/app/components/SelectBox";
 import Button from "@/app/components/Button";
 import RadioButton from "@/app/components/RadioButton";
 
-const EmpAddForm = ({isOpen, onClose} : {isOpen: boolean, onClose: () => void}) => {
-  
+const EmpAddForm = ({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
-  
+
   useEffect(() => {
-    const handleClickOutside = (event: { target: any; }) => {
+    const handleClickOutside = (event: { target: any }) => {
       if (dialogRef.current && !dialogRef.current.contains(event.target)) {
         onClose();
       }
     };
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
+      document.body.classList.add("h-screen", "overflow-hidden");
     } else {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.classList.remove("h-screen", "overflow-hidden");
     }
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.classList.remove("h-screen", "overflow-hidden");
     };
   }, [isOpen, onClose]);
 
   return (
     <dialog ref={dialogRef} id="dialog" open={isOpen}>
-      <div className="lg:col-span-6 lg:col-start-4 rounded  bg-main shadow-xl rounded-r-lg  pt-6 pb-8 mt-10 mb-10 ">
+      <div className="lg:col-span-6 lg:col-start-4 rounded  bg-slate-50 shadow-xl rounded-r-lg  pt-6 pb-8 mt-10 mb-10 ">
         <form className="lg:col-span-5 sm:col-span-4">
           <div className="grid grid-cols-11">
             <div className=" lg:col-span-7 lg:col-start-2 sm:col-span-4 mt-2 text-2xl font-extrabold mb-4 ">
