@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 :root {
   --foreground-rgb: 0, 0, 0;
   /* --background-start-rgb: 214, 219, 220;
@@ -116,3 +117,13 @@ option:hover {
   background-color: #c0392b;
 }
 
+.slidercol{
+  background-color:var(--main-dark) !important;
+
+}
+
+.slider-label {
+  display: block;
+  text-align: center;
+  white-space: pre-line; /* Ensures line breaks are respected */
+}
