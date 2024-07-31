@@ -14,7 +14,7 @@ import { parseWithZod } from "@conform-to/zod";
 import { SignUpSchema } from "@/app/utils/schema";
 import { useFormState } from "react-dom";
 import signup from "../actions";
-import PhoneNumber from "@/app/components/PhoneNumber";
+// import PhoneNumber from "@/app/components/PhoneNumber";
 
 export default function Signup() {
   const [lastResult, action] = useFormState(signup, undefined);

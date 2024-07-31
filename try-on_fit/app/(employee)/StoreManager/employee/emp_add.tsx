@@ -5,10 +5,15 @@ import TextBox from "@/app/components/TextBox";
 import SelectBox from "@/app/components/SelectBox";
 import Button from "@/app/components/Button";
 import RadioButton from "@/app/components/RadioButton";
+import { useFormState } from "react-dom";
+import {createEmployee} from "../actions";
 
 const EmpAddForm = ({isOpen, onClose} : {isOpen: boolean, onClose: () => void}) => {
   
+  // const [form, action] = useFormState(createEmployee, undefined);
+  const [state, EmpAddFormComponent] = useFormState(createEmployee, undefined)
   const dialogRef = useRef<HTMLDialogElement | null>(null);
+  
   
   useEffect(() => {
     const handleClickOutside = (event: { target: any; }) => {
@@ -29,7 +34,12 @@ const EmpAddForm = ({isOpen, onClose} : {isOpen: boolean, onClose: () => void}) 
   return (
     <dialog ref={dialogRef} id="dialog" open={isOpen}>
       <div className="lg:col-span-6 lg:col-start-4 rounded  bg-main shadow-xl rounded-r-lg  pt-6 pb-8 mt-10 mb-10 ">
-        <form className="lg:col-span-5 sm:col-span-4">
+        <form
+        id={form.id}
+        onSubmit={form.onSubmit}
+        action={EmpAddFormComponent}
+      
+         className="lg:col-span-5 sm:col-span-4">
           <div className="grid grid-cols-11">
             <div className=" lg:col-span-7 lg:col-start-2 sm:col-span-4 mt-2 text-2xl font-extrabold mb-4 ">
               <h1>Employee Registration</h1>

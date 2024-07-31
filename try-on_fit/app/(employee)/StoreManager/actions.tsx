@@ -6,7 +6,7 @@ import { parseWithZod } from '@conform-to/zod';
 
 export async function createEmployee(prevState: unknown, formData: FormData) {
     
-  
+  console.log(formData);
   const data = {
     firstName: formData.get('EmpAdd-Fnam'),
     lastName: formData.get('EmpAdd-Lname"'),

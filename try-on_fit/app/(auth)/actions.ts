@@ -85,7 +85,7 @@ export async function signup(prevState: unknown, formData: FormData) {
     body: JSON.stringify(signupData),
   };
 
-  const resp = await customFetch("/auth/signup", params, true);
+  const resp = await customFetch("/auth/signup", params);
   if (resp) {
     if (resp.isSuccess) {
       redirect("/auth/signin");
