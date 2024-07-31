@@ -8,68 +8,88 @@ import RadioButton from "@/app/components/RadioButton";
 import { useFormState } from "react-dom";
 import {createEmployee} from "../actions";
 
-const EmpAddForm = ({isOpen, onClose} : {isOpen: boolean, onClose: () => void}) => {
-  
-  // const [form, action] = useFormState(createEmployee, undefined);
-  const [state, EmpAddFormComponent] = useFormState(createEmployee, undefined)
+
+const EmpAddForm = ({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
-  
-  
+
   useEffect(() => {
-    const handleClickOutside = (event: { target: any; }) => {
+    const handleClickOutside = (event: { target: any }) => {
       if (dialogRef.current && !dialogRef.current.contains(event.target)) {
         onClose();
       }
     };
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
+      document.body.classList.add("h-screen", "overflow-hidden");
     } else {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.classList.remove("h-screen", "overflow-hidden");
     }
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.classList.remove("h-screen", "overflow-hidden");
     };
   }, [isOpen, onClose]);
+  const [selectedValue, setSelectedValue] = React.useState("");
 
   return (
-    <dialog ref={dialogRef} id="dialog" open={isOpen}>
-      <div className="lg:col-span-6 lg:col-start-4 rounded  bg-main shadow-xl rounded-r-lg  pt-6 pb-8 mt-10 mb-10 ">
-        <form
-        id={form.id}
-        onSubmit={form.onSubmit}
-        action={EmpAddFormComponent}
-      
-         className="lg:col-span-5 sm:col-span-4">
+
+    <dialog
+      ref={dialogRef}
+      id="dialog"
+      open={isOpen}
+      className="z-50 bg-white shadow-md"
+    >
+      <div className="lg:col-span-6 lg:col-start-4 rounded  bg-slate-50 shadow-xl rounded-r-lg  pt-6 pb-8 mt-10 mb-10 ">
+        <form className="lg:col-span-5 sm:col-span-4">
           <div className="grid grid-cols-11">
             <div className=" lg:col-span-7 lg:col-start-2 sm:col-span-4 mt-2 text-2xl font-extrabold mb-4 ">
               <h1>Employee Registration</h1>
             </div>
             <div className="lg:col-span-4 lg:col-start-2 sm:col-span-1 mt-3">
               <TextBox
-                labelName={"First Name"}
-                key={"EmpAdd-Fname"}
+                labelName="First Name"
+                name="firstName"
                 inputType="text"
+                key="EmpAdd-Fname"
+                defaultValue=""
+                placeholder="Enter First Name"
               />
             </div>
             <div className="lg:col-span-4 lg:col-start-7 sm:col-span-1 mt-3">
               <TextBox
-                labelName={"Last Name"}
-                id={"EmpAdd-Lname"}
+                labelName="Last Name"
+                name="lastName"
                 inputType="text"
+                key="EmpAdd-Lname"
+                defaultValue=""
+                placeholder="Enter Last Name"
               />
             </div>
             <div className="lg:col-span-4 lg:col-start-2 sm:col-span-1 mt-3">
               <TextBox
-                labelName={"Email"}
-                id={"EmpAdd-email"}
-                inputType="text"
+                labelName="Email"
+                name="email"
+                inputType="email"
+                key="EmpAdd-email"
+                defaultValue=""
+                placeholder="Enter Email"
               />
             </div>
             <div className="lg:col-span-4 lg:col-start-7 sm:col-span-1 mt-3">
               <TextBox
-                labelName={"Phone"}
-                id={"EmpAdd-phone"}
-                inputType="text"
+                labelName="Phone"
+                name="phone"
+                inputType="tel"
+                key="EmpAdd-phone"
+                defaultValue=""
+                placeholder="Enter Phone Number"
               />
             </div>
             <div className="lg:col-span-4 lg:col-start-2 sm:col-span-1 mt-3">
@@ -87,8 +107,8 @@ const EmpAddForm = ({isOpen, onClose} : {isOpen: boolean, onClose: () => void}) 
                   { value: "Stockkeepr", label: "Stock keepr" },
                 ]}
                 autoComplete="gender"
-                value=""
-                onChange={(newValue) => console.log(newValue)}
+                value={selectedValue}
+                onChange={(newValue) => setSelectedValue(newValue)}
               />
             </div>
             <div className="lg:col-span-5 lg:col-start-7 sm:col-span-1 mt-3">
@@ -112,23 +132,32 @@ const EmpAddForm = ({isOpen, onClose} : {isOpen: boolean, onClose: () => void}) 
             </div>
             <div className="lg:col-span-9 lg:col-start-2 sm:col-span-4 mt-3">
               <TextBox
-                labelName={"Street Address"}
-                id={"EmpAdd-address1"}
+                labelName="Street Address"
+                name="streetAddress"
                 inputType="text"
+                key="EmpAdd-address1"
+                defaultValue=""
+                placeholder="Enter Street Address"
               />
             </div>
             <div className="lg:col-span-4 lg:col-start-2 sm:col-span-2 mt-3">
               <TextBox
-                labelName={"City"}
-                id={"EmpAdd-address2"}
+                labelName="City"
+                name="city"
                 inputType="text"
+                key="EmpAdd-city"
+                defaultValue=""
+                placeholder="Enter City"
               />
             </div>
             <div className="lg:col-span-4 lg:col-start-7 sm:col-span-2 mt-3">
               <TextBox
-                labelName={"State/Province"}
-                id={"EmpAdd-address2"}
+                labelName="State/Province"
+                name="stateProvince"
                 inputType="text"
+                key="EmpAdd-stateProvince"
+                defaultValue=""
+                placeholder="Enter State/Province"
               />
             </div>
             <div className="lg:col-span-7 lg:col-start-3 sm:col-span-4 mt-3">
