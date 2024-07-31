@@ -1,7 +1,8 @@
-// MeasurementSection.js
-import React from "react";
+import React, { useState } from "react";
 import TextBox from "./TextBox"; // assuming TextBox is a separate component
 import Button from "./Button"; // assuming Button is a separate component
+import SelectBox from "./SelectBox";
+import AddNewModal from "@/app/components/AddNewModal";
 
 interface MeasurementSectionProps {
   section: {
@@ -26,20 +27,61 @@ const MeasurementSection: React.FC<MeasurementSectionProps> = ({
   handleAddMeasurement,
   lastSectionButtonText,
 }) => {
+  const [selectedmeasurementValue, setselectedmeasurementValue] = useState("");
+  const [newOptionValue, setNewOptionValue] = useState("");
+  const [isAddNewModalOpen, setIsAddNewModalOpen] = useState(false);
+  const [measurementOptions, setmeasurementOptions] = useState([
+    { value: "", label: "" },
+    { value: "Waist", label: "Waist" },
+    { value: "Hip", label: "Hip" },
+    { value: "other", label: "Other" },
+  ]);
+
+  const handleSelectChange = (newValue: string) => {
+    setselectedmeasurementValue(newValue);
+    if (newValue === "other") {
+      setIsAddNewModalOpen(true);
+    }
+  };
+
+  const handleAddNewOption = (newOptionValue: string) => {
+    // Add the new option to the category options array
+    setmeasurementOptions((prevOptions) => [
+      ...prevOptions,
+      { value: newOptionValue, label: newOptionValue },
+    ]);
+    // Update the selected category value with the newly added option
+    setselectedmeasurementValue(newOptionValue);
+    setIsAddNewModalOpen(false);
+  };
+
   return (
     <div
       key={section.id}
       className="bg-neutral-50 lg:col-start-1  rounded-lg mt-2 grid grid-cols-12 pl-8 border-1"
     >
       <div className="bg-main lg:col-span-4 sm:col-span-4 row-span-2 lg:col-start-1 m-0 mt-2">
-        <TextBox
-          labelName="Name"
-          name="mesurement"
-          key="mesurement"
-          inputType="text"
-          defaultValue=""
-          placeholder={"Empty"}
+        <SelectBox
+          labelName="measurement"
+          id="Product-measurement"
+          name="measurement"
+          options={measurementOptions}
+          autoComplete="measurement"
+          value={selectedmeasurementValue}
+          onChange={handleSelectChange}
         />
+        {isAddNewModalOpen && (
+          <AddNewModal
+            isOpen={isAddNewModalOpen}
+            onClose={() => {
+              setIsAddNewModalOpen(false);
+              setNewOptionValue(""); // reset the new option value
+            }}
+            onCollect={(newOptionValue) => {
+              handleAddNewOption(newOptionValue);
+            }}
+          />
+        )}
       </div>
       <div className="bg-main lg:col-span-2 sm:col-span-1  row-span-2 ml-3 lg:col-start-5 mt-2">
         <TextBox

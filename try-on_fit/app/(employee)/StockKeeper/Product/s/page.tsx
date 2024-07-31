@@ -12,6 +12,8 @@ import ColorList from "@/app/components/PasswordBox";
 import Modal from "@/app/components/modal";
 import TextBoxB from "@/app/components/TextBox_B";
 import MeasurementSection from "@/app/components/MeasurementSection";
+import SizeQuantity from "@/app/components/SizeQuantity";
+import AddNewModal from "@/app/components/AddNewModal";
 
 export default function AddProduct() {
   //model section
@@ -29,6 +31,9 @@ export default function AddProduct() {
     }
     setShowModal(false);
   };
+
+  //delete model
+  const [isAddNewModalOpen, setIsAddNewModalOpen] = useState(false);
 
   //model section
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -170,6 +175,73 @@ export default function AddProduct() {
       }
     }
   };
+  ////////////////////////////////////////////////////size and qunatity section
+  const [sizeQuantitySections, setsizeQuantitySections] = useState([
+    { id: 1, name: "", max: "", value: "" },
+  ]);
+
+  // const [lastSectionButtonText, setLastSectionButtonText] = useState("+");
+
+  const handleAddsizeQuantity = () => {
+    const newSection = {
+      id: sizeQuantitySections.length + 1,
+      name: "",
+      max: "",
+      value: "",
+    };
+    setsizeQuantitySections([...sizeQuantitySections, newSection]);
+  };
+
+  const handleRemovesizeQuantity = (id: number) => {
+    const section = sizeQuantitySections.find((section) => section.id === id);
+    if (section) {
+      if (sizeQuantitySections.length > 1) {
+        // Remove card
+        const newSections = sizeQuantitySections.filter(
+          (section) => section.id !== id
+        );
+        setsizeQuantitySections(newSections);
+      } else {
+        // Clear input values of the last card
+        const newSection = {
+          id: 0, // or some other default id value
+          name: "Empty",
+          max: "000",
+          value: "", // or some other default value
+        };
+        setsizeQuantitySections([newSection]);
+        setLastSectionButtonText(` ${newSection.name} ${newSection.max}`);
+      }
+    }
+  };
+
+  /////////////////////////////////////////////////////////select box of cantergory
+  const [selectedCategoryValue, setSelectedCategoryValue] = useState("");
+  //  const [isAddNewModalOpen, setIsAddNewModalOpen] = useState(false);
+  const [newOptionValue, setNewOptionValue] = useState("");
+  const [categoryOptions, setCategoryOptions] = useState([
+    { value: "", label: "" },
+    { value: "T-Shirts", label: "T-Shirts" },
+    { value: "Shirts", label: "Shirts" },
+    { value: "other", label: "Other" },
+  ]);
+  const handleSelectChange = (newValue: string) => {
+    setSelectedCategoryValue(newValue);
+    if (newValue === "other") {
+      setIsAddNewModalOpen(true);
+    }
+  };
+
+  const handleAddNewOption = (newOptionValue: string) => {
+    // Add the new option to the category options array
+    setCategoryOptions((prevOptions) => [
+      ...prevOptions,
+      { value: newOptionValue, label: newOptionValue },
+    ]);
+    // Update the selected category value with the newly added option
+    setSelectedCategoryValue(newOptionValue);
+    setIsAddNewModalOpen(false);
+  };
   return (
     <div className="grid grid-cols-12 ">
       <form
@@ -222,16 +294,23 @@ export default function AddProduct() {
               labelName="Category"
               id="Product-category"
               name="category"
-              options={[
-                { value: "", label: "" },
-                { value: "T-Shirts", label: "T-Shirts" },
-                { value: "Shirts", label: "Shirts" },
-                { value: "other", label: "Other" },
-              ]}
+              options={categoryOptions}
               autoComplete="category"
-              value={selectedValue}
-              onChange={(newValue) => setSelectedValue(newValue)}
+              value={selectedCategoryValue}
+              onChange={handleSelectChange}
             />
+            {isAddNewModalOpen && (
+              <AddNewModal
+                isOpen={isAddNewModalOpen}
+                onClose={() => {
+                  setIsAddNewModalOpen(false);
+                  setNewOptionValue(""); // reset the new option value
+                }}
+                onCollect={(newOptionValue) => {
+                  handleAddNewOption(newOptionValue);
+                }}
+              />
+            )}
           </div>
           <div className="bg-main  lg:col-span-4 sm:col-span-2 mb-4  ">
             <fieldset>
@@ -360,157 +439,19 @@ export default function AddProduct() {
                   (Please click the appropriate button to enter desired
                   quantity)
                 </p>
-                <div className="flex flex-wrap px-2">
-                  <Button
-                    className={`px-3 py-1 ${
-                      activeSizes.S ? "bg-emerald-700" : "bg-yellow-800"
-                    }`}
-                    type="button"
-                    onClick={() => handleSizeClick("S")}
-                  >
-                    S
-                  </Button>
-                  <Button
-                    className={`px-3 py-1 ${
-                      activeSizes.M ? "bg-emerald-700" : "bg-yellow-800"
-                    }`}
-                    type="button"
-                    onClick={() => handleSizeClick("M")}
-                  >
-                    M
-                  </Button>
-                  <Button
-                    className={`px-3 py-1 ${
-                      activeSizes.L ? "bg-emerald-700" : "bg-yellow-800"
-                    }`}
-                    type="button"
-                    onClick={() => handleSizeClick("L")}
-                  >
-                    L
-                  </Button>
-                  <Button
-                    className={`px-3 py-1 border-2 bo ${
-                      activeSizes.XL ? "bg-emerald-700" : "bg-yellow-800"
-                    }`}
-                    type="button"
-                    onClick={() => handleSizeClick("XL")}
-                  >
-                    XL
-                  </Button>
-
-                  <Button
-                    className={`px-3 py-1 ${
-                      activeSizes.XXL ? "bg-emerald-700" : "bg-yellow-800"
-                    }`}
-                    type="button"
-                    onClick={() => handleSizeClick("XXL")}
-                  >
-                    2XL
-                  </Button>
-                  <Button
-                    className={`px-3 py-1 ${
-                      activeSizes.XXXL ? "bg-emerald-700" : "bg-yellow-800	"
-                    }`}
-                    type="button"
-                    onClick={() => handleSizeClick("XXXL")}
-                  >
-                    3XL
-                  </Button>
-                </div>
+                {sizeQuantitySections.map((section, index) => (
+                  <SizeQuantity
+                    key={section.id}
+                    section={section}
+                    index={index}
+                    sizeQuantitySections={sizeQuantitySections}
+                    handleRemoveSizeQuantity={handleRemovesizeQuantity}
+                    handleAddSizeQuantity={handleAddsizeQuantity}
+                    lastSectionButtonText={lastSectionButtonText}
+                  />
+                ))}
                 {/* {showSection && ( */}
-                <div className=" pt-3 mb-1 mr-6 grid grid-cols-12 pl-3">
-                  <p className="mt-4 lg:col-start-1 lg:col-span-1">Small</p>
-                  <div
-                    className="bg-main lg:col-span-2
-                     sm:col-span-4 lg:col-start-2 mb-4 ml-5 "
-                  >
-                    <NumberBox
-                      labelName=""
-                      name="quantity"
-                      key="quantity"
-                      inputType="number"
-                      defaultValue=""
-                      className="min=1"
-                      disabled={!activeSizes.S}
-                    />
-                  </div>
 
-                  <p className="mt-4 lg:col-start-1 lg:col-span-1 ">Medium</p>
-                  <div
-                    className="bg-main lg:col-span-2
-                     sm:col-span-4  lg:col-start-2  mb-4 ml-5 "
-                  >
-                    <NumberBox
-                      labelName=""
-                      name="quantity"
-                      key="quantity"
-                      inputType="number"
-                      defaultValue=""
-                      className="min=1"
-                      disabled={!activeSizes.M}
-                    />
-                  </div>
-                  <p className="mt-4 lg:col-start-1 lg:col-span-1">Large</p>
-                  <div
-                    className="bg-main lg:col-span-2
-                     sm:col-span-4  lg:col-start-2  mb-4 ml-5 "
-                  >
-                    <NumberBox
-                      labelName=""
-                      name="quantity"
-                      key="quantity"
-                      inputType="number"
-                      defaultValue=""
-                      className="min=1"
-                      disabled={!activeSizes.L}
-                    />
-                  </div>
-                  <p className="mt-4 lg:col-start-1 lg:col-span-1">XL</p>
-                  <div
-                    className="bg-main lg:col-span-2
-                     sm:col-span-4  lg:col-start-2  mb-4 ml-5 "
-                  >
-                    <NumberBox
-                      labelName=""
-                      name="quantity"
-                      key="quantity"
-                      inputType="number"
-                      defaultValue=""
-                      className="min=1"
-                      disabled={!activeSizes.XL}
-                    />
-                  </div>
-                  <p className="mt-4 lg:col-start-1 lg:col-span-1">XXL</p>
-                  <div
-                    className="bg-main lg:col-span-2
-                     sm:col-span-4  lg:col-start-2  mb-4 ml-5 "
-                  >
-                    <NumberBox
-                      labelName=""
-                      name="quantity"
-                      key="quantity"
-                      inputType="number"
-                      defaultValue=""
-                      className="min=1"
-                      disabled={!activeSizes.XXL}
-                    />
-                  </div>
-                  <p className="mt-4 lg:col-start-1 lg:col-span-1">XXXL</p>
-                  <div
-                    className="bg-main lg:col-span-2
-                     sm:col-span-4  lg:col-start-2  mb-4 ml-5 "
-                  >
-                    <NumberBox
-                      labelName=""
-                      name="quantity"
-                      key="quantity"
-                      inputType="number"
-                      defaultValue=""
-                      className="min=1"
-                      disabled={!activeSizes.XXXL}
-                    />
-                  </div>
-                </div>
                 <p className=" mt-4 block text-sm font-medium leading-6 text-gray-900">
                   Please enter the measurements for this clothing item
                 </p>
