@@ -2,8 +2,11 @@ import { customFetch } from "@/app/utils/auth";
 import { redirect } from "next/navigation";
 import {EmployeeRegistrationSchema} from "../StoreManager/stockManagerSchema"
 import { parseWithZod } from "@conform-to/zod";
+import { date } from "zod";
 
 export async function createEmployee(prevState: unknown, formData: FormData) {
+  const currentDate = new Date().toISOString();
+  console.log(currentDate);
   const submission = parseWithZod(formData, {
     schema: EmployeeRegistrationSchema,
   });
@@ -13,15 +16,16 @@ export async function createEmployee(prevState: unknown, formData: FormData) {
   }
 
   const signupData = {
-    firstName: formData.get('firstName'),
-    lastName: formData.get('lastName'),
+    first_name: formData.get('firstName'),
+    last_name: formData.get('lastName'),
     email: formData.get('email'),
-    phone: formData.get('phone'),
-    employeeRole: formData.get('employeeRole'),
-    gender: formData.get('gender'),
-    streetAddress: formData.get('streetAddress'),
-    city: formData.get('city'),
-    state: formData.get('state'),
+    contact_number: formData.get('phone'),
+    role: formData.get('employeeRole'),
+    // gender: formData.get('gender'),
+    // streetAddress: formData.get('streetAddress'),
+    // city: formData.get('city'),
+    // state: formData.get('stateProvince'),
+    enrolled_date  : currentDate,
   };
 
   const params = {
