@@ -1,4 +1,5 @@
 import { z } from 'zod';
+console.log("EmployeeRegistrationSchema");
 
 export const EmployeeRegistrationSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
