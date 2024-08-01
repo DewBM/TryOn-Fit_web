@@ -35,7 +35,7 @@ export const SignUpSchema = z
       .refine(validatePhoneNumber, {
         message: "Phone number must be a 10-digit number",
       }),
-    address: z.string(),
+    // address: z.string(),
     password: z
       .string()
       .min(1, { message: "Password cannot be empty" })
@@ -45,9 +45,9 @@ export const SignUpSchema = z
       }),
     passwordConfirm: z
       .string()
-      .min(1, { message: "Password confirmation cannot be empty" }),
+      .min(1, { message: "Password confirmation cannot be empty" })
   })
-  .refine((data) => data.password === data.passwordConfirm, {
+  .refine((data) => data.password == data.passwordConfirm, {
     message: "Passwords must match",
     path: ["passwordConfirm"], 
   });
