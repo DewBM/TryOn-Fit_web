@@ -93,6 +93,27 @@ function Page() { // Capitalize component name
       name: 'Kids Frock',
       price: 1600,
     },
+    {
+      images: ['/images/kids/1.jpg'],
+      name: 'Baby Boy T-Shirt 1',
+      price: 1200,
+    },
+    {
+      images: ['/images/kids/2.jpeg'],
+      name: 'Baby Boy T-Shirt 2',
+      price: 1300,
+    },
+    {
+      images: ['/images/kids/5.jpeg'],
+      name: 'Baby Boy T-Shirt 3',
+      price: 1250,
+    },
+    // Baby Girl T-Shirts
+    {
+      images: ['/images/kids/3.jpeg'],
+      name: 'Baby Girl T-Shirt 1',
+      price: 1400,
+    },
   ];
   
   return (
@@ -105,11 +126,11 @@ function Page() { // Capitalize component name
         className="w-full object-cover"
       />
     </div>
-    <div className="flex flex-row pt-[60rem]">
+    <div className="flex flex-row pt-[55rem]">
       <div className="w-[20%] pt-10 justify-start">
         <Filter />
       </div>
-      <div className="flex w-[80%] px-10 flex-wrap gap-[6rem]  pb-[1rem] justify-center -z-1">
+      <div className="flex w-[80%]  flex-wrap gap-[6rem]  pb-[1rem] justify-center -z-1">
         {items.map((item, index) => (
           <Product
             key={index}
