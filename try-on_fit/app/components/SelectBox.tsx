@@ -6,6 +6,7 @@ export default function SelectBox({
   options,
   value,
   onChange,
+  // defaultValue,
   error,
   className,
 }: {
@@ -16,6 +17,7 @@ export default function SelectBox({
   options: { value: string; label: string }[];
   value: string;
   onChange: (newValue: string) => void;
+  // defaultValue: React.HTMLInputTypeAttribute;
   error?: string;
   className?: string;
 }) {
@@ -23,7 +25,7 @@ export default function SelectBox({
     <div className={`sm:col-span-3 text-xm ${className}`}>
       <label
         htmlFor={labelName.toLowerCase()}
-        className="block text-sm font-medium leading-6 text-gray-900 "
+        className="block text-sm font-medium leading-6 text-gray-900 mb-2"
       >
         {labelName}
       </label>

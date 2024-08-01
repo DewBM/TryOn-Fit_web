@@ -37,8 +37,8 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, onClose }) => {
           >
             Delete field
           </button>
-          </div>
-          <div className="bg-gray-50 px-4 py-3 sm:px-6 text-center">
+        </div>
+        <div className="bg-gray-50 px-4 py-3 sm:px-6 text-center">
           <button
             onClick={onClose}
             className="mt-3 px-12 inline-flex justify-center rounded-md border border-red-500 shadow-sm  py-2 bg-white text-base font-medium text-red-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"

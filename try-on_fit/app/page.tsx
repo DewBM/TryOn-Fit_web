@@ -30,7 +30,7 @@ function Home() {
       <NavBar />
 
       <section>
-        <div className="pt-[7.3rem]">
+        <div className="">
           <Slider />
         </div>
       </section>

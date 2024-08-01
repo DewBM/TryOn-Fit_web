@@ -14,7 +14,7 @@ import { parseWithZod } from "@conform-to/zod";
 import { SignUpSchema } from "@/app/utils/schema";
 import { useFormState } from "react-dom";
 import signup from "../actions";
-import PhoneNumber from "@/app/components/PhoneNumber";
+// import PhoneNumber from "@/app/components/PhoneNumber";
 
 export default function Signup() {
   const [lastResult, action] = useFormState(signup, undefined);
@@ -28,19 +28,20 @@ export default function Signup() {
     shouldValidate: "onBlur",
     shouldRevalidate: "onInput",
   });
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  // const passwordRegex =
+  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-  const validatePassword = (password: string) => {
-    if (!passwordRegex.test(password)) {
-      return false;
-    }
-    return true;
-  };
-  const validatePhoneNumber = (phoneNumber: string) => {
-    const regex = /^\d{10}$/;
-    return regex.test(phoneNumber);
-  };
+  // const validatePassword = (password: string) => {
+  //   if (!passwordRegex.test(password)) {
+  //     return false;
+  //   }
+  //   return true;
+  // };
+  // const validatePhoneNumber = (phoneNumber: string) => {
+  //   const regex = /^\d{10}$/;
+  //   return regex.test(phoneNumber);
+  // };
+
   return (
     <Layout>
       <div className="grid grid-cols-12 mb-0 rounded mx-8">
@@ -157,7 +158,7 @@ export default function Signup() {
             <div className="sm:col-span-2">
               <PasswordBox
                 labelName={"Confirm Password"}
-                inputType={"passwordConfirm"}
+                inputType={"password"}
                 name={fields.passwordConfirm.name}
                 key={fields.passwordConfirm.key as React.Key}
                 defaultValue={

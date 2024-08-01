@@ -37,7 +37,8 @@ export default function Signin() {
         />
       </div>
       <div className="lg:col-span-2 lg:col-start-5">
-        <Form
+        <form
+          id={form.id}
           onSubmit={form.onSubmit}
           action={action}
           className="bg-main-lighter shadow-xl rounded-r-lg px-8 pt-3 pb-8 mb-1"
@@ -96,7 +97,7 @@ export default function Signin() {
               </Link>
             </p>
           </div>
-        </Form>
+        </form>
       </div>
     </div>
   );
