@@ -1,10 +1,14 @@
-"use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Layout from "@/app/(auth)/layout";
 import TextBox from "@/app/components/TextBox";
 import SelectBox from "@/app/components/SelectBox";
 import Button from "@/app/components/Button";
 import RadioButton from "@/app/components/RadioButton";
+import { useFormState } from "react-dom";
+import { createEmployee } from "../actions";
+import { useForm } from "@conform-to/react";
+import { parseWithZod } from "@conform-to/zod";
+import { EmployeeRegistrationSchema } from "../stockManagerSchema";
 
 const EmpAddForm = ({
   isOpen,
@@ -13,7 +17,19 @@ const EmpAddForm = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
+  const [lastResult, action] = useFormState(createEmployee, undefined);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
+
+  const [form, fields] = useForm({
+    lastResult,
+    onValidate({ formData }) {
+      const result = parseWithZod(formData, { schema: EmployeeRegistrationSchema });
+      console.log(result);
+      return result;
+    },
+    shouldValidate: "onBlur",
+    shouldRevalidate: "onInput",
+  });
 
   useEffect(() => {
     const handleClickOutside = (event: { target: any }) => {
@@ -33,7 +49,8 @@ const EmpAddForm = ({
       document.body.classList.remove("h-screen", "overflow-hidden");
     };
   }, [isOpen, onClose]);
-  const [selectedValue, setSelectedValue] = React.useState("");
+
+  const [selectedValue, setSelectedValue] = useState("");
 
   return (
     <dialog
@@ -42,126 +59,128 @@ const EmpAddForm = ({
       open={isOpen}
       className="z-50 bg-white shadow-md"
     >
-      <div className="lg:col-span-6 lg:col-start-4 rounded  bg-slate-50 shadow-xl rounded-r-lg  pt-6 pb-8 mt-10 mb-10 ">
-        <form className="lg:col-span-5 sm:col-span-4">
+      <div className="lg:col-span-6 lg:col-start-4 rounded bg-slate-50 shadow-xl rounded-r-lg pt-6 pb-8 mt-10 mb-10">
+        <form 
+          id={form.id}
+          onSubmit={form.onSubmit}
+          action={action}
+          noValidate
+          className="lg:col-span-5 sm:col-span-4"
+        >
           <div className="grid grid-cols-11">
-            <div className=" lg:col-span-7 lg:col-start-2 sm:col-span-4 mt-2 text-2xl font-extrabold mb-4 ">
+            <div className="lg:col-span-7 lg:col-start-2 sm:col-span-4 mt-2 text-2xl font-extrabold mb-4">
               <h1>Employee Registration</h1>
             </div>
             <div className="lg:col-span-4 lg:col-start-2 sm:col-span-1 mt-3">
               <TextBox
                 labelName="First Name"
-                name="firstName"
+                name={fields.firstName.name}
                 inputType="text"
-                key="EmpAdd-Fname"
-                defaultValue=""
+                key={fields.firstName.key as React.Key}
+                defaultValue={fields.firstName.initialValue as React.HTMLInputTypeAttribute}
                 placeholder="Enter First Name"
               />
+              <div className="text-xs text-red-400">{fields.firstName.errors}</div>
             </div>
             <div className="lg:col-span-4 lg:col-start-7 sm:col-span-1 mt-3">
               <TextBox
                 labelName="Last Name"
-                name="lastName"
+                name={fields.lastName.name}
                 inputType="text"
-                key="EmpAdd-Lname"
-                defaultValue=""
+                key={fields.lastName.key as React.Key}
+                defaultValue={fields.lastName.initialValue as React.HTMLInputTypeAttribute}
                 placeholder="Enter Last Name"
               />
+              <div className="text-xs text-red-400">{fields.lastName.errors}</div>
             </div>
             <div className="lg:col-span-4 lg:col-start-2 sm:col-span-1 mt-3">
               <TextBox
                 labelName="Email"
-                name="email"
+                name={fields.email.name}
                 inputType="email"
-                key="EmpAdd-email"
-                defaultValue=""
+                key={fields.email.key as React.Key}
+                defaultValue={fields.email.initialValue as React.HTMLInputTypeAttribute}
                 placeholder="Enter Email"
               />
+              <div className="text-xs text-red-400">{fields.email.errors}</div>
             </div>
+            
             <div className="lg:col-span-4 lg:col-start-7 sm:col-span-1 mt-3">
               <TextBox
                 labelName="Phone"
-                name="phone"
+                name={fields.phone.name}
                 inputType="tel"
-                key="EmpAdd-phone"
-                defaultValue=""
+                key={fields.phone.key as React.Key}
+                defaultValue={fields.phone.initialValue as React.HTMLInputTypeAttribute}
                 placeholder="Enter Phone Number"
               />
+              <div className="text-xs text-red-400">{fields.phone.errors}</div>
             </div>
             <div className="lg:col-span-4 lg:col-start-2 sm:col-span-1 mt-3">
               <SelectBox
-                labelName="Employee Roll"
-                id="signup-gender"
-                name="gender"
+                labelName="Employee Role"
+                id="signup-role"
+                name={fields.employeeRole.name} // Ensure the name matches the schema
                 options={[
-                  { value: "", label: "" },
-                  { value: "CusSupport", label: "Customer support" },
-                  {
-                    value: "DisCoordinator",
-                    label: "Distribution coordinator",
-                  },
-                  { value: "Stockkeepr", label: "Stock keepr" },
+                  { value: "", label: "Select Role" },
+                  { value: "CusSupport", label: "Customer Support" },
+                  { value: "DisCoordinator", label: "Distribution Coordinator" },
+                  { value: "Stockkeeper", label: "Stockkeeper" },
                 ]}
-                autoComplete="gender"
+                autoComplete="role"
                 value={selectedValue}
-                onChange={(newValue) => setSelectedValue(newValue)}
+                onChange={(newValue: React.SetStateAction<string>) => setSelectedValue(newValue)} // Add this line
               />
+              <div className="text-xs text-red-400">{fields.employeeRole.errors}</div>
             </div>
             <div className="lg:col-span-5 lg:col-start-7 sm:col-span-1 mt-3">
               <fieldset>
                 <legend className="block text-sm font-medium leading-6 text-gray-900">
                   Gender
                 </legend>
-                {/* Add a legend element for the label */}
-                <div
-                  style={{
-                    display: "flex",
-                    flexWrap: "nowrap",
-                    alignItems: "center",
-                  }}
-                >
-                  <RadioButton label="Male" value="male" name="gender" />
-                  <RadioButton label="Female" value="female" name="gender" />
-                  <RadioButton label="Other" value="other" name="gender" />
+                <div  style={{ display: "flex", flexWrap: "nowrap", alignItems: "center" }}>
+                  <RadioButton label="Male" value="male" name={fields.gender.name} />
+                  <RadioButton label="Female" value="female" name={fields.gender.name} />
+                  <RadioButton label="Other" value="other" name={fields.gender.name} />
                 </div>
               </fieldset>
+              {/* <div className="text-xs text-red-400">{fields.username.errors}</div> */}
             </div>
             <div className="lg:col-span-9 lg:col-start-2 sm:col-span-4 mt-3">
               <TextBox
                 labelName="Street Address"
-                name="streetAddress"
+                name={fields.streetAddress.name}
                 inputType="text"
-                key="EmpAdd-address1"
-                defaultValue=""
+                key={fields.streetAddress.key as React.Key}
+                defaultValue={fields.streetAddress.initialValue as React.HTMLInputTypeAttribute}
                 placeholder="Enter Street Address"
               />
+              <div className="text-xs text-red-400">{fields.streetAddress.errors}</div>
             </div>
             <div className="lg:col-span-4 lg:col-start-2 sm:col-span-2 mt-3">
               <TextBox
                 labelName="City"
-                name="city"
+                name={fields.city.name}
                 inputType="text"
-                key="EmpAdd-city"
-                defaultValue=""
+                key={fields.city.key as React.Key}
+                defaultValue={fields.city.initialValue as React.HTMLInputTypeAttribute}
                 placeholder="Enter City"
               />
+              <div className="text-xs text-red-400">{fields.city.errors}</div>
             </div>
             <div className="lg:col-span-4 lg:col-start-7 sm:col-span-2 mt-3">
               <TextBox
                 labelName="State/Province"
-                name="stateProvince"
+                name={fields.stateProvince.name}
                 inputType="text"
-                key="EmpAdd-stateProvince"
-                defaultValue=""
+                key={fields.stateProvince.key as React.Key}
+                defaultValue={fields.stateProvince.initialValue as React.HTMLInputTypeAttribute}
                 placeholder="Enter State/Province"
               />
+              <div className="text-xs text-red-400">{fields.stateProvince.errors}</div>
             </div>
             <div className="lg:col-span-7 lg:col-start-3 sm:col-span-4 mt-3">
-              <Button
-                type="submit"
-                className=" py-1.5 b px-28 ml-10"
-                // onClick={handleCloseModal}
-              >
+              <Button type="submit" className="py-1.5 px-28 ml-10">
                 Register
               </Button>
             </div>
