@@ -19,7 +19,7 @@ interface EmployeeCardProps {
           alt={name}
           width={120}
           height={120}
-          className="rounded-md mx-auto"
+          className="rounded-md mx-auto" 
         />
         <div className="text-md  mt-2">{name}</div>
         <span className="text-main-dark text-sm">{title}</span>
