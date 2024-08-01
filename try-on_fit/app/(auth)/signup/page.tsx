@@ -22,7 +22,9 @@ export default function Signup() {
     lastResult,
 
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: SignUpSchema });
+      const result = parseWithZod(formData, { schema: SignUpSchema });
+      console.log(result);
+      return result;
     },
 
     shouldValidate: "onBlur",
@@ -94,16 +96,18 @@ export default function Signup() {
             <div className="sm:col-span-4">
               <SelectBox
                 labelName="Select an option"
-                id="select-box"
-                name="select-box"
+                key={fields.gender.key as React.Key}
+                // id="select-box"
+                name={fields.gender.name}
                 autoComplete="off"
                 options={options}
                 value={selectedValue}
+                defaultValue={fields.gender.initialValue as React.HTMLInputTypeAttribute}
                 onChange={handleChange}
-                error={selectedValue === "" ? "" : undefined}
+                // error={selectedValue === "" ? "" : undefined}
               />
               <div className="text-xs text-red-400">
-                {fields.lastName.errors}
+                {fields.gender.errors}
               </div>
             </div>
             <div className="sm:col-span-4">
