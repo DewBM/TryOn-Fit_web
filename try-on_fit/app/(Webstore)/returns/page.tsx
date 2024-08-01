@@ -11,7 +11,7 @@ function returns() {
   return (
     <div>
       <NavBar />
-      <div className="w-full flex flex-row pl-[5rem]  justify-between">
+      <div className="w-full flex flex-row pl-[5rem]  justify-between pb-10">
         <div className="flex flex-col w-[80%] space-y-10 ">
           <OrderNumber2
             orderId={[654216389056]}
