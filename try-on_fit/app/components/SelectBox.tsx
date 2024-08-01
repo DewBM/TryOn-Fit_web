@@ -5,7 +5,8 @@ export default function SelectBox({
   autoComplete,
   options,
   value,
-  onChange,
+  // onChange,
+  // defaultValue,
   error,
   className,
 }: {
@@ -15,7 +16,8 @@ export default function SelectBox({
   autoComplete: string;
   options: { value: string; label: string }[];
   value: string;
-  onChange: (newValue: string) => void;
+  // onChange: (newValue: string) => void;
+  // defaultValue: React.HTMLInputTypeAttribute;
   error?: string;
   className?: string;
 }) {
@@ -33,7 +35,7 @@ export default function SelectBox({
           name={name}
           autoComplete={autoComplete}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => {}}
           className="block w-full rounded-md border-0 focus:outline-none py-2.5 pl-1 text-gray-900 ring-1 ring-inset ring-main-light focus:ring-2 focus:ring-inset focus:ring-main-dark text-xs sm:leading-6"
         >
           {options.map((option) => (
