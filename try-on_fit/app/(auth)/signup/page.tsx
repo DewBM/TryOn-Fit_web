@@ -28,19 +28,18 @@ export default function Signup() {
     shouldValidate: "onBlur",
     shouldRevalidate: "onInput",
   });
-  // const passwordRegex =
-  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const [selectedValue, setSelectedValue] = useState("");
 
-  // const validatePassword = (password: string) => {
-  //   if (!passwordRegex.test(password)) {
-  //     return false;
-  //   }
-  //   return true;
-  // };
-  // const validatePhoneNumber = (phoneNumber: string) => {
-  //   const regex = /^\d{10}$/;
-  //   return regex.test(phoneNumber);
-  // };
+  const options = [
+    { value: "", label: "" },
+    { value: "male", label: "Male" },
+    { value: "female", label: "Female" },
+    { value: "unisex", label: "UniSex" },
+  ];
+
+  const handleChange = (newValue: string) => {
+    setSelectedValue(newValue);
+  };
 
   return (
     <Layout>
@@ -94,19 +93,14 @@ export default function Signup() {
             </div>
             <div className="sm:col-span-4">
               <SelectBox
-                labelName="Gender"
-                id="signup-gender"
-                name="gender"
-                options={[
-                  { value: "", label: "" },
-                  { value: "female", label: "Female" },
-                  { value: "male", label: "Male" },
-                  { value: "other", label: "Other" },
-                ]}
-                autoComplete="gender"
-                value={fields.gender.value ?? ""}
-                // onChange={(newValue) => fields.gender.onChange(newValue)}
-                // error={fields.gender.errors?.[0]}
+                labelName="Select an option"
+                id="select-box"
+                name="select-box"
+                autoComplete="off"
+                options={options}
+                value={selectedValue}
+                onChange={handleChange}
+                error={selectedValue === "" ? "" : undefined}
               />
               <div className="text-xs text-red-400">
                 {fields.lastName.errors}
