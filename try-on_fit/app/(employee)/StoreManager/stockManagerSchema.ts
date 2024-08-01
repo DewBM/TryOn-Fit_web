@@ -1,18 +1,29 @@
 import { z } from 'zod';
-console.log("EmployeeRegistrationSchema");
+// Phone number validation
+const validatePhoneNumber = (phoneNumber: string) => {
+  const regex = /^\d{10}$/;
+  return regex.test(phoneNumber);
+};
 
 export const EmployeeRegistrationSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(1, "Phone number is required"),
-  employeeRole: z.enum(["CusSupport", "DisCoordinator", "Stockkeeper"], {
-    required_error: "Employee role is required",
+  firstName: z.string().min(1, { message: "First name is required" }),
+  lastName: z.string().min(1, { message: "Last name is required" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  phone: z
+  .string()
+  .min(1, { message: "Phone number cannot be empty" })
+  .refine(validatePhoneNumber, {
+    message: "Phone number must be a 10-digit number",
   }),
-  gender: z.enum(["male", "female", "other"], {
-    required_error: "Gender is required",
+  employeeRole: z.enum(["CusSupport", "DisCoordinator", "Stockkeeper"]).refine(val => val !== undefined, {
+    message: "Employee role is required",
   }),
-  streetAddress: z.string().min(1, "Street address is required"),
-  city: z.string().min(1, "City is required"),
-  stateProvince: z.string().min(1, "State/Province is required"),
+  gender: z.enum(["male", "female", "other"]).refine(val => val !== undefined, {
+    message: "Gender is required",
+  }),
+  streetAddress: z.string().min(1, { message: "Street address is required" }),
+  city: z.string().min(1, { message: "City is required" }),
+  stateProvince: z.string().min(1, { message: "State/Province is required" }),
 });
+
+console.log("EmployeeRegistrationSchema");

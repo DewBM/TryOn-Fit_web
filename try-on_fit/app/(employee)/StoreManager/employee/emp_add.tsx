@@ -1,5 +1,4 @@
-"use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Layout from "@/app/(auth)/layout";
 import TextBox from "@/app/components/TextBox";
 import SelectBox from "@/app/components/SelectBox";
@@ -9,7 +8,7 @@ import { useFormState } from "react-dom";
 import { createEmployee } from "../actions";
 import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
-import {EmployeeRegistrationSchema} from "../stockManagerSchema";
+import { EmployeeRegistrationSchema } from "../stockManagerSchema";
 
 const EmpAddForm = ({
   isOpen,
@@ -24,7 +23,9 @@ const EmpAddForm = ({
   const [form, fields] = useForm({
     lastResult,
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: EmployeeRegistrationSchema });
+      const result = parseWithZod(formData, { schema: EmployeeRegistrationSchema });
+      console.log(result);
+      return result;
     },
     shouldValidate: "onBlur",
     shouldRevalidate: "onInput",
@@ -49,7 +50,7 @@ const EmpAddForm = ({
     };
   }, [isOpen, onClose]);
 
-  const [selectedValue, setSelectedValue] = React.useState("");
+  const [selectedValue, setSelectedValue] = useState("");
 
   return (
     <dialog
@@ -79,6 +80,7 @@ const EmpAddForm = ({
                 defaultValue={fields.firstName.initialValue as React.HTMLInputTypeAttribute}
                 placeholder="Enter First Name"
               />
+              <div className="text-xs text-red-400">{fields.firstName.errors}</div>
             </div>
             <div className="lg:col-span-4 lg:col-start-7 sm:col-span-1 mt-3">
               <TextBox
@@ -89,6 +91,7 @@ const EmpAddForm = ({
                 defaultValue={fields.lastName.initialValue as React.HTMLInputTypeAttribute}
                 placeholder="Enter Last Name"
               />
+              <div className="text-xs text-red-400">{fields.lastName.errors}</div>
             </div>
             <div className="lg:col-span-4 lg:col-start-2 sm:col-span-1 mt-3">
               <TextBox
@@ -99,7 +102,9 @@ const EmpAddForm = ({
                 defaultValue={fields.email.initialValue as React.HTMLInputTypeAttribute}
                 placeholder="Enter Email"
               />
+              <div className="text-xs text-red-400">{fields.email.errors}</div>
             </div>
+            
             <div className="lg:col-span-4 lg:col-start-7 sm:col-span-1 mt-3">
               <TextBox
                 labelName="Phone"
@@ -109,34 +114,37 @@ const EmpAddForm = ({
                 defaultValue={fields.phone.initialValue as React.HTMLInputTypeAttribute}
                 placeholder="Enter Phone Number"
               />
+              <div className="text-xs text-red-400">{fields.phone.errors}</div>
             </div>
             <div className="lg:col-span-4 lg:col-start-2 sm:col-span-1 mt-3">
-            <SelectBox
-  labelName="Employee Role"
-  id="signup-role"
-  name={fields.employeeRole.name} // Ensure the name matches the schema
-  options={[
-    { value: "", label: "Select Role" },
-    { value: "CusSupport", label: "Customer Support" },
-    { value: "DisCoordinator", label: "Distribution Coordinator" },
-    { value: "Stockkeeper", label: "Stockkeeper" },
-  ]}
-  autoComplete="role"
-  value={selectedValue}
-  onChange={(newValue) => setSelectedValue(newValue)}
-/>
+              <SelectBox
+                labelName="Employee Role"
+                id="signup-role"
+                name={fields.employeeRole.name} // Ensure the name matches the schema
+                options={[
+                  { value: "", label: "Select Role" },
+                  { value: "CusSupport", label: "Customer Support" },
+                  { value: "DisCoordinator", label: "Distribution Coordinator" },
+                  { value: "Stockkeeper", label: "Stockkeeper" },
+                ]}
+                autoComplete="role"
+                value={selectedValue}
+                onChange={(newValue: React.SetStateAction<string>) => setSelectedValue(newValue)} // Add this line
+              />
+              <div className="text-xs text-red-400">{fields.employeeRole.errors}</div>
             </div>
             <div className="lg:col-span-5 lg:col-start-7 sm:col-span-1 mt-3">
               <fieldset>
                 <legend className="block text-sm font-medium leading-6 text-gray-900">
                   Gender
                 </legend>
-                <div style={{ display: "flex", flexWrap: "nowrap", alignItems: "center" }}>
+                <div  style={{ display: "flex", flexWrap: "nowrap", alignItems: "center" }}>
                   <RadioButton label="Male" value="male" name={fields.gender.name} />
                   <RadioButton label="Female" value="female" name={fields.gender.name} />
                   <RadioButton label="Other" value="other" name={fields.gender.name} />
                 </div>
               </fieldset>
+              {/* <div className="text-xs text-red-400">{fields.username.errors}</div> */}
             </div>
             <div className="lg:col-span-9 lg:col-start-2 sm:col-span-4 mt-3">
               <TextBox
@@ -147,6 +155,7 @@ const EmpAddForm = ({
                 defaultValue={fields.streetAddress.initialValue as React.HTMLInputTypeAttribute}
                 placeholder="Enter Street Address"
               />
+              <div className="text-xs text-red-400">{fields.streetAddress.errors}</div>
             </div>
             <div className="lg:col-span-4 lg:col-start-2 sm:col-span-2 mt-3">
               <TextBox
@@ -157,6 +166,7 @@ const EmpAddForm = ({
                 defaultValue={fields.city.initialValue as React.HTMLInputTypeAttribute}
                 placeholder="Enter City"
               />
+              <div className="text-xs text-red-400">{fields.city.errors}</div>
             </div>
             <div className="lg:col-span-4 lg:col-start-7 sm:col-span-2 mt-3">
               <TextBox
@@ -167,6 +177,7 @@ const EmpAddForm = ({
                 defaultValue={fields.stateProvince.initialValue as React.HTMLInputTypeAttribute}
                 placeholder="Enter State/Province"
               />
+              <div className="text-xs text-red-400">{fields.stateProvince.errors}</div>
             </div>
             <div className="lg:col-span-7 lg:col-start-3 sm:col-span-4 mt-3">
               <Button type="submit" className="py-1.5 px-28 ml-10">
