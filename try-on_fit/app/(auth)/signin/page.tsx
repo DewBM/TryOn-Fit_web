@@ -7,7 +7,7 @@ import TextBox from "@/app/components/TextBox";
 import Image from "next/image";
 import signupimg from "../../../public/images/img_signIn.jpg";
 import { useFormState } from "react-dom";
-import signin from "../actions";
+import { signin } from "../actions";
 import { LoginSchema } from "@/app/utils/schema";
 import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";

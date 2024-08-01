@@ -13,7 +13,7 @@ import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { SignUpSchema } from "@/app/utils/schema";
 import { useFormState } from "react-dom";
-import signup from "../actions";
+import { signup } from "../actions";
 // import PhoneNumber from "@/app/components/PhoneNumber";
 
 export default function Signup() {
@@ -135,6 +135,20 @@ export default function Signup() {
               />
               <div className="text-xs text-red-400">
                 {fields.phoneNumber.errors}
+              </div>
+            </div>
+            <div className="sm:col-span-4">
+              <TextBox
+                labelName="Username"
+                name={fields.username.name}
+                key={fields.username.key as React.Key}
+                inputType="text"
+                defaultValue={
+                  fields.username.initialValue as React.HTMLInputTypeAttribute
+                }
+              />
+              <div className="text-xs text-red-400">
+                {fields.username.errors}
               </div>
             </div>
             <div className="sm:col-span-2">
