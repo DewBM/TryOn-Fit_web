@@ -23,6 +23,11 @@ function MenCollectionPage() {
     { images: ['/images/men/14.jpeg'], name: 'Sleeveless T-Shirt', price: 1800 },
     { images: ['/images/men/1.webp'], name: 'Basic T-Shirt', price: 1500 },
     { images: ['/images/men/7.jpeg'], name: 'Flannel Shirt', price: 2300 },
+    { images: ['/images/men/6.jpeg'], name: 'Denim Shirt', price: 2400 },
+    { images: ['/images/men/7.jpeg'], name: 'Flannel Shirt', price: 2300 },
+    { images: ['/images/men/8.webp'], name: 'Chino Trousers', price: 2600 },
+    { images: ['/images/men/9.jpeg'], name: 'Slim Fit Trousers', price: 2700 },
+    
   ];
 
   return (
@@ -35,11 +40,11 @@ function MenCollectionPage() {
         className="w-full object-cover"
       />
     </div>
-    <div className="flex flex-row pt-[60rem]">
+    <div className="flex flex-row pt-[55rem]">
       <div className="w-[20%] pt-10 justify-start">
         <Filter />
       </div>
-      <div className="flex w-[80%] px-10 flex-wrap gap-[6rem]  pb-[1rem] justify-center -z-1">
+      <div className="flex w-[80%]  flex-wrap gap-[6rem]  pb-[1rem] justify-center -z-1">
         {items.map((item, index) => (
           <Product
             key={index}
