@@ -127,3 +127,14 @@ option:hover {
   text-align: center;
   white-space: pre-line; /* Ensures line breaks are respected */
 }
+/* styles/globals.css */
+
+.status-delivered {
+  color: green;
+}
+
+
+
+.status-processing {
+  color: blue;
+}
