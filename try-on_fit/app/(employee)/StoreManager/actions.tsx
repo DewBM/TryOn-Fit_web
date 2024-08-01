@@ -1,40 +1,43 @@
-'use server'
-import { redirect } from 'next/navigation'
 import { customFetch } from "@/app/utils/auth";
-import { parseWithZod } from '@conform-to/zod';
-
+import { redirect } from "next/navigation";
+import {EmployeeRegistrationSchema} from "../StoreManager/stockManagerSchema"
+import { parseWithZod } from "@conform-to/zod";
 
 export async function createEmployee(prevState: unknown, formData: FormData) {
-    
-  console.log(formData);
-  const data = {
-    firstName: formData.get('EmpAdd-Fnam'),
-    lastName: formData.get('EmpAdd-Lname"'),
-    email: formData.get('EmpAdd-email'),
-    phone: formData.get('EmpAdd-phone'),
-    employeeRole: formData.get('signup-gender'),
-    gender: formData.get('signup-gender'),
-    streetAddress: formData.get('EmpAdd-address1'),
-    city: formData.get('EmpAdd-address2'),
+  const submission = parseWithZod(formData, {
+    schema: EmployeeRegistrationSchema,
+  });
+
+  if (submission.status !== "success") {
+    return submission.reply();
+  }
+
+  const signupData = {
+    firstName: formData.get('firstName'),
+    lastName: formData.get('lastName'),
+    email: formData.get('email'),
+    phone: formData.get('phone'),
+    employeeRole: formData.get('employeeRole'),
+    gender: formData.get('gender'),
+    streetAddress: formData.get('streetAddress'),
+    city: formData.get('city'),
     state: formData.get('state'),
   };
-    const params = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    };
 
-    console.log(data);
-  
-    const resp = await customFetch("/", params);
-    if (resp) {
-      if (resp.isSuccess) {
-        redirect("/auth/employee");
-      } else {
-        // return {msg: resp.msg}
-      }
+  const params = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(signupData),
+  };
+
+  const resp = await customFetch("/employee", params);
+  if (resp) {
+    if (resp.isSuccess) {
+      redirect("/StoreManager/employee");
+    } else {
+      // handle failure
     }
   }
-  
+}
