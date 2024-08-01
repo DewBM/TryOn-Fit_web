@@ -108,6 +108,31 @@ function WomenCollectionPage() {
       name: 'Sleeve Blouse',
       price: 2900,
     },
+    {
+      images: ['/images/women/11.webp'],
+      name: 'Classic Trousers',
+      price: 3900,
+    },
+    {
+      images: ['/images/women/12.webp'],
+      name: 'Summer Frock',
+      price: 4200,
+    },
+    {
+      images: ['/images/women/11.webp'],
+      name: 'Evening Frock',
+      price: 4500,
+    },
+    {
+      images: ['/images/women/10.jpeg'],
+      name: 'Evening Frock',
+      price: 4500,
+    },
+    {
+      images: ['/images/women/13.jpeg'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
   ];
 
   return (
@@ -120,11 +145,11 @@ function WomenCollectionPage() {
           className="w-full object-cover"
         />
       </div>
-      <div className="flex flex-row pt-[60rem]">
+      <div className="flex flex-row pt-[55rem]">
         <div className="w-[20%] pt-10 justify-start">
           <Filter />
         </div>
-        <div className="flex w-[80%] px-10 flex-wrap gap-[6rem]  pb-[1rem] justify-center -z-1">
+        <div className="flex w-[80%]  flex-wrap gap-[6rem]  pb-[1rem] justify-center -z-1">
           {items.map((item, index) => (
             <Product
               key={index}
