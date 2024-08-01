@@ -25,6 +25,10 @@ export const LoginSchema = z.object({
 
 export const SignUpSchema = z
   .object({
+    username: z.string()
+      .min(3, { message: "Username must be at least 3 characters long" })
+      .max(20, { message: "Username cannot be more than 20 characters long" })
+      .regex(/^[a-zA-Z0-9_]+$/, { message: "Username can only contain letters, numbers, and underscores" }),
     firstName: z.string(),
     lastName: z.string(),
     gender: z.string(),
