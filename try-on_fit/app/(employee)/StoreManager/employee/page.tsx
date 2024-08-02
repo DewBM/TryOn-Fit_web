@@ -29,6 +29,7 @@ import { capitalize } from "@/app/components/utils";
 import { customFetch } from "@/app/utils/auth";
 import EmpAddForm from "./emp_add";
 import DeleteModal from "@/app/components/DeleteModal";
+import { useRouter } from "next/navigation";
 
 const INITIAL_VISIBLE_COLUMNS = [
   "employee_name",
@@ -58,6 +59,10 @@ export default function Home() {
   const openAddDialog = () => setIsAddDialogOpen(true);
   const closeAddDialog = () => setIsAddDialogOpen(false);
 
+  const router = useRouter();
+     const viewEmployee=()=>{
+      router.push("/StoreManager/employee/emp_view");
+     }
   useEffect(() => {
     const getEmployees = async () => {
       let employees: Employee[] = await customFetch("/employee", {
@@ -170,7 +175,8 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu>
-                    <DropdownItem className="customHoverColor customActiveColor">
+                    <DropdownItem className="customHoverColor customActiveColor"
+                    onClick={viewEmployee}>
                       View
                     </DropdownItem>
                     <DropdownItem className="customHoverColor customActiveColor">
