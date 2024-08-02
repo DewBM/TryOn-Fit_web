@@ -19,7 +19,7 @@ function Footer() {
 		router.push("user_profile/profile")
 	}
 	const handleorders = () =>{
-		router.push("orderitems")
+		router.push("orderItems")
 	}
 	
   return (
