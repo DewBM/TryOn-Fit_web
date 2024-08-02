@@ -4,6 +4,8 @@ import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownIte
 import {SearchIcon} from "./SearchIcon.jsx";
 import { useRouter } from "next/navigation";
 import Image from "next/image"
+import {Checkbox} from "@nextui-org/react";
+
 // Define the Props interface
 interface Props {
   openNav: () => void; 
@@ -21,6 +23,21 @@ export default function NavBar() {
      const handleFitOn = ()=>{
       router.push('FitOn')
      }
+     const handleuprofile =() =>{
+      router.push("user_profile/profile")
+     }
+     const handlemesure=()=>{
+      router.push("")
+     }
+     const handleFaq =() =>{
+      router.push("faq")
+    }
+    const handlesigning =() =>{
+      router.push("signin")
+    }
+    const handlesignout=() =>{
+      router.push("signup")
+    }
   return (
     <div className="relative w-[100%] bg-black  " style={{zIndex:+1 }}>
       <div className="flex items-center  h-[16vh] justify-between  px-8 ">
@@ -73,14 +90,34 @@ export default function NavBar() {
     
    </DropdownTrigger>
    <DropdownMenu aria-label="Static Actions">
-   <DropdownItem key="new" className="hover:bg-main-dark">  <a href="#">Profile</a></DropdownItem>
-     <DropdownItem key="edit" className="hover:bg-main-dark">  <a href="##">Edit</a></DropdownItem>
-     <DropdownItem key="notifi" className="hover:bg-main-dark"><a href="#">Notifications</a></DropdownItem>
-     <DropdownItem key="settings" className="hover:bg-main-dark"><a href="#">Settings</a></DropdownItem>
-     <DropdownItem key="help" className="hover:bg-main-dark">  <a href="#">Help &amp; Support</a></DropdownItem>
-    
-  
-   </DropdownMenu>
+              <DropdownItem key="profile" className="hover:bg-main-dark">
+                <a href="#">Profile</a>
+                <div className="flex flex-col gap-4 pl-2 pt-2">
+     <p className="text-sm"onClick={handleuprofile}>User Profile</p>
+     <p className="text-sm"onClick={handlemesure}>Body Mesurement</p>
+      {/* <Checkbox isDisabled defaultSelected onClick={handleuprofile}> User Profile</Checkbox>
+      <Checkbox isDisabled onClick={handlemesure}>Body Mesurement</Checkbox> */}
+    </div>  
+              </DropdownItem>
+              <DropdownItem key="notifications" className="hover:bg-main-dark">
+                <a href="#" >Notifications</a>
+              </DropdownItem>
+              <DropdownItem key="settings" className="hover:bg-main-dark">
+                <a href="#">Settings</a>
+              </DropdownItem>
+              <DropdownItem key="help" className="hover:bg-main-dark">
+                <a href=""onClick={handleFaq}>Help &amp; Support</a>
+              </DropdownItem>
+              <DropdownItem key="signin" className="hover:bg-main-dark">
+                <a href="" onClick={handlesigning}>Signin</a>
+              </DropdownItem>
+              <DropdownItem key="signup" className="hover:bg-main-dark">
+                <a href="" onClick={handlesignout}>Signup</a>
+              </DropdownItem>
+              <DropdownItem key="logout" className="hover:bg-main-dark text-red-600">
+                <a href="#">Logout</a>
+              </DropdownItem>
+            </DropdownMenu>
  </Dropdown>
        </div>
       </div>
