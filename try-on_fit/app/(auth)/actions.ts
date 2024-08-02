@@ -6,7 +6,7 @@ import { parseWithZod } from '@conform-to/zod';
 import { LoginSchema } from '../utils/schema';
 import { SignUpSchema } from "../utils/schema";
 
-export default async function signin(prevState: unknown, formData: FormData) {
+export async function signin(prevState: unknown, formData: FormData) {
 
    const submission = parseWithZod(formData, {
       schema: LoginSchema,
@@ -68,13 +68,14 @@ export async function signup(prevState: unknown, formData: FormData) {
   }
 
   const signupData = {
+    username: formData.get('username'),
     firstName: formData.get("First Name"),
     lastName: formData.get("Last Name"),
     gender: formData.get("Gender"),
     email: formData.get("Email"),
     phoneNumber: formData.get("Phone Number"),
     address: formData.get("Address"),
-    password: formData.get("Password"),
+    password: formData.get("password"),
     passwordConfirm: formData.get("passwordConfirm"),
   };
   const params = {
@@ -85,10 +86,10 @@ export async function signup(prevState: unknown, formData: FormData) {
     body: JSON.stringify(signupData),
   };
 
-  const resp = await customFetch("/auth/signup", params, true);
+  const resp = await customFetch("/auth/signup", params);
   if (resp) {
     if (resp.isSuccess) {
-      redirect("/auth/signin");
+      redirect("/signin");
     } else {
       // return {msg: resp.msg}
     }

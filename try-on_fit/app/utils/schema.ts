@@ -25,6 +25,10 @@ export const LoginSchema = z.object({
 
 export const SignUpSchema = z
   .object({
+    username: z.string()
+      .min(3, { message: "Username must be at least 3 characters long" })
+      .max(20, { message: "Username cannot be more than 20 characters long" })
+      .regex(/^[a-zA-Z0-9_]+$/, { message: "Username can only contain letters, numbers, and underscores" }),
     firstName: z.string(),
     lastName: z.string(),
     gender: z.string(),
@@ -35,7 +39,7 @@ export const SignUpSchema = z
       .refine(validatePhoneNumber, {
         message: "Phone number must be a 10-digit number",
       }),
-    address: z.string(),
+    // address: z.string(),
     password: z
       .string()
       .min(1, { message: "Password cannot be empty" })
@@ -45,9 +49,9 @@ export const SignUpSchema = z
       }),
     passwordConfirm: z
       .string()
-      .min(1, { message: "Password confirmation cannot be empty" }),
+      .min(1, { message: "Password confirmation cannot be empty" })
   })
-  .refine((data) => data.password === data.passwordConfirm, {
+  .refine((data) => data.password == data.passwordConfirm, {
     message: "Passwords must match",
     path: ["passwordConfirm"], 
   });

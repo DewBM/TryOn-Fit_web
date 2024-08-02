@@ -1,21 +1,27 @@
+import React from "react";
+
 export default function SelectBox({
   labelName,
-  id,
+  // id,
+  key,
   name,
   autoComplete,
   options,
   value,
   onChange,
+  defaultValue,
   error,
   className,
 }: {
   labelName: string;
-  id: string;
+  // id: string;
+  key: React.Key;
   name: string;
   autoComplete: string;
   options: { value: string; label: string }[];
   value: string;
   onChange: (newValue: string) => void;
+  defaultValue: React.HTMLInputTypeAttribute;
   error?: string;
   className?: string;
 }) {
@@ -29,9 +35,11 @@ export default function SelectBox({
       </label>
       <div className="mt-1">
         <select
-          id={id}
+          // id={id}
           name={name}
+          key={key}
           autoComplete={autoComplete}
+          defaultValue={defaultValue}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className="block w-full rounded-md border-0 focus:outline-none py-2.5 pl-1 text-gray-900 ring-1 ring-inset ring-main-light focus:ring-2 focus:ring-inset focus:ring-main-dark text-xs sm:leading-6"
@@ -42,7 +50,7 @@ export default function SelectBox({
             </option>
           ))}
         </select>
-        {error && <div className="text-red-500">{error}</div>}
+        {/* {error && <div className="text-red-500">{error}</div>} */}
       </div>
     </div>
   );

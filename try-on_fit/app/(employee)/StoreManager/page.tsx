@@ -5,6 +5,7 @@ import Header from "@/app/components/Header/index";
 import CardDataStats from "@/app/components/DashboardCard";
 import SalesChart from "@/app/components/charts/SalesChart";
 import { FiUser, FiTruck, FiDollarSign, FiShoppingBag } from "react-icons/fi";
+import { FaUndo } from "react-icons/fa";
 
 import RatingBox from "@/app/components/RatingBox";
 
@@ -67,6 +68,18 @@ export default function Home() {
             <SalesChart />
           </div>
           <div className="col-span-4 sm:col-span-1">
+            <CardDataStats title="Total Returns" total="22">
+              <div
+                className="rounded-full p-2 inline-block border-[0.5px] border-stroke " // Added margin-bottom class
+                style={{
+                  padding: "10px",
+                  backgroundColor: "var(--main-background)",
+                  boxShadow: "var(--main-drop-shadow)",
+                }}
+              >
+                <FaUndo size={22} style={{ stroke: "var(--main-dark)" }} />
+              </div>
+            </CardDataStats>
             <RatingBox />
           </div>
         </div>

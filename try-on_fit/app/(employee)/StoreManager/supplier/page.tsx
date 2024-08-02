@@ -32,6 +32,7 @@ import {
 } from "@/app/components/data-3";
 import { capitalize } from "@/app/components/utils";
 import DeleteModal from "@/app/components/DeleteModal";
+import { useRouter } from "next/navigation";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   available: "success",
@@ -63,6 +64,11 @@ export default function SupplierTable() {
   });
   const [page, setPage] = React.useState(1);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const router = useRouter();
+  const viewSupplier = () => {
+    router.push("/StoreManager/supplier/supplier_view");
+  };
 
   const pages = Math.ceil(suppliers.length / rowsPerPage);
 
@@ -153,7 +159,10 @@ export default function SupplierTable() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu>
-                    <DropdownItem className="customHoverColor customActiveColor">
+                    <DropdownItem
+                      className="customHoverColor customActiveColor"
+                      onClick={viewSupplier}
+                    >
                       View
                     </DropdownItem>
                     <DropdownItem className="customHoverColor customActiveColor">

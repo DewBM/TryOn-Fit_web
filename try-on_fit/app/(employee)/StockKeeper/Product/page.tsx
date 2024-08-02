@@ -28,6 +28,7 @@ import { SearchIcon } from "@/app/components/SearchIcon";
 import { columns, products, statusOptions } from "@/app/components/data";
 import { capitalize } from "@/app/components/utils";
 import DeleteModal from "@/app/components/DeleteModal";
+import { useRouter } from "next/navigation";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   available: "success",
@@ -41,33 +42,34 @@ const INITIAL_VISIBLE_COLUMNS = [
   "actions",
 ];
 
-type User = (typeof products)[0];
+const ProductPage = () => {
+  const router = useRouter();
 
-export default function Home() {
-  const [filterValue, setFilterValue] = React.useState("");
-  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
-    new Set([])
-  );
-  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
+  const viewProduct = () => {
+    router.push("/StockKeeper/Product/view_product");
+  };
+
+  type User = (typeof products)[0];
+
+  const [filterValue, setFilterValue] = useState("");
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
+  const [visibleColumns, setVisibleColumns] = useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
-  const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
+  const [statusFilter, setStatusFilter] = useState<Selection>("all");
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: "price",
     direction: "ascending",
   });
-  const [page, setPage] = React.useState(1);
-
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for delete modal
+  const [page, setPage] = useState(1);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const pages = Math.ceil(products.length / rowsPerPage);
-
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
-
     return columns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid)
     );
@@ -96,7 +98,6 @@ export default function Home() {
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
@@ -105,7 +106,6 @@ export default function Home() {
       const first = a[sortDescriptor.column as keyof User] as number;
       const second = b[sortDescriptor.column as keyof User] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
-
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
@@ -154,7 +154,10 @@ export default function Home() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem className="customHoverColor customActiveColor">
+                  <DropdownItem
+                    className="customHoverColor customActiveColor"
+                    onClick={viewProduct}
+                  >
                     View
                   </DropdownItem>
                   <DropdownItem className="customHoverColor customActiveColor">
@@ -282,7 +285,7 @@ export default function Home() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {products.length} users
+            Total {products.length} products
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -335,13 +338,11 @@ export default function Home() {
       wrapper: ["max-h-[382px]", "max-w-3xl"],
       th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
       td: [
-        // changing the rows border radius
-        // first
         "group-data-[first=true]:first:before:rounded-none",
         "group-data-[first=true]:last:before:rounded-none",
-        // middle
+
         "group-data-[middle=true]:before:rounded-none",
-        // last
+
         "group-data-[last=true]:first:before:rounded-none",
         "group-data-[last=true]:last:before:rounded-none",
       ],
@@ -398,4 +399,6 @@ export default function Home() {
       />
     </>
   );
-}
+};
+
+export default ProductPage;
