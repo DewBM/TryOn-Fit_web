@@ -14,6 +14,10 @@ import Footer from "@/app/components/Footer";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+  const handleinform=()=>{
+    router.push("inquiryForm")
+  }
   return (
     <div>
       <NavBar />
@@ -247,7 +251,7 @@ export default function Home() {
             Need more help? Send us a help request.
           </div>
           <div className="justify-center items-center text-center my-15 bg-white pt-5 pb-12 mx-4 lg:mx-13">
-            <button className="border-main-dark p-3 border rounded-xl my-15 hover:bg-main-lighter">
+            <button className="border-main-dark p-3 border rounded-xl my-15 hover:bg-main-lighter" onClick={handleinform}>
               Request
             </button>
           </div>
