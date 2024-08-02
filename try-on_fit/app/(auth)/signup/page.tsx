@@ -13,7 +13,6 @@ import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { SignUpSchema } from "@/app/utils/schema";
 import { useFormState } from "react-dom";
-
 import { signup } from "../actions";
 // import PhoneNumber from "@/app/components/PhoneNumber";
 
@@ -31,7 +30,6 @@ export default function Signup() {
     shouldValidate: "onBlur",
     shouldRevalidate: "onInput",
   });
-
   const [selectedValue, setSelectedValue] = useState("");
 
   const options = [
@@ -52,7 +50,7 @@ export default function Signup() {
           <Image
             src={signupimg}
             alt="Auth Image"
-            className="rounded-l-lg shadow-2xl my-auto lg:col-span-3 h-full object-cover"
+            className="rounded-l-lg shadow-2xl my-auto lg:col-span-3"
           />
         </div>
 
@@ -64,7 +62,7 @@ export default function Signup() {
             className="bg-main-lighter shadow-xl px-4 pb-2 grid gap-x-2.5 gap-y-1 sm:grid-cols-4 rounded-r-lg"
             noValidate
           >
-            <div className="sm:col-span-4 text-4xl font-extrabold mt-3 mb-6">
+            <div className="sm:col-span-4 text-4xl font-extrabold mt-3 mb-3">
               <h1>Create an account</h1>
             </div>
             <div className="sm:col-span-2 mt-2">
@@ -117,20 +115,17 @@ export default function Signup() {
                 labelName="Email"
                 name={fields.email.name}
                 key={fields.email.key as React.Key}
-                inputType="email"
+                inputType="text"
                 defaultValue={
                   fields.email.initialValue as React.HTMLInputTypeAttribute
                 }
               />
-              <div className="text-xs text-red-400">
-                {fields.email.errors ||
-                  (fields.email.value && validateEmail(fields.email.value))}
-              </div>
+              <div className="text-xs text-red-400">{fields.email.errors}</div>
             </div>
             <div className="sm:col-span-4">
               <TextBox
                 labelName={"Phone Number"}
-                inputType={"tel"}
+                inputType={"phoneNumber"}
                 name={fields.phoneNumber.name}
                 key={fields.phoneNumber.key as React.Key}
                 defaultValue={
@@ -139,9 +134,7 @@ export default function Signup() {
                 }
               />
               <div className="text-xs text-red-400">
-                {fields.phoneNumber.errors ||
-                  (fields.phoneNumber.value &&
-                    validatePhoneNumber(fields.phoneNumber.value))}
+                {fields.phoneNumber.errors}
               </div>
             </div>
             <div className="sm:col-span-4">
@@ -161,13 +154,16 @@ export default function Signup() {
             <div className="sm:col-span-2">
               <PasswordBox
                 labelName={"Password"}
-                id={"password"}
+                inputType={"password"}
+                name={fields.password.name}
+                key={fields.password.key as React.Key}
+                defaultValue={
+                  fields.password.initialValue as React.HTMLInputTypeAttribute
+                }
                 showEyeIcon={true}
               />
               <div className="text-xs text-red-400">
-                {fields.password.errors ||
-                  (fields.password.value &&
-                    validatePassword(fields.password.value))}
+                {fields.password.errors}
               </div>
             </div>
             {/* passwordConfirm */}
@@ -184,13 +180,7 @@ export default function Signup() {
                 showEyeIcon={true}
               />
               <div className="text-xs text-red-400">
-                {fields.passwordConfirm.errors ||
-                  (fields.passwordConfirm.value &&
-                    fields.password.value &&
-                    validatePasswordConfirm(
-                      fields.passwordConfirm.value,
-                      fields.password.value
-                    ))}
+                {fields.passwordConfirm.errors}
               </div>
             </div>
             <div className="sm:col-span-4 mb-0 px-0 mt-0 m-0">
