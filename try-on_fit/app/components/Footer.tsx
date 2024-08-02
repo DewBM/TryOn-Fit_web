@@ -15,7 +15,9 @@ function Footer() {
 	const handleFaq =() =>{
 		router.push("faq")
 	}
-	
+	const handleprofile =() =>{
+		router.push("user_profile/profile")
+	}
   return (
     <div>
       <div className="bg-black text-white  h-1/2 w-full flex md:flex-row flex-col justify-around items-start p-10">
@@ -67,7 +69,7 @@ function Footer() {
 				<div className="p-5">
 					<ul>
 						<p className="text-white font-bold text-2xl pb-4" onClick={handleFaq}>FAQ</p>
-						<li className="text-white text-md pb-3 font-light hover:text-main-dark cursor-pointer">
+						<li className="text-white text-md pb-3 font-light hover:text-main-dark cursor-pointer"onClick={handleprofile}>
 							Account
 						</li>
 						<li className="text-white text-md pb-3 font-light hover:text-main-dark cursor-pointer">
