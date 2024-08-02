@@ -21,6 +21,7 @@ function Footer() {
 	const handleorders = () =>{
 		router.push("orderitems")
 	}
+	
   return (
     <div>
       <div className="bg-black text-white  h-1/2 w-full flex md:flex-row flex-col justify-around items-start p-10">
@@ -71,7 +72,7 @@ function Footer() {
 				</div>
 				<div className="p-5">
 					<ul>
-						<p className="text-white font-bold text-2xl pb-4" onClick={handleFaq}>FAQ</p>
+						<p className="text-white font-bold text-2xl pb-4" >FAQ</p>
 						<li className="text-white text-md pb-3 font-light hover:text-main-dark cursor-pointer"onClick={handleprofile}>
 							Account
 						</li>
@@ -90,7 +91,7 @@ function Footer() {
 				<div className="p-5">
 					<ul>
 						<p className="text-white font-bold text-2xl pb-4">Support</p>
-						<li className="text-white text-16 pb-3 font-light hover:text-main-dark cursor-pointer">
+						<li className="text-white text-16 pb-3 font-light hover:text-main-dark cursor-pointer"onClick={handleFaq}>
 							Help Center    //faq inquiry
 						</li>
 						<li className="text-white text-16 pb-3 font-light hover:text-main-dark cursor-pointer">
