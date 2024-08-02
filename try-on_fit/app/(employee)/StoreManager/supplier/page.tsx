@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import {
   Table,
@@ -15,7 +15,6 @@ import {
   DropdownMenu,
   DropdownItem,
   Chip,
-  User,
   Pagination,
   Selection,
   ChipProps,
@@ -27,11 +26,12 @@ import { ChevronDownIcon } from "@/app/components/ChevronDownIcon";
 import { SearchIcon } from "@/app/components/SearchIcon";
 import {
   supplierColumns,
-  suppliers,
+  suppliers as initialSuppliers,
   statusOptions,
 } from "@/app/components/data-3";
 import { capitalize } from "@/app/components/utils";
 import DeleteModal from "@/app/components/DeleteModal";
+import { customFetch } from "@/app/utils/auth";
 import { useRouter } from "next/navigation";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
@@ -46,29 +46,59 @@ const INITIAL_VISIBLE_COLUMNS = [
   "actions",
 ];
 
-type Supplier = (typeof suppliers)[0];
+type Supplier = {
+  key: React.Key;
+  supplier_id: string;
+  first_name: string;
+  last_name: string;
+  brand_name: string;
+  email : string
+  contact_no: string;
+  address: string;
+  supplier_name: string;
+  status: string;
+};
 
 export default function SupplierTable() {
-  const [filterValue, setFilterValue] = React.useState("");
-  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
-    new Set([])
-  );
-  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
+  const [suppliers, setSuppliers] = useState<Supplier[]>(initialSuppliers);
+  const [filterValue, setFilterValue] = useState("");
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
+  const [visibleColumns, setVisibleColumns] = useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
-  const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
+  const [statusFilter, setStatusFilter] = useState<Selection>("all");
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: "supplier_name",
     direction: "ascending",
   });
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = useState(1);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+
+  useEffect(() => {
+    const getSuppliers = async () => {
+      let suppliers: Supplier[] = await customFetch("/supplier", {
+        method: "GET",
+      });
+      if (suppliers) {
+        suppliers = suppliers.map((e) => {
+          e.supplier_name = e.first_name + " " + e.last_name;
+          e.key = e.supplier_id;
+          return e;
+        });
+
+        setSuppliers(suppliers);
+      }
+    };
+    getSuppliers();
+  }, []);
 
   const router = useRouter();
   const viewSupplier = () => {
     router.push("/StoreManager/supplier/supplier_view");
   };
+
 
   const pages = Math.ceil(suppliers.length / rowsPerPage);
 
@@ -125,7 +155,16 @@ export default function SupplierTable() {
 
       switch (columnKey) {
         case "supplier_name":
-
+          return (
+            <div className="flex flex-col">
+              <p
+                className="text-bold text-small capitalize"
+                style={{ color: "var(--main-darker)" }}
+              >
+                {cellValue}
+              </p>
+            </div>
+          );
         case "contact":
           return (
             <div className="flex flex-col">
@@ -315,7 +354,6 @@ export default function SupplierTable() {
     onSearchChange,
     onRowsPerPageChange,
     suppliers.length,
-    hasSearchFilter,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -347,9 +385,7 @@ export default function SupplierTable() {
       td: [
         "group-data-[first=true]:first:before:rounded-none",
         "group-data-[first=true]:last:before:rounded-none",
-
         "group-data-[middle=true]:before:rounded-none",
-
         "group-data-[last=true]:first:before:rounded-none",
         "group-data-[last=true]:last:before:rounded-none",
       ],
@@ -391,7 +427,7 @@ export default function SupplierTable() {
         </TableHeader>
         <TableBody emptyContent={"No suppliers found"} items={sortedItems}>
           {(item) => (
-            <TableRow key={item.id}>
+            <TableRow key={item.key}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}
