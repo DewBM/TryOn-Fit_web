@@ -1,7 +1,14 @@
+
+"use client"
 import React from 'react'
 import Image from "next/image"
+import { useRouter } from 'next/navigation'
 
 function Footer() {
+	const router = useRouter();
+	const handlereturns=()=>{
+		router.push("returns")
+	}
   return (
     <div>
       <div className="bg-black text-white  h-1/2 w-full flex md:flex-row flex-col justify-around items-start p-10">
@@ -42,10 +49,11 @@ function Footer() {
 							Product
 						</li>
 						<li className="text-white text-md pb-3 font-light hover:text-main-dark cursor-pointer">
-						Account
+						Returns
 						</li>
 						<li className="text-white text-md pb-3 font-light hover:text-main-dark cursor-pointer">
-							Contact Us
+							Order status  
+							{/* contact us hadenna ona */}
 						</li>
 					</ul>
 				</div>
@@ -71,7 +79,7 @@ function Footer() {
 					<ul>
 						<p className="text-white font-bold text-2xl pb-4">Support</p>
 						<li className="text-white text-16 pb-3 font-light hover:text-main-dark cursor-pointer">
-							Help Center
+							Help Center    //faq inquiry
 						</li>
 						<li className="text-white text-16 pb-3 font-light hover:text-main-dark cursor-pointer">
 							Most rated
