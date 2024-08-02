@@ -92,7 +92,7 @@ function Footer() {
 					<ul>
 						<p className="text-white font-bold text-2xl pb-4">Support</p>
 						<li className="text-white text-16 pb-3 font-light hover:text-main-dark cursor-pointer"onClick={handleFaq}>
-							Help Center    //faq inquiry
+							Help Center    
 						</li>
 						<li className="text-white text-16 pb-3 font-light hover:text-main-dark cursor-pointer">
 							Most rated
