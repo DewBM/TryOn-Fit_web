@@ -18,6 +18,9 @@ function Footer() {
 	const handleprofile =() =>{
 		router.push("user_profile/profile")
 	}
+	const handleorders = () =>{
+		router.push("orderitems")
+	}
   return (
     <div>
       <div className="bg-black text-white  h-1/2 w-full flex md:flex-row flex-col justify-around items-start p-10">
@@ -72,10 +75,10 @@ function Footer() {
 						<li className="text-white text-md pb-3 font-light hover:text-main-dark cursor-pointer"onClick={handleprofile}>
 							Account
 						</li>
-						<li className="text-white text-md pb-3 font-light hover:text-main-dark cursor-pointer">
+						<li className="text-white text-md pb-3 font-light hover:text-main-dark cursor-pointer"onClick={handleorders}>
 							Orders
 						</li>
-						<li className="text-white text-md pb-3 font-light hover:text-main-dark cursor-pointer">
+						<li className="text-white text-md pb-3 font-light hover:text-main-dark cursor-pointer"onClick={handleorders}>
 							Manage Orders
 						</li>
 						<li className="text-white text-md pb-3 font-light hover:text-main-dark cursor-pointer">
