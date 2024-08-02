@@ -39,7 +39,7 @@ const Orderitemcard: React.FC<Props> = ({
   };
      const router = useRouter();
      const haddlemanage=()=>{
-      router.push("returns");
+      router.push("status");
      }
   return (
     <div className=" flex flex-col h-[200px] w-[90%] rounded-2xl border border-gray-300">
