@@ -12,6 +12,9 @@ function Footer() {
 	const handleorederstatus = () =>{
 		router.push("status")
 	}
+	const handleFaq =() =>{
+		router.push("faq")
+	}
 	
   return (
     <div>
@@ -63,7 +66,7 @@ function Footer() {
 				</div>
 				<div className="p-5">
 					<ul>
-						<p className="text-white font-bold text-2xl pb-4">FAQ</p>
+						<p className="text-white font-bold text-2xl pb-4" onClick={handleFaq}>FAQ</p>
 						<li className="text-white text-md pb-3 font-light hover:text-main-dark cursor-pointer">
 							Account
 						</li>
