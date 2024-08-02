@@ -32,6 +32,7 @@ import {
 import { capitalize } from "@/app/components/utils";
 import DeleteModal from "@/app/components/DeleteModal";
 import { customFetch } from "@/app/utils/auth";
+import { useRouter } from "next/navigation";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   available: "success",
@@ -74,6 +75,7 @@ export default function SupplierTable() {
   const [page, setPage] = useState(1);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+
   useEffect(() => {
     const getSuppliers = async () => {
       let suppliers: Supplier[] = await customFetch("/supplier", {
@@ -91,6 +93,12 @@ export default function SupplierTable() {
     };
     getSuppliers();
   }, []);
+
+  const router = useRouter();
+  const viewSupplier = () => {
+    router.push("/StoreManager/supplier/supplier_view");
+  };
+
 
   const pages = Math.ceil(suppliers.length / rowsPerPage);
 
@@ -190,7 +198,10 @@ export default function SupplierTable() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu>
-                    <DropdownItem className="customHoverColor customActiveColor">
+                    <DropdownItem
+                      className="customHoverColor customActiveColor"
+                      onClick={viewSupplier}
+                    >
                       View
                     </DropdownItem>
                     <DropdownItem className="customHoverColor customActiveColor">

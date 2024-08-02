@@ -13,7 +13,7 @@ import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { SignUpSchema } from "@/app/utils/schema";
 import { useFormState } from "react-dom";
-import signup from "../actions";
+import { signup } from "../actions";
 // import PhoneNumber from "@/app/components/PhoneNumber";
 
 export default function Signup() {
@@ -22,25 +22,26 @@ export default function Signup() {
     lastResult,
 
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: SignUpSchema });
+      const result = parseWithZod(formData, { schema: SignUpSchema });
+      console.log(result);
+      return result;
     },
 
     shouldValidate: "onBlur",
     shouldRevalidate: "onInput",
   });
-  // const passwordRegex =
-  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const [selectedValue, setSelectedValue] = useState("");
 
-  // const validatePassword = (password: string) => {
-  //   if (!passwordRegex.test(password)) {
-  //     return false;
-  //   }
-  //   return true;
-  // };
-  // const validatePhoneNumber = (phoneNumber: string) => {
-  //   const regex = /^\d{10}$/;
-  //   return regex.test(phoneNumber);
-  // };
+  const options = [
+    { value: "", label: "" },
+    { value: "male", label: "Male" },
+    { value: "female", label: "Female" },
+    { value: "unisex", label: "UniSex" },
+  ];
+
+  const handleChange = (newValue: string) => {
+    setSelectedValue(newValue);
+  };
 
   return (
     <Layout>
@@ -94,22 +95,19 @@ export default function Signup() {
             </div>
             <div className="sm:col-span-4">
               <SelectBox
-                labelName="Gender"
-                id="signup-gender"
-                name="gender"
-                options={[
-                  { value: "", label: "" },
-                  { value: "female", label: "Female" },
-                  { value: "male", label: "Male" },
-                  { value: "other", label: "Other" },
-                ]}
-                autoComplete="gender"
-                value={fields.gender.value ?? ""}
-                // onChange={(newValue) => fields.gender.onChange(newValue)}
-                // error={fields.gender.errors?.[0]}
+                labelName="Select an option"
+                key={fields.gender.key as React.Key}
+                // id="select-box"
+                name={fields.gender.name}
+                autoComplete="off"
+                options={options}
+                value={selectedValue}
+                defaultValue={fields.gender.initialValue as React.HTMLInputTypeAttribute}
+                onChange={handleChange}
+                // error={selectedValue === "" ? "" : undefined}
               />
               <div className="text-xs text-red-400">
-                {fields.lastName.errors}
+                {fields.gender.errors}
               </div>
             </div>
             <div className="sm:col-span-4">
@@ -137,6 +135,20 @@ export default function Signup() {
               />
               <div className="text-xs text-red-400">
                 {fields.phoneNumber.errors}
+              </div>
+            </div>
+            <div className="sm:col-span-4">
+              <TextBox
+                labelName="Username"
+                name={fields.username.name}
+                key={fields.username.key as React.Key}
+                inputType="text"
+                defaultValue={
+                  fields.username.initialValue as React.HTMLInputTypeAttribute
+                }
+              />
+              <div className="text-xs text-red-400">
+                {fields.username.errors}
               </div>
             </div>
             <div className="sm:col-span-2">

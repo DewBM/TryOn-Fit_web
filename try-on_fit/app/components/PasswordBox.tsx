@@ -22,7 +22,6 @@ export default function PasswordBox({
   showEyeIcon?: boolean;
 }) {
   const [visible, setVisible] = useState(false);
-
   return (
     <div>
       <label
