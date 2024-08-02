@@ -13,7 +13,9 @@ import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { SignUpSchema } from "@/app/utils/schema";
 import { useFormState } from "react-dom";
-import signup from "../actions";
+
+import { signup } from "../actions";
+// import PhoneNumber from "@/app/components/PhoneNumber";
 
 export default function Signup() {
   const [lastResult, action] = useFormState(signup, undefined);
@@ -21,47 +23,28 @@ export default function Signup() {
     lastResult,
 
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: SignUpSchema });
+      const result = parseWithZod(formData, { schema: SignUpSchema });
+      console.log(result);
+      return result;
     },
 
     shouldValidate: "onBlur",
     shouldRevalidate: "onInput",
   });
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const phoneRegex = /^\d{10}$/;
 
-  const validatePassword = (password: string) => {
-    if (!passwordRegex.test(password)) {
-      return "Password must be at least 8 characters, contain at least one uppercase letter, one lowercase letter, one number and one special character.";
-    }
-    return "";
+  const [selectedValue, setSelectedValue] = useState("");
+
+  const options = [
+    { value: "", label: "" },
+    { value: "male", label: "Male" },
+    { value: "female", label: "Female" },
+    { value: "unisex", label: "UniSex" },
+  ];
+
+  const handleChange = (newValue: string) => {
+    setSelectedValue(newValue);
   };
 
-  const validateEmail = (email: string) => {
-    if (!emailRegex.test(email)) {
-      return "Invalid email address.";
-    }
-    return "";
-  };
-
-  const validatePhoneNumber = (phoneNumber: string) => {
-    if (!phoneRegex.test(phoneNumber)) {
-      return "Phone number must be 10 digits.";
-    }
-    return "";
-  };
-
-  const validatePasswordConfirm = (
-    passwordConfirm: string,
-    password: string
-  ) => {
-    if (passwordConfirm !== password) {
-      return "Passwords do not match.";
-    }
-    return "";
-  };
   return (
     <Layout>
       <div className="grid grid-cols-12 mb-0 rounded mx-8">
@@ -114,22 +97,19 @@ export default function Signup() {
             </div>
             <div className="sm:col-span-4">
               <SelectBox
-                labelName="Gender"
-                id="signup-gender"
-                name="gender"
-                options={[
-                  { value: "", label: "" },
-                  { value: "female", label: "Female" },
-                  { value: "male", label: "Male" },
-                  { value: "other", label: "Other" },
-                ]}
-                autoComplete="gender"
-                value={fields.gender.value ?? ""}
-                // onChange={(newValue) => fields.gender.onChange(newValue)}
-                // error={fields.gender.errors?.[0]}
+                labelName="Select an option"
+                key={fields.gender.key as React.Key}
+                // id="select-box"
+                name={fields.gender.name}
+                autoComplete="off"
+                options={options}
+                value={selectedValue}
+                defaultValue={fields.gender.initialValue as React.HTMLInputTypeAttribute}
+                onChange={handleChange}
+                // error={selectedValue === "" ? "" : undefined}
               />
               <div className="text-xs text-red-400">
-                {fields.lastName.errors}
+                {fields.gender.errors}
               </div>
             </div>
             <div className="sm:col-span-4">
@@ -164,6 +144,20 @@ export default function Signup() {
                     validatePhoneNumber(fields.phoneNumber.value))}
               </div>
             </div>
+            <div className="sm:col-span-4">
+              <TextBox
+                labelName="Username"
+                name={fields.username.name}
+                key={fields.username.key as React.Key}
+                inputType="text"
+                defaultValue={
+                  fields.username.initialValue as React.HTMLInputTypeAttribute
+                }
+              />
+              <div className="text-xs text-red-400">
+                {fields.username.errors}
+              </div>
+            </div>
             <div className="sm:col-span-2">
               <PasswordBox
                 labelName={"Password"}
@@ -180,8 +174,14 @@ export default function Signup() {
             <div className="sm:col-span-2">
               <PasswordBox
                 labelName={"Confirm Password"}
-                id={"passwordConfirm"}
-                showEyeIcon={false}
+                inputType={"password"}
+                name={fields.passwordConfirm.name}
+                key={fields.passwordConfirm.key as React.Key}
+                defaultValue={
+                  fields.passwordConfirm
+                    .initialValue as React.HTMLInputTypeAttribute
+                }
+                showEyeIcon={true}
               />
               <div className="text-xs text-red-400">
                 {fields.passwordConfirm.errors ||

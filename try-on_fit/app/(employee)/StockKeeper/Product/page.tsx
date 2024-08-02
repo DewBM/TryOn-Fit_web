@@ -282,7 +282,7 @@ export default function Home() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {products.length} users
+            Total {products.length} products
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -335,13 +335,12 @@ export default function Home() {
       wrapper: ["max-h-[382px]", "max-w-3xl"],
       th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
       td: [
-        // changing the rows border radius
-        // first
+        
         "group-data-[first=true]:first:before:rounded-none",
         "group-data-[first=true]:last:before:rounded-none",
-        // middle
+
         "group-data-[middle=true]:before:rounded-none",
-        // last
+
         "group-data-[last=true]:first:before:rounded-none",
         "group-data-[last=true]:last:before:rounded-none",
       ],

@@ -7,6 +7,7 @@ const RatingBoxContainer = styled.div`
   border-radius: 1rem;
   text-align: center;
   margin-bottom: 1rem;
+  margin-top:1rem;
 `;
 
 const Rating = styled.div`
