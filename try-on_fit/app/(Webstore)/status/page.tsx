@@ -30,7 +30,7 @@ function page() {
             price={["RS2900"]}
             quality={["1"]}
           />
-           <Statuscard
+           {/* <Statuscard
             images={["/images/2.webp"]}
             title={["Sleeeve Blouse"]}
             color={["Brown"]}
@@ -43,7 +43,7 @@ function page() {
             color={["Brown"]}
             price={["RS.6700"]}
             quality={["1"]}
-          />
+          /> */}
          </div>
        
       </div>

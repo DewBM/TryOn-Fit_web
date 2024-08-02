@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 function Needhelp() {
     const route = useRouter();
     const handdleinquiry=()=>{
-       route.push("inquiryForm")
+       route.push("faq")
     }
      const handleorder =()=>{
         route.push("orderItems")
@@ -24,7 +24,7 @@ function Needhelp() {
         <div className="flex flex-row py-2 ">
       
         <span className="material-symbols-outlined pr-5 ">help_outline</span>
-        <p className='text-lg cursor-pointer  ' onClick={handdleinquiry}>Inquiry Forum</p>
+        <p className='text-lg cursor-pointer  ' onClick={handdleinquiry}>FAQ</p>
         <span className="pl-5 material-symbols-outlined">north_east</span>
         </div>
 
