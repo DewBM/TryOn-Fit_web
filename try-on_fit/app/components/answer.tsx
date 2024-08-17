@@ -19,12 +19,16 @@ const Answer: React.FC<Props> = ({ images, topic, description, content }) => {
         {images && images.length > 0 && (
           <div className="my-4 mx-10">
             {images.map((img, index) => (
-              <img
-                key={index}
-                src={img}
-                alt={`${topic} image ${index + 1}`}
-                className="w-full h-auto max-w-md float-left my-2 border border-gray-300 mr-8 mb-4"
-              />
+              <div key={index} className="mb-8">
+                <p className="text-md font-semibold mb-2 mx-9">{`Step ${
+                  index + 1
+                }`}</p>
+                <img
+                  src={img}
+                  alt={`${topic} image ${index + 1}`}
+                  className="w-full h-auto max-w-md my-2 border border-gray-300 mx-auto"
+                />
+              </div>
             ))}
           </div>
         )}

@@ -99,10 +99,8 @@ export default function Home() {
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
                     <DropdownItem>
-                      How can I get product recommendations?
-                    </DropdownItem>
-                    <DropdownItem>
-                      What criteria are used for recommendations?
+                      How can I get product recommendations according to body
+                      measurements?
                     </DropdownItem>
                     <DropdownItem>
                       Can I customize my recommendation settings?
@@ -182,9 +180,6 @@ export default function Home() {
                   <DropdownMenu aria-label="Static Actions">
                     <DropdownItem>
                       How can I contact customer support?
-                    </DropdownItem>
-                    <DropdownItem>
-                      Where can I find the latest news and updates?
                     </DropdownItem>
                     <DropdownItem>
                       How do I leave a review for a product?
