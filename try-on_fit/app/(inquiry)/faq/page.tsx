@@ -15,9 +15,9 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
-  const handleinform=()=>{
-    router.push("inquiryForm")
-  }
+  const handleinform = () => {
+    router.push("inquiryForm");
+  };
   return (
     <div>
       <NavBar />
@@ -51,9 +51,7 @@ export default function Home() {
                     <DropdownItem>
                       What should I do if my order is delayed?
                     </DropdownItem>
-                    <DropdownItem>
-                      How can I track my order?
-                    </DropdownItem>
+                    <DropdownItem>How can I track my order?</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
                 <Dropdown className="bg-white">
@@ -69,9 +67,6 @@ export default function Home() {
                     <DropdownItem>How do I place an order?</DropdownItem>
                     <DropdownItem>
                       What payment methods are accepted?
-                    </DropdownItem>
-                    <DropdownItem>
-                      How do I use a discount code?
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
@@ -89,11 +84,7 @@ export default function Home() {
                       How do I use the Virtual Fit-On feature?
                     </DropdownItem>
                     <DropdownItem>
-                      What if the Virtual Fit-On size doesn't match the actual
-                      product?
-                    </DropdownItem>
-                    <DropdownItem>
-                      Can I save my Virtual Fit-On measurements?
+                      Can I save my Virtual Fit-On images?
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
@@ -130,9 +121,7 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>
-                      How do I request a refund?
-                    </DropdownItem>
+                    <DropdownItem>How do I request a refund?</DropdownItem>
                     <DropdownItem>
                       How long does it take to process a refund?
                     </DropdownItem>
@@ -151,9 +140,7 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>
-                      How do I create an account?
-                    </DropdownItem>
+                    <DropdownItem>How do I create an account?</DropdownItem>
                     <DropdownItem>
                       How do I update my account information?
                     </DropdownItem>
@@ -219,7 +206,9 @@ export default function Home() {
                   <li className="pt-3 ml-8 lg:ml-40">
                     When will I receive my order?
                   </li>
-                  <li className="pt-3 ml-8 lg:ml-40">How to cancel my order?</li>
+                  <li className="pt-3 ml-8 lg:ml-40">
+                    How to cancel my order?
+                  </li>
                   <li className="pt-3 ml-8 lg:ml-40">
                     How do I track my package?
                   </li>
@@ -234,7 +223,9 @@ export default function Home() {
                     The product I received does not match the description. What
                     can I do?
                   </li>
-                  <li className="pt-3 ml-8 lg:ml-30">How to check my refund?</li>
+                  <li className="pt-3 ml-8 lg:ml-30">
+                    How to check my refund?
+                  </li>
                   <li className="pt-3 ml-8 lg:ml-30">
                     I cannot find order in my account.
                   </li>
@@ -251,7 +242,10 @@ export default function Home() {
             Need more help? Send us a help request.
           </div>
           <div className="justify-center items-center text-center my-15 bg-white pt-5 pb-12 mx-4 lg:mx-13">
-            <button className="border-main-dark p-3 border rounded-xl my-15 hover:bg-main-lighter" onClick={handleinform}>
+            <button
+              className="border-main-dark p-3 border rounded-xl my-15 hover:bg-main-lighter"
+              onClick={handleinform}
+            >
               Request
             </button>
           </div>

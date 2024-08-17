@@ -23,7 +23,7 @@ const Answer: React.FC<Props> = ({ images, topic, description, content }) => {
                 key={index}
                 src={img}
                 alt={`${topic} image ${index + 1}`}
-                className="w-full h-auto max-w-md float-left my-2 border border-gray-300"
+                className="w-full h-auto max-w-md float-left my-2 border border-gray-300 mr-8 mb-4"
               />
             ))}
           </div>

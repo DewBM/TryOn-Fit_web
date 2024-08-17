@@ -10,14 +10,11 @@ const FAQPage = () => {
       <NavBar />
       <div className="mx-16 my-10">
         <Answer
-          topic="How do I request a refund?"
-          description="Steps to request a refund."
+          topic=" What should I do if my order is delayed?"
+          description="If your order has not arrived by the estimated delivery date, we
+                recommend taking the following steps:"
           content={
             <div>
-              <p>
-                If your order has not arrived by the estimated delivery date, we
-                recommend taking the following steps:
-              </p>
               <ol className="list-decimal ml-5 mt-3">
                 <li>
                   {" "}
