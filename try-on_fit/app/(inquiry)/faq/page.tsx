@@ -123,9 +123,6 @@ export default function Home() {
                     <DropdownItem>
                       How long does it take to process a refund?
                     </DropdownItem>
-                    <DropdownItem>
-                      What items are eligible for a refund?
-                    </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
                 <Dropdown className="bg-white">
@@ -159,9 +156,6 @@ export default function Home() {
                   <DropdownMenu aria-label="Static Actions">
                     <DropdownItem>
                       How do I report a problem with my order?
-                    </DropdownItem>
-                    <DropdownItem>
-                      What aftersales services are available?
                     </DropdownItem>
                     <DropdownItem>
                       How do I provide feedback on a product?
