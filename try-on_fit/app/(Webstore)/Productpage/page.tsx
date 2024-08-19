@@ -3,6 +3,7 @@ import { useState } from 'react';
 import NavBar from '@/app/components/NavBar';
 import Footer from '@/app/components/Footer';
 import { useRouter } from 'next/navigation';
+import RatingStar from '@/app/components/RatingStar';
 
 
 const ProductPage = () => {
@@ -16,7 +17,17 @@ const ProductPage = () => {
     const [activeImg, setActiveImage] = useState(images.img1);
     const [amount, setAmount] = useState(1);
     const router = useRouter();
-
+    const ratingsData = {
+        averageRating: 4.6,
+        totalRatings: 39,
+        ratingsBreakdown: [
+          { stars: 5, count: 30 },
+          { stars: 4, count: 4 },
+          { stars: 3, count: 4 },
+          { stars: 2, count: 0 },
+          { stars: 1, count: 1 },
+        ],
+      };
 
     return (
         <div>
@@ -52,6 +63,10 @@ const ProductPage = () => {
                     </div>
                 </div>
             </section>
+<RatingStar title='Fashionable Gflock Collection'
+averageRating={ratingsData.averageRating} 
+totalRatings={ratingsData.totalRatings}
+ratingsBreakdown={ratingsData.ratingsBreakdown}  />
             <Footer />
         </div>
     );
