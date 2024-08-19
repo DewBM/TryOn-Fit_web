@@ -13,7 +13,7 @@ interface Props {
 const Shopnowcard = ({ images, title, onClick }: Props) => {
   return (
     <div>
-      <Card radius="lg" className="border-hidden object-contain px-10 pt-10 pb-8 rounded-lg bg-main-lighter" >
+      <Card radius="lg" className="border-hidden object-contain px-10 pt-10 pb-8 rounded-lg" >
         {images.map((imgSrc, index) => (
           <Image
             key={index}

@@ -132,6 +132,21 @@ function Home() {
       name: 'Sleeve Blouse',
       price: 2900,
     },
+    {
+      images: ['/images/men/1.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/men/1.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/women/5.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
   ];
 
   return (

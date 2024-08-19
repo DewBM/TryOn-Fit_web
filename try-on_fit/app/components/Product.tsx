@@ -29,7 +29,7 @@ const Product: React.FC<Props> = ({ images, name, price }) => {
 
   return (
     <>
-      <Card className="w-80 py-4 bg-main-lighter flex justify-center">
+      <Card className="w-80 py-4  flex justify-center">
         <CardBody className="overflow-visible justify-center items-center pt-2">
           {images.map((imgSrc, index) => (
             <Image
