@@ -32,7 +32,7 @@ import {
 import { capitalize } from "@/app/components/utils";
 import DeleteModal from "@/app/components/DeleteModal";
 import { customFetch } from "@/app/utils/auth";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   available: "success",
@@ -60,7 +60,8 @@ type Supplier = {
 };
 
 export default function SupplierTable() {
-  const [suppliers, setSuppliers] = useState<Supplier[]>(initialSuppliers);
+  // const [suppliers, setSuppliers] = useState<Supplier[]>(initialSuppliers);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
@@ -74,6 +75,27 @@ export default function SupplierTable() {
   });
   const [page, setPage] = useState(1);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const deleteSupplier = async (supplierId: number) => {
+    const x = { "supplier_id": "21001626" };
+    const params = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(x),
+    };
+  
+    const resp = await customFetch("/supplier", params);
+    if (resp) {
+      if (resp.isSuccess) {
+        redirect("/StoreManager/supplier");
+      } else {
+        // handle failure
+      }
+    }
+    console.log(supplierId)
+  };
+  
 
 
   useEffect(() => {
@@ -87,7 +109,7 @@ export default function SupplierTable() {
           e.key = e.supplier_id;
           return e;
         });
-
+        console.log(suppliers)
         setSuppliers(suppliers);
       }
     };
@@ -209,7 +231,7 @@ export default function SupplierTable() {
                     </DropdownItem>
                     <DropdownItem
                       className="customHoverColor customActiveColor"
-                      onClick={() => setIsDeleteModalOpen(true)}
+                      onClick={() => deleteSupplier(22)}
                     >
                       Delete
                     </DropdownItem>
