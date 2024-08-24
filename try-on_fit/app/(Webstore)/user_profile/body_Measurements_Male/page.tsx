@@ -504,7 +504,34 @@ const MaleBodyMeasurementPage = () => {
                     </button>
                   </div>
                 </div>
-                <div className="grid grid-cols-6  lg:col-start-6">
+                <div className="grid grid-cols-6 lg:row-span-2 lg:col-start-6">
+                  <div className="lg:col-span-2">
+                    <label>Calf</label>
+                    {renderMeasurementInput("Calf_Circumference")}
+                  </div>
+                  <div>
+                    <button
+                      className="bg-main-dark hover:bg-main-light text-white ml-7 w-6 h-6 font-normal py-1 px-2 rounded flex justify-center items-center"
+                      onClick={() => {
+                        setMeasurements((prevState) => ({
+                          ...prevState,
+                          measurements: prevState.measurements.includes(
+                            "Calf_Circumference"
+                          )
+                            ? prevState.measurements.filter(
+                                (m) => m !== "Calf_Circumference"
+                              )
+                            : [...prevState.measurements, "Calf_Circumference"],
+                        }));
+                      }}
+                    >
+                      {measurements.measurements.includes("Calf_Circumference")
+                        ? "-"
+                        : "+"}
+                    </button>
+                  </div>
+                </div>
+                {/* <div className="grid grid-cols-6  lg:col-start-6">
                   <div className="lg:col-span-2">
                     <label>Calf</label>
                     {renderMeasurementInput("Calf_Circumference")}
@@ -531,7 +558,7 @@ const MaleBodyMeasurementPage = () => {
                         : "+"}
                     </button>
                   </div>
-                </div>
+                </div> */}
                 <div className="grid grid-cols-6  lg:col-start-1">
                   <div>
                     <button
