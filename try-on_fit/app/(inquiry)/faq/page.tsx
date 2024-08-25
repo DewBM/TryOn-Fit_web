@@ -18,6 +18,51 @@ export default function Home() {
   const handleinform = () => {
     router.push("inquiryForm");
   };
+  const orderdelay = () => {
+    router.push("faq/order_delayed");
+  };
+  const orderarrivetime = () => {
+    router.push("faq/order_arrive_time");
+  };
+  const trackorder = () => {
+    router.push("faq/track_order");
+  };
+  const placeorder = () => {
+    router.push("faq/place_order");
+  };
+  const paymentmethod = () => {
+    router.push("faq/payment_method");
+  };
+  const virtualfiton = () => {
+    router.push("faq/virtual_fiton");
+  };
+  const fitonimages = () => {
+    router.push("faq/fiton_clothes");
+  };
+  const recomendation = () => {
+    router.push("faq/recomendation");
+  };
+  const customizerecomendation = () => {
+    router.push("faq/customize_recomendation");
+  };
+  const refundrequest = () => {
+    router.push("faq/refund_request");
+  };
+  const refundconfirmation = () => {
+    router.push("faq/refund_confirmation");
+  };
+  const createaccount = () => {
+    router.push("faq/create_account");
+  };
+  const accountsettings = () => {
+    router.push("faq/account_settings");
+  };
+  const forgetpassword = () => {
+    router.push("faq/forget_password");
+  };
+  const customersupport = () => {
+    router.push("faq/customer_support");
+  };
   return (
     <div>
       <NavBar />
@@ -47,11 +92,15 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>When will my order arrive?</DropdownItem>
-                    <DropdownItem>
+                    <DropdownItem onClick={orderarrivetime}>
+                      When will my order arrive?
+                    </DropdownItem>
+                    <DropdownItem onClick={orderdelay}>
                       What should I do if my order is delayed?
                     </DropdownItem>
-                    <DropdownItem>How can I track my order?</DropdownItem>
+                    <DropdownItem onClick={trackorder}>
+                      How can I track my order?
+                    </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
                 <Dropdown className="bg-white">
@@ -64,8 +113,8 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>How do I place an order?</DropdownItem>
-                    <DropdownItem>
+                    <DropdownItem onClick={placeorder}>How do I place an order?</DropdownItem>
+                    <DropdownItem onClick={paymentmethod}>
                       What payment methods are accepted?
                     </DropdownItem>
                   </DropdownMenu>
@@ -80,10 +129,10 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>
+                    <DropdownItem onClick={virtualfiton}>
                       How do I use the Virtual Fit-On feature?
                     </DropdownItem>
-                    <DropdownItem>
+                    <DropdownItem onClick={fitonimages}>
                       Can I save my Virtual Fit-On images?
                     </DropdownItem>
                   </DropdownMenu>
@@ -98,11 +147,11 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>
+                    <DropdownItem onClick={recomendation}>
                       How can I get product recommendations according to body
                       measurements?
                     </DropdownItem>
-                    <DropdownItem>
+                    <DropdownItem onClick={customizerecomendation}>
                       Can I customize my recommendation settings?
                     </DropdownItem>
                   </DropdownMenu>
@@ -119,8 +168,8 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>How do I request a refund?</DropdownItem>
-                    <DropdownItem>
+                    <DropdownItem onClick={refundrequest}>How do I request a refund?</DropdownItem>
+                    <DropdownItem onClick={refundconfirmation}>
                       How long does it take to process a refund?
                     </DropdownItem>
                   </DropdownMenu>
@@ -135,11 +184,11 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>How do I create an account?</DropdownItem>
-                    <DropdownItem>
+                    <DropdownItem onClick={createaccount}>How do I create an account?</DropdownItem>
+                    <DropdownItem onClick={accountsettings}>
                       How do I update my account information?
                     </DropdownItem>
-                    <DropdownItem>
+                    <DropdownItem onClick={forgetpassword}>
                       What do I do if I forget my password?
                     </DropdownItem>
                   </DropdownMenu>
@@ -172,7 +221,7 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>
+                    <DropdownItem onClick={customersupport}>
                       How can I contact customer support?
                     </DropdownItem>
                     <DropdownItem>
