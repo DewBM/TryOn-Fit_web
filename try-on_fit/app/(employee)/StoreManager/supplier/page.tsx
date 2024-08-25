@@ -75,8 +75,9 @@ export default function SupplierTable() {
   });
   const [page, setPage] = useState(1);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const deleteSupplier = async (supplierId: number) => {
-    const x = { "supplier_id": "21001626" };
+  const deleteSupplier = async (supplierId: string) => {
+    console.log(supplierId);
+    const x = { "supplier_id": supplierId };
     const params = {
       method: "DELETE",
       headers: {
@@ -231,7 +232,7 @@ export default function SupplierTable() {
                     </DropdownItem>
                     <DropdownItem
                       className="customHoverColor customActiveColor"
-                      onClick={() => deleteSupplier(22)}
+                      onClick={() => deleteSupplier(supplier.supplier_id)}
                     >
                       Delete
                     </DropdownItem>
