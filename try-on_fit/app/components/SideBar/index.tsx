@@ -25,29 +25,29 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const sidebarItemsByRole = {
     StockKeeper: [
-      { label: "DashBoard", route: "/", icon: <FiHome /> },
-      { label: "Products", route: "/products", icon: <FiPackage /> },
+      { label: "DashBoard", route: "/StockKeeper", icon: <FiHome /> },
+      { label: "Products", route: "/StockKeeper/Product", icon: <FiPackage /> },
       { label: "Restock", route: "/restock", icon: <FiArrowUp />  },
     ],
     StoreManager: [
-      { label: "DashBoard", route: "/", icon: <FiHome /> },
-      { label: "Employee", route: "/employee", icon: <FiUsers /> },
-      { label: "Supplier",route: "/supplier",icon: <FiTruck />, },
-      { label: "Inquiry",route: "/inquiry",icon: <FiMessageSquare />, },
-      { label: "Order",route: "/order",icon: <FiShoppingCart />, },
-      { label: "Return",route: "/return",icon: <FiArrowLeftCircle />, },
+      { label: "DashBoard", route: "/StoreManager", icon: <FiHome /> },
+      { label: "Employee", route: "/StoreManager/employee", icon: <FiUsers /> },
+      { label: "Supplier",route: "/StoreManager/supplier",icon: <FiTruck />, },
+      { label: "Inquiry",route: "/StoreManager/inquiry",icon: <FiMessageSquare />, },
+      { label: "Order",route: "/StoreManager/orders",icon: <FiShoppingCart />, },
+      { label: "Return",route: "/StoreManager/return",icon: <FiArrowLeftCircle />, },
       { label: "Reports",route: "/reports",icon: <FiBarChart />, },
     ],
     CustomerSupport: [
-      { label: "DashBoard", route: "/", icon: <FiHome /> },
-      { label: "Inquiry", route: "/inquiry", icon: <FiMessageSquare /> },
+      { label: "DashBoard", route: "/CustomerSupport", icon: <FiHome /> },
+      { label: "Inquiry", route: "/CustomerSupport/inquiry", icon: <FiMessageSquare /> },
       { label: "Customer Feedback",route: "/customer-feedback",icon: <FiStar />,
       },
     ],
     DistributionCoordinator: [
-      { label: "DashBoard", route: "/", icon: <FiHome /> },
-      { label: "Orders", route: "/orders", icon: <FiShoppingCart /> },
-      { label: "Returns", route: "/returns", icon: <FiArrowLeftCircle /> },
+      { label: "DashBoard", route: "/DistributionCoordinator", icon: <FiHome /> },
+      { label: "Orders", route: "/DistributionCoordinator/orders", icon: <FiShoppingCart /> },
+      { label: "Returns", route: "/DistributionCoordinator/return", icon: <FiArrowLeftCircle /> },
     ],
   };
 

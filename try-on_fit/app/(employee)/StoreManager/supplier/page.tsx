@@ -362,7 +362,7 @@ export default function SupplierTable() {
         <Pagination
           showControls
           classNames={{
-            cursor: "bg-main-dark customHoverColor",
+            cursor: "bg-main-dark text-background",
           }}
           isDisabled={hasSearchFilter}
           page={page}
