@@ -1,36 +1,160 @@
-'use client'
-import React from "react";
-import Image from "next/image";
-import Button from "../app/components/Button";
-import aboutusimg from "../public/images/aboutus.png";
-import Shopnowcard from "../app/components/Helper/Shopnowcard";
-import Slider from "../app/components/Slider";
-import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
-import { useRouter } from "next/navigation"; // Import from 'next/router' instead of 'next/navigation'
-import Product from "./components/Product";
+'use client';
+import React from 'react';
+import Image from 'next/image';
+import Button from '../app/components/Button';
+import aboutusimg from '../public/images/aboutus.png';
+import Shopnowcard from '../app/components/Helper/Shopnowcard';
+import Slider from '../app/components/Slider';
+import NavBar from './components/NavBar';
+import Footer from './components/Footer';
+import { useRouter } from 'next/navigation'; // Use 'next/navigation' for hooks
+import Product from './components/Product';
 
 function Home() {
   const router = useRouter();
 
   const handlewomencollection = () => {
-    router.push("womenscollection"); 
+    router.push('womenscollection');
   };
 
   const handlemenscollection = () => {
-    router.push("menscollection"); 
+    router.push('menscollection');
   };
 
   const handlekidscollections = () => {
-    router.push("kidscollection"); 
+    router.push('kidscollection');
   };
+
+  // Define the items array
+  const items = [
+    {
+      images: ['/images/women/1.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/men/5.jpeg'],
+      name: 'Shirt',
+      price: 2900,
+    },
+    {
+      images: ['/images/women/4.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/men/1.webp'],
+      name: 't-shirts',
+      price: 2900,
+    },
+    {
+      images: ['/images/women/5.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/men/4.webp'],
+      name: 'T-shirts',
+      price: 2900,
+    },
+    {
+      images: ['/images/men/1.webp'],
+      name: 'Sleeve shirt',
+      price: 2900,
+    },
+    {
+      images: ['/images/women/5.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/men/1.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/men/1.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/women/5.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/men/4.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/women/1.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/men/5.jpeg'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/women/4.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/men/6.jpeg'],
+      name: 'Sleeveless shirts',
+      price: 2900,
+    },
+    {
+      images: ['/images/men/9.jpeg'],
+      name: 'Trouser',
+      price: 2900,
+    },
+    {
+      images: ['/images/women/4.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/men/10.jpeg'],
+      name: 'Trouser',
+      price: 2900,
+    },
+    {
+      images: ['/images/women/5.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/men/4.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/men/1.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/men/1.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+    {
+      images: ['/images/women/5.webp'],
+      name: 'Sleeve Blouse',
+      price: 2900,
+    },
+  ];
 
   return (
     <div>
       <NavBar />
 
       <section>
-        <div className="">
+        <div>
           <Slider />
         </div>
       </section>
@@ -44,9 +168,14 @@ function Home() {
           </div>
 
           <div className="flex flex-wrap gap-[2rem] pt-[5rem] pb-[3rem] justify-center">
-            <Product /> <Product /> <Product /> <Product /> <Product />
-            <Product /> <Product /> <Product /> <Product /> <Product />
-            <Product /> <Product />
+            {items.map((item, index) => (
+              <Product 
+                key={index}
+                images={item.images}
+                name={item.name}
+                price={item.price}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -68,7 +197,7 @@ function Home() {
               </div>
               <div className="w-[60%] text-wrap pt-10 px-5">
                 <p className="text-light text-balance item-center text-[18px]">
-                  At TryOnFit, we believe that every individual deserves to feel confident and stylish in their own skin. Founded in [Year], our team of fashion enthusiasts, tech innovators, and customer service professionals are dedicated to bringing you the latest trends and timeless classics in a way that’s easy, accessible, and tailored just for you
+                  At TryOnFit, we believe that every individual deserves to feel confident and stylish in their own skin. Founded in [Year], our team of fashion enthusiasts, tech innovators, and customer service professionals are dedicated to bringing you the latest trends and timeless classics in a way that’s easy, accessible, and tailored just for you.
                 </p>
                 <div className="flex justify-start pt-10">
                   <Button type="submit" className="w-[200px] ml-3">
@@ -91,17 +220,17 @@ function Home() {
 
           <div className="flex flex-wrap justify-between pt-[5rem] pb-[3rem]">
             <Shopnowcard
-              images={["/images/women.jpg"]}
+              images={['/images/women.jpg']}
               title={"Women's collection"}
               onClick={handlewomencollection}
             />
             <Shopnowcard
-              images={["/images/men.jpg"]}
+              images={['/images/men.jpg']}
               title={"Men's collection"}
               onClick={handlemenscollection}
             />
             <Shopnowcard
-              images={["/images/kids.jpg"]}
+              images={['/images/kids.jpg']}
               title={"Kid's collection"}
               onClick={handlekidscollections}
             />

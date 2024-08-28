@@ -1,6 +1,6 @@
 import { customFetch } from "@/app/utils/auth";
 import { redirect } from "next/navigation";
-import {EmployeeRegistrationSchema} from "../StoreManager/stockManagerSchema"
+import {EmployeeRegistrationSchema,supplierRegistrationSchema} from "../StoreManager/stockManagerSchema"
 import { parseWithZod } from "@conform-to/zod";
 import { date } from "zod";
 
@@ -40,6 +40,56 @@ export async function createEmployee(prevState: unknown, formData: FormData) {
   if (resp) {
     if (resp.isSuccess) {
       redirect("/StoreManager/employee");
+    } else {
+      // handle failure
+    }
+  }
+}
+ 
+
+
+
+
+
+export async function creatSupplier(prevState: unknown, formData: FormData) {
+  console.log("formData");
+  const submission = parseWithZod(formData, {
+    schema: supplierRegistrationSchema,
+  });
+
+  if (submission.status !== "success") {
+    return submission.reply();
+  }
+    const streetAddress = formData.get('streetAddress');
+    const city = formData.get('city');
+    const state = formData.get('stateProvince');
+
+    const Address = `${streetAddress} ${city} ${state}`;
+  const supData = {
+    supplier_id: formData.get('supid'),
+    first_name: formData.get('firstName'),
+    last_name: formData.get('lastName'),
+    email: formData.get('email'),
+    contact_no: formData.get('phone'),
+    address : Address,
+    // gender: formData.get('gender'),
+    // streetAddress: formData.get('streetAddress'),
+    // city: formData.get('city'),
+    // state: formData.get('stateProvince'),
+  };
+
+  const params = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(supData),
+  };
+
+  const resp = await customFetch("/supplier", params);
+  if (resp) {
+    if (resp.isSuccess) {
+      redirect("/StoreManager/supplier");
     } else {
       // handle failure
     }

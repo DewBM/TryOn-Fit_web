@@ -119,7 +119,8 @@ const EmpAddForm = ({
             <div className="lg:col-span-4 lg:col-start-2 sm:col-span-1 mt-3">
               <SelectBox
                 labelName="Employee Role"
-                id="signup-role"
+                // id="signup-role"
+                key={fields.employeeRole.key as React.Key}
                 name={fields.employeeRole.name} // Ensure the name matches the schema
                 options={[
                   { value: "", label: "Select Role" },
@@ -130,7 +131,8 @@ const EmpAddForm = ({
                 autoComplete="role"
                 value={selectedValue}
                 onChange={(newValue: React.SetStateAction<string>) => setSelectedValue(newValue)} // Add this line
-              />
+                defaultValue={fields.gender.initialValue as React.HTMLInputTypeAttribute}
+                />
               <div className="text-xs text-red-400">{fields.employeeRole.errors}</div>
             </div>
             <div className="lg:col-span-5 lg:col-start-7 sm:col-span-1 mt-3">

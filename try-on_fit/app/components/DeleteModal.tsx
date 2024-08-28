@@ -13,9 +13,9 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="fixed inset-0 bg-black opacity-50"></div>
-      <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
-        <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4 flex items-center justify-center">
-          <div className="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10 border border-red-500">
+      <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-md sm:w-full">
+        <div className="px-2 pt-4 pb-4 sm:p-6 sm:pb-4 flex items-center justify-center">
+          <div className="flex-shrink-0 flex items-center justify-center h-10 w-5 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10 border border-red-500">
             <FaExclamationTriangle className="text-red-500" />
           </div>
         </div>
@@ -30,18 +30,16 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, onClose }) => {
             will be lost.
           </p>
         </div>
-        <div className="bg-gray-50 px-4 py-3 sm:px-6 text-center">
+        <div className="bg-gray-50 px-4 py-3 sm:px-6 text-center flex justify-center space-x-4">
           <button
             onClick={onClose}
-            className=" inline-flex justify-center rounded-md border border-transparent shadow-sm px-8 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+            className="inline-flex justify-center rounded-md border border-transparent shadow-sm px-8 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-sm"
           >
             Delete field
           </button>
-        </div>
-        <div className="bg-gray-50 px-4 py-3 sm:px-6 text-center">
           <button
             onClick={onClose}
-            className="mt-3 px-12 inline-flex justify-center rounded-md border border-red-500 shadow-sm  py-2 bg-white text-base font-medium text-red-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+            className="px-12 inline-flex justify-center rounded-md border border-red-500 shadow-sm py-2 bg-white text-base font-medium text-red-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm"
           >
             Cancel
           </button>
