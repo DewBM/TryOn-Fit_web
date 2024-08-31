@@ -7,6 +7,12 @@ import SelectBox from "@/app/components/SelectBox";
 import Button from "@/app/components/Button";
 
 export default function Inquiry() {
+  const [selectedValue, setSelectedValue] = useState("");
+
+  const handleChange = (newValue: string) => {
+    setSelectedValue(newValue);
+  };
+  
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +43,7 @@ export default function Inquiry() {
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-4 text-lg font-semibold mb-3">
               <TextBox
-                labelName={"Order Number"}
+                labelName={"Order ID"}
                 id={"lg-ordernum"}
                 inputType="text"
               ></TextBox>
@@ -46,20 +52,24 @@ export default function Inquiry() {
               <p>Issue Information</p>
               <hr className="border-b border-#cbd5e1"></hr>
             </div>
-            <div className=" sm:col-span-1 lg:grid-cols-4 text-lg  font-bold mb-3">
+            <div className=" sm:col-span-1 lg:grid-cols-4 text-lg  font-bold  mb-3">
               <SelectBox
                 labelName="Select the Issue"
                 id="inquery-issueType"
                 name="issueType"
                 options={[
                   { value: "", label: "" },
-                  { value: "female", label: "Female" },
-                  { value: "male", label: "Male" },
-                  { value: "other", label: "Other" },
+                  { value: "Awaiting and Arrival", label: "Awaiting and Arrival" },
+                  { value: "Ordering and payment", label: "Ordering and payment" },
+                  { value: "Virtual FitOn", label: "Virtual FitOn" },
+                  { value: "Refund", label: "Refund" },
+                  { value: "Account Managment", label: "Account Managment" },
+                  
                 ]}
-                autoComplete="gender"
-                value=""
-                onChange={(newValue) => console.log(newValue)}
+                autoComplete="Other"
+                value={selectedValue}
+                onChange={(newValue) => handleChange(newValue)}
+                
               />
             </div>
             <div className="sm:col-span-1 lg:grid-cols-5 text-lg font-semibold mb-8 mt-8">
@@ -79,12 +89,12 @@ export default function Inquiry() {
             </div>
             <div className=" sm:col-span-1 sm:row-span-2 lg:grid-cols-4 text-lg py-4 font-semibold mb-3">
               <TextBox
-                labelName={"Describe Your Issues"}
+                labelName={"Describe Your Issue"}
                 id={"lg-ordernum"}
                 inputType="text"
               ></TextBox>
             </div>
-            <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-16">
+            {/* <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-16">
               <p>Perfect Solution</p>
               <hr className="border-b border-#cbd5e1"></hr>
             </div>
@@ -103,14 +113,14 @@ export default function Inquiry() {
                 value=""
                 onChange={(newValue) => console.log(newValue)}
               />
-            </div>
+            </div> */}
             <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-16">
               <p>Additional Comments</p>
               <hr className="border-b border-#cbd5e1"></hr>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-4 text-lg font-semibold mb-3">
               <TextBox
-                labelName={"Any Additional COmments or request"}
+                labelName={"Any Additional Comments or Requests"}
                 id={"lg-ordernum"}
                 inputType="text"
               ></TextBox>
