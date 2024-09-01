@@ -165,4 +165,4 @@ const Dialog = () => {
   );
 };
 
-export default Dialog;
+export default Dialog ;

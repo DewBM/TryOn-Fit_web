@@ -3,8 +3,46 @@ import SupplierCard from "@/app/components/SupplierCard";
 import SupplierContactDetailsSection from "@/app/components/SupplierContactDetailsSection";
 import SupplierpersonalDetailsSection from "@/app/components/SupplierpersonaldetailsSection";
 import SupplierCategories from "@/app/components/SupplierCategories";
+import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router';
+import { useEffect, useRef } from "react";
+import { useFormState } from "react-dom";
 
-const SupplierPage = () => {
+// const SupplierPage = () => {
+  // const router = useRouter();
+  // const { search } = router.query;
+  // console.log(search);
+  const ViewSup = ({
+    isOpen,
+    onClose,
+  }: {
+    isOpen: boolean;
+    onClose: () => void;
+  }) => {
+    // const [lastResult, action] = useFormState(createEmployee, undefined);
+    const dialogRef = useRef<HTMLDialogElement | null>(null);
+    console.log("hiii2")
+
+    useEffect(() => {
+      const handleClickOutside = (event: { target: any }) => {
+        if (dialogRef.current && !dialogRef.current.contains(event.target)) {
+          onClose();
+        }
+      };
+      if (isOpen) {
+        document.addEventListener("mousedown", handleClickOutside);
+        document.body.classList.add("h-screen", "overflow-hidden");
+      } else {
+        document.removeEventListener("mousedown", handleClickOutside);
+        document.body.classList.remove("h-screen", "overflow-hidden");
+      }
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+        document.body.classList.remove("h-screen", "overflow-hidden");
+      };
+    }, [isOpen, onClose]);
+  
   const supplierInfo = {
     photo: "/images/emp-1.jpg",
     name: "Kevin Andersan",
@@ -44,6 +82,12 @@ const SupplierPage = () => {
   };
 
   return (
+    <dialog
+      ref={dialogRef}
+      id="dialog"
+      open={isOpen}
+      className="z-50 bg-white shadow-md"
+    >
     <div className="container mx-auto p-4">
       <h1 className="text-lg font-semibold mb-5">Employee details</h1>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -71,7 +115,8 @@ const SupplierPage = () => {
         <SupplierCategories categories={supplierInfo.categories} />
       </div>
     </div>
+    </dialog>
   );
 };
 
-export default SupplierPage;
+export default ViewSup;
