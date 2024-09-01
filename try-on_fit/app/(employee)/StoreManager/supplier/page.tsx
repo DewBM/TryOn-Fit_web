@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import Swal from "sweetalert2";
+import ViewSup from "./supplier_view/page"
 import {
   Table,
   TableHeader,
@@ -27,14 +28,14 @@ import { ChevronDownIcon } from "@/app/components/ChevronDownIcon";
 import { SearchIcon } from "@/app/components/SearchIcon";
 import {
   supplierColumns,
-  suppliers as initialSuppliers,
   statusOptions,
 } from "@/app/components/data-3";
 import { capitalize } from "@/app/components/utils";
 // import DeleteModal from "@/app/components/DeleteModal";
 import { customFetch } from "@/app/utils/auth";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { FaExclamationTriangle } from "react-icons/fa";
+
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   available: "success",
@@ -62,6 +63,13 @@ type Supplier = {
 };
 
 export default function SupplierTable() {
+
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const openAddDialog = () => {
+    console.log("Open dialog")
+    setIsAddDialogOpen(true);}
+  const closeAddDialog = () => setIsAddDialogOpen(false);
+  
   // const [suppliers, setSuppliers] = useState<Supplier[]>(initialSuppliers);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [filterValue, setFilterValue] = useState("");
@@ -77,6 +85,8 @@ export default function SupplierTable() {
   });
   const [page, setPage] = useState(1);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+
   const deleteSupplier = async (supplierId: string) => {
     console.log(supplierId);
     const x = { "supplier_id": supplierId };
@@ -119,10 +129,12 @@ export default function SupplierTable() {
     getSuppliers();
   }, []);
 
-  const router = useRouter();
-  const viewSupplier = () => {
-    router.push("/StoreManager/supplier/supplier_view");
-  };
+  // const router = useRouter();
+  // const viewSupplier = (supplirData: Supplier) => {
+  //   console.log(supplirData)
+  //   const serializedObject = encodeURIComponent(JSON.stringify(supplirData));
+  //   router.push(`/StoreManager/supplier/supplier_view?supplier_id=${21}`);
+  // };
 
 
   const pages = Math.ceil(suppliers.length / rowsPerPage);
@@ -248,8 +260,9 @@ export default function SupplierTable() {
                   <DropdownMenu>
                     <DropdownItem
                       className="customHoverColor customActiveColor"
-                      onClick={viewSupplier}
-                    >
+                      // onClick={() =>{viewSupplier(supplier)}}
+                      onClick={openAddDialog}
+                      >
                       View
                     </DropdownItem>
                     <DropdownItem className="customHoverColor customActiveColor">
@@ -265,13 +278,14 @@ export default function SupplierTable() {
                   </DropdownMenu>
                 </Dropdown>
               </div>
+              
             </div>
           );
         default:
           return cellValue;
       }
     },
-    []
+    [isAddDialogOpen]
   );
 
   const onRowsPerPageChange = React.useCallback(
@@ -488,6 +502,7 @@ export default function SupplierTable() {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
       />
+      <ViewSup isOpen={isAddDialogOpen} onClose={closeAddDialog} />
     </>
   );
 }
