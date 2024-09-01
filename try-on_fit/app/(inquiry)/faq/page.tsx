@@ -15,9 +15,54 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
-  const handleinform=()=>{
-    router.push("inquiryForm")
-  }
+  const handleinform = () => {
+    router.push("inquiryForm");
+  };
+  const orderdelay = () => {
+    router.push("faq/order_delayed");
+  };
+  const orderarrivetime = () => {
+    router.push("faq/order_arrive_time");
+  };
+  const trackorder = () => {
+    router.push("faq/track_order");
+  };
+  const placeorder = () => {
+    router.push("faq/place_order");
+  };
+  const paymentmethod = () => {
+    router.push("faq/payment_method");
+  };
+  const virtualfiton = () => {
+    router.push("faq/virtual_fiton");
+  };
+  const fitonimages = () => {
+    router.push("faq/fiton_clothes");
+  };
+  const recomendation = () => {
+    router.push("faq/recomendation");
+  };
+  const customizerecomendation = () => {
+    router.push("faq/customize_recomendation");
+  };
+  const refundrequest = () => {
+    router.push("faq/refund_request");
+  };
+  const refundconfirmation = () => {
+    router.push("faq/refund_confirmation");
+  };
+  const createaccount = () => {
+    router.push("faq/create_account");
+  };
+  const accountsettings = () => {
+    router.push("faq/account_settings");
+  };
+  const forgetpassword = () => {
+    router.push("faq/forget_password");
+  };
+  const customersupport = () => {
+    router.push("faq/customer_support");
+  };
   return (
     <div>
       <NavBar />
@@ -47,11 +92,13 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>When will my order arrive?</DropdownItem>
-                    <DropdownItem>
+                    <DropdownItem onClick={orderarrivetime}>
+                      When will my order arrive?
+                    </DropdownItem>
+                    <DropdownItem onClick={orderdelay}>
                       What should I do if my order is delayed?
                     </DropdownItem>
-                    <DropdownItem>
+                    <DropdownItem onClick={trackorder}>
                       How can I track my order?
                     </DropdownItem>
                   </DropdownMenu>
@@ -66,12 +113,9 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>How do I place an order?</DropdownItem>
-                    <DropdownItem>
+                    <DropdownItem onClick={placeorder}>How do I place an order?</DropdownItem>
+                    <DropdownItem onClick={paymentmethod}>
                       What payment methods are accepted?
-                    </DropdownItem>
-                    <DropdownItem>
-                      How do I use a discount code?
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
@@ -85,15 +129,11 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>
+                    <DropdownItem onClick={virtualfiton}>
                       How do I use the Virtual Fit-On feature?
                     </DropdownItem>
-                    <DropdownItem>
-                      What if the Virtual Fit-On size doesn't match the actual
-                      product?
-                    </DropdownItem>
-                    <DropdownItem>
-                      Can I save my Virtual Fit-On measurements?
+                    <DropdownItem onClick={fitonimages}>
+                      Can I save my Virtual Fit-On images?
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
@@ -107,13 +147,11 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>
-                      How can I get product recommendations?
+                    <DropdownItem onClick={recomendation}>
+                      How can I get product recommendations according to body
+                      measurements?
                     </DropdownItem>
-                    <DropdownItem>
-                      What criteria are used for recommendations?
-                    </DropdownItem>
-                    <DropdownItem>
+                    <DropdownItem onClick={customizerecomendation}>
                       Can I customize my recommendation settings?
                     </DropdownItem>
                   </DropdownMenu>
@@ -130,14 +168,9 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>
-                      How do I request a refund?
-                    </DropdownItem>
-                    <DropdownItem>
+                    <DropdownItem onClick={refundrequest}>How do I request a refund?</DropdownItem>
+                    <DropdownItem onClick={refundconfirmation}>
                       How long does it take to process a refund?
-                    </DropdownItem>
-                    <DropdownItem>
-                      What items are eligible for a refund?
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
@@ -151,13 +184,11 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>
-                      How do I create an account?
-                    </DropdownItem>
-                    <DropdownItem>
+                    <DropdownItem onClick={createaccount}>How do I create an account?</DropdownItem>
+                    <DropdownItem onClick={accountsettings}>
                       How do I update my account information?
                     </DropdownItem>
-                    <DropdownItem>
+                    <DropdownItem onClick={forgetpassword}>
                       What do I do if I forget my password?
                     </DropdownItem>
                   </DropdownMenu>
@@ -176,9 +207,6 @@ export default function Home() {
                       How do I report a problem with my order?
                     </DropdownItem>
                     <DropdownItem>
-                      What aftersales services are available?
-                    </DropdownItem>
-                    <DropdownItem>
                       How do I provide feedback on a product?
                     </DropdownItem>
                   </DropdownMenu>
@@ -193,11 +221,8 @@ export default function Home() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem>
+                    <DropdownItem onClick={customersupport}>
                       How can I contact customer support?
-                    </DropdownItem>
-                    <DropdownItem>
-                      Where can I find the latest news and updates?
                     </DropdownItem>
                     <DropdownItem>
                       How do I leave a review for a product?
@@ -219,7 +244,9 @@ export default function Home() {
                   <li className="pt-3 ml-8 lg:ml-40">
                     When will I receive my order?
                   </li>
-                  <li className="pt-3 ml-8 lg:ml-40">How to cancel my order?</li>
+                  <li className="pt-3 ml-8 lg:ml-40">
+                    How to cancel my order?
+                  </li>
                   <li className="pt-3 ml-8 lg:ml-40">
                     How do I track my package?
                   </li>
@@ -234,7 +261,9 @@ export default function Home() {
                     The product I received does not match the description. What
                     can I do?
                   </li>
-                  <li className="pt-3 ml-8 lg:ml-30">How to check my refund?</li>
+                  <li className="pt-3 ml-8 lg:ml-30">
+                    How to check my refund?
+                  </li>
                   <li className="pt-3 ml-8 lg:ml-30">
                     I cannot find order in my account.
                   </li>
@@ -251,7 +280,10 @@ export default function Home() {
             Need more help? Send us a help request.
           </div>
           <div className="justify-center items-center text-center my-15 bg-white pt-5 pb-12 mx-4 lg:mx-13">
-            <button className="border-main-dark p-3 border rounded-xl my-15 hover:bg-main-lighter" onClick={handleinform}>
+            <button
+              className="border-main-dark p-3 border rounded-xl my-15 hover:bg-main-lighter"
+              onClick={handleinform}
+            >
               Request
             </button>
           </div>

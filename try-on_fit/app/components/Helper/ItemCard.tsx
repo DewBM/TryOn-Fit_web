@@ -10,8 +10,8 @@ interface Props{
 
 const ItemCard = ({name,price}:Props) => {
     return(
-       <div><p className="text-poppins uppercase font-semibold text-sm  ">{name}</p>
-        <small className="text-default-500">RS.{price}</small></div>
+       <div><p className="text-poppins uppercase font-semibold text-lg  ">{name}</p>
+        <small className="text-lg">RS.{price}</small></div>
         
        
       

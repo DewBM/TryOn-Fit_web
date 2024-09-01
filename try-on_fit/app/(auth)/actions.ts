@@ -35,16 +35,16 @@ export async function signin(prevState: unknown, formData: FormData) {
       if (resp.isSuccess) {
          switch (resp.role) {
             case "ADMIN":
-               redirect('/store-manager');
+               redirect('/StoreManager');
             
             case "SK":
-               redirect('/stock-keeper');
+               redirect('/StockKeeper');
                
             case "CS":
-               redirect('/customer-support')
+               redirect('/CustomerSupport')
    
-            case 'DB':
-               redirect('/distribution-coordinator');
+            case 'DC':
+               redirect('/DistributionCoordinator');
          
             default:
                redirect('/');
