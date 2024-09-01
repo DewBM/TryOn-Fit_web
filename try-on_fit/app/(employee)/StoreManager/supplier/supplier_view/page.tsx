@@ -8,6 +8,10 @@ import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
+import { Dialog, DialogPanel } from "@headlessui/react";
+import { SupplierType } from "../page";
+
+
 
 // const SupplierPage = () => {
   // const router = useRouter();
@@ -16,13 +20,15 @@ import { useFormState } from "react-dom";
   const ViewSup = ({
     isOpen,
     onClose,
+    supplierData,
   }: {
     isOpen: boolean;
     onClose: () => void;
+    supplierData ?:  SupplierType;
   }) => {
     // const [lastResult, action] = useFormState(createEmployee, undefined);
     const dialogRef = useRef<HTMLDialogElement | null>(null);
-    console.log("hiii2")
+    console.log(supplierData)
 
     useEffect(() => {
       const handleClickOutside = (event: { target: any }) => {
@@ -48,7 +54,7 @@ import { useFormState } from "react-dom";
     name: "Kevin Andersan",
     role: "Stock Keeper",
     cardDetails: [
-      { label: "Supplier ID", value: "S01" },
+      { label: "Supplier ID", value: supplierData?.supplier_id || "N/A" },
       { label: "Registered date", value: "10/05/2019" },
       { label: "Stock Keeper", value: "Kevin Andersan" },
     ],
@@ -82,12 +88,14 @@ import { useFormState } from "react-dom";
   };
 
   return (
-    <dialog
-      ref={dialogRef}
-      id="dialog"
-      open={isOpen}
-      className="z-50 bg-white shadow-md"
-    >
+    // <dialog
+    //   ref={dialogRef}
+    //   id="dialog"
+    //   open={isOpen}
+    //   className="z-50 bg-white shadow-md"
+    // >
+    <Dialog open={isOpen} onClose={onClose} className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <DialogPanel className="bg-white rounded-lg overflow-hidden w-full max-w-4xl p-6 md:p-8 relative">
     <div className="container mx-auto p-4">
       <h1 className="text-lg font-semibold mb-5">Employee details</h1>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -115,7 +123,8 @@ import { useFormState } from "react-dom";
         <SupplierCategories categories={supplierInfo.categories} />
       </div>
     </div>
-    </dialog>
+    </DialogPanel>
+    </Dialog>
   );
 };
 

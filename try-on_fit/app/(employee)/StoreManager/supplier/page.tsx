@@ -49,7 +49,7 @@ const INITIAL_VISIBLE_COLUMNS = [
   "actions",
 ];
 
-type Supplier = {
+export type SupplierType = {
   key: React.Key;
   supplier_id: string;
   first_name: string;
@@ -63,15 +63,16 @@ type Supplier = {
 };
 
 export default function SupplierTable() {
-
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const openAddDialog = () => {
+  const [supplierViewData, setSupplierViewData] = useState<SupplierType>()
+  const [isAddDialogOpen, setIsAddDialogOpen ] = useState(false);
+  const openAddDialog = (supplier: SupplierType) => {
+    setSupplierViewData(supplier)
     console.log("Open dialog")
     setIsAddDialogOpen(true);}
   const closeAddDialog = () => setIsAddDialogOpen(false);
   
   // const [suppliers, setSuppliers] = useState<Supplier[]>(initialSuppliers);
-  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [suppliers, setSuppliers] = useState<SupplierType[]>([]);
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
@@ -113,7 +114,7 @@ export default function SupplierTable() {
 
   useEffect(() => {
     const getSuppliers = async () => {
-      let suppliers: Supplier[] = await customFetch("/supplier", {
+      let suppliers: SupplierType[] = await customFetch("/supplier", {
         method: "GET",
       });
       if (suppliers) {
@@ -177,9 +178,9 @@ export default function SupplierTable() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: Supplier, b: Supplier) => {
-      const first = a[sortDescriptor.column as keyof Supplier] as string;
-      const second = b[sortDescriptor.column as keyof Supplier] as string;
+    return [...items].sort((a: SupplierType, b: SupplierType) => {
+      const first = a[sortDescriptor.column as keyof SupplierType] as string;
+      const second = b[sortDescriptor.column as keyof SupplierType] as string;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
@@ -189,8 +190,8 @@ export default function SupplierTable() {
 
 
   const renderCell = React.useCallback(
-    (supplier: Supplier, columnKey: React.Key) => {
-      const cellValue = supplier[columnKey as keyof Supplier];
+    (supplier: SupplierType, columnKey: React.Key) => {
+      const cellValue = supplier[columnKey as keyof SupplierType];
 
       const handleDeleteClick = () => {
         Swal.fire({
@@ -260,8 +261,8 @@ export default function SupplierTable() {
                   <DropdownMenu>
                     <DropdownItem
                       className="customHoverColor customActiveColor"
-                      // onClick={() =>{viewSupplier(supplier)}}
-                      onClick={openAddDialog}
+                      onClick={() =>{openAddDialog(supplier)}}
+                      // onClick={openAddDialog}
                       >
                       View
                     </DropdownItem>
@@ -502,7 +503,8 @@ export default function SupplierTable() {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
       />
-      <ViewSup isOpen={isAddDialogOpen} onClose={closeAddDialog} />
+      {/* <ViewSup isOpen={isAddDialogOpen} onClose={closeAddDialog}  data={}/> */}
+      <ViewSup isOpen={isAddDialogOpen} onClose={closeAddDialog}  supplierData={supplierViewData}/>
     </>
   );
 }
