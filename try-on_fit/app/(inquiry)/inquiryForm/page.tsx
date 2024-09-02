@@ -29,7 +29,7 @@ export default function Inquiry() {
             className="sm:col-span-1 lg:col-span-4 "
           >
             <div className=" sm:col-span-1 lg:col-span-5 text-3xl font-bold  lg:col-start-2 mb-3">
-              <h1>Submit a request assistance</h1>
+              <h1>Submit a Request Assistance</h1>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-5 text-base text-red-600 font-semibold mb-3">
               <p>
@@ -37,25 +37,76 @@ export default function Inquiry() {
                 support staff will respond as soon as possible
               </p>
             </div>
+            
+
             <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-11">
               <p>Order Information</p>
               <hr className="border-b border-#cbd5e1"></hr>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-4 text-lg font-semibold mb-3">
+
               <TextBox
                 labelName={"Order ID"}
-                id={"lg-ordernum"}
+                name="orderId"
+                key="orderId"
+                defaultValue=""
                 inputType="text"
+                placeholder=""
+                disabled={false}
               ></TextBox>
+
+               <TextBox
+                labelName={"Product ID"}
+                name="productId"
+                key="productId"
+                defaultValue=""
+                inputType="text"
+                placeholder=""
+                disabled={false}
+              ></TextBox>
+{/* 
+              <TextBox
+                labelName={"Customer ID"}
+                name="customerId"
+                key="customerId"
+                defaultValue=""
+                inputType="text"
+                placeholder=""
+                disabled={false}
+              ></TextBox>
+
+              <TextBox
+                labelName={"Customer Name"}
+                name="customerName"
+                key="customerName"
+                defaultValue=""
+                inputType="text"
+                placeholder=""
+                disabled={false}
+              ></TextBox>
+
+              <TextBox
+                labelName={"Customer Contact Number"}
+                name="customerNum"
+                key="customerNum"
+                defaultValue=""
+                inputType="text"
+                placeholder=""
+                disabled={false}
+              ></TextBox> */}
+
             </div>
+
+
             <div className=" sm:col-span- lg:grid-cols-5 text-xl  font-bold mb-10 mt-11">
               <p>Issue Information</p>
               <hr className="border-b border-#cbd5e1"></hr>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-4 text-lg  font-bold  mb-3">
+
               <SelectBox
                 labelName="Select the Issue"
-                id="inquery-issueType"
+                key="issueType"
                 name="issueType"
                 options={[
                   { value: "", label: "" },
@@ -64,12 +115,11 @@ export default function Inquiry() {
                   { value: "Virtual FitOn", label: "Virtual FitOn" },
                   { value: "Refund", label: "Refund" },
                   { value: "Account Managment", label: "Account Managment" },
-                  
                 ]}
                 autoComplete="Other"
                 value={selectedValue}
                 onChange={(newValue) => handleChange(newValue)}
-                
+                defaultValue=""
               />
             </div>
             <div className="sm:col-span-1 lg:grid-cols-5 text-lg font-semibold mb-8 mt-8">
@@ -87,11 +137,12 @@ export default function Inquiry() {
                 </span>
               )}
             </div>
+
             <div className=" sm:col-span-1 sm:row-span-2 lg:grid-cols-4 text-lg py-4 font-semibold mb-3">
               <TextBox
                 labelName={"Describe Your Issue"}
-                id={"lg-ordernum"}
-                inputType="text"
+                name={"lg-ordernum"}
+                inputType="text" key={""} defaultValue={"number"}                
               ></TextBox>
             </div>
             {/* <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-16">
@@ -121,9 +172,8 @@ export default function Inquiry() {
             <div className=" sm:col-span-1 lg:grid-cols-4 text-lg font-semibold mb-3">
               <TextBox
                 labelName={"Any Additional Comments or Requests"}
-                id={"lg-ordernum"}
-                inputType="text"
-              ></TextBox>
+                name={"lg-ordernum"}
+                inputType="text" key={""} defaultValue={"number"}              ></TextBox>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-4 text-base font-semibold mb-3">
               <Button type="submit" className="  m-1 mt-4 px-10">
