@@ -68,6 +68,7 @@ function Page() {
       <NavBar />
       <div className="w-full flex flex-row pl-[5rem] py-[5rem] justify-between">
         <div className="flex flex-col w-[80%] space-y-10">
+       
           {cartItems.map((item) => (
             <Cartcard
               key={item.id}

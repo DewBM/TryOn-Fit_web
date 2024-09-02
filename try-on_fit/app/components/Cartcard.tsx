@@ -17,7 +17,7 @@ function Cartcard({ images, price, quantity, title, color, onDelete, onQuantityC
   // Safely parse the quantity, defaulting to 1 if undefined or empty
   const initialQuantity = quantity && quantity.length > 0 ? parseInt(quantity[0], 10) : 1;
   const [currentQuantity, setCurrentQuantity] = useState(initialQuantity);
-
+  const [isSelected, setIsSelected] = useState(false);
   const handleIncrease = () => {
     const newQuantity = currentQuantity + 1;
     setCurrentQuantity(newQuantity);
@@ -31,11 +31,22 @@ function Cartcard({ images, price, quantity, title, color, onDelete, onQuantityC
       onQuantityChange(newQuantity);
     }
   };
-
+ 
+  const handleCheckboxChange = () => {
+    setIsSelected(prev => !prev); // Toggle selection state
+  };
   return (
     <div className="h-[150px] w-[90%] rounded-2xl border border-gray-300">
       <div className="flex flex-row py-2 ">
-        <div>
+        <div className="flex flex-row justify-center pt-[3rem] px-10 ">
+        <input 
+            type="checkbox" 
+            className="form-checkbox shadow-md h-6 w-6 accent-slate-950 rounded" 
+            checked={isSelected}
+            onChange={handleCheckboxChange} 
+          />
+           </div>
+          <div className="">
           {images.map((imgSrc, index) => (
             <Image
               key={index}
@@ -46,8 +57,9 @@ function Cartcard({ images, price, quantity, title, color, onDelete, onQuantityC
               height={100}
             />
           ))}
+         
         </div>
-        <div className="flex flex-row pl-[14rem] gap-20">
+        <div className="flex flex-row pl-[10rem] gap-20">
         <div className="flex flex-col justify-center ">
           <p className="text-medium font-bold text-balance">{title}</p>
           <p className="text-sm pt-3">{color}</p>
