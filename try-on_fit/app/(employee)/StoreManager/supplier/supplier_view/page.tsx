@@ -94,16 +94,17 @@ import { SupplierType } from "../page";
     //   open={isOpen}
     //   className="z-50 bg-white shadow-md"
     // >
-    <Dialog open={isOpen} onClose={onClose} className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-    <DialogPanel className="bg-white rounded-lg overflow-hidden w-full max-w-4xl p-6 md:p-8 relative">
+        // >
+<Dialog open={isOpen} onClose={onClose} className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+  <Dialog.Panel className="bg-white rounded-lg overflow-hidden w-full max-w-2xl max-h-[80vh] p-4 md:p-6 relative">
     <div className="container mx-auto p-4">
       <h1 className="text-lg font-semibold mb-5">Employee details</h1>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <SupplierCard
+        {/* <SupplierCard
           name={supplierInfo.name}
           title={supplierInfo.role}
           details={supplierInfo.cardDetails}
-        />
+        /> */}
         <div className="col-span-2 flex flex-col space-y-4">
           <div className="bg-white p-4 rounded shadow border">
             <SupplierpersonalDetailsSection
@@ -119,11 +120,11 @@ import { SupplierType } from "../page";
           </div>
         </div>
       </div>
-      <div className="bg-white p-4 rounded shadow border mt-4">
+      {/* <div className="bg-white p-4 rounded shadow border mt-4">
         <SupplierCategories categories={supplierInfo.categories} />
-      </div>
+      </div> */}
     </div>
-    </DialogPanel>
+    </Dialog.Panel>
     </Dialog>
   );
 };
