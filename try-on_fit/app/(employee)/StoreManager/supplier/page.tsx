@@ -44,7 +44,7 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 
 const INITIAL_VISIBLE_COLUMNS = [
   "supplier_name",
-  "contact",
+  "brand_name",
   "status",
   "actions",
 ];
@@ -226,7 +226,7 @@ export default function SupplierTable() {
               </p>
             </div>
           );
-        case "contact":
+        case "Brand Name":
           return (
             <div className="flex flex-col">
               <p
