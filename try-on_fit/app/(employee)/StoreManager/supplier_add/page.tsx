@@ -60,6 +60,16 @@ const Dialog = () => {
                 />
                 <div className="text-xs text-red-400">{fields.supid.errors}</div>
               </div>
+              <div className="lg:col-span-4 lg:col-start-7 sm:col-span-1 mt-3">
+                <TextBox
+                  labelName={"Brand Name"}
+                  name={fields.brandName.name}
+                  key={fields.brandName.key as React.Key}
+                  defaultValue={fields.brandName.initialValue as React.HTMLInputTypeAttribute}
+                  inputType="text"
+                />
+                <div className="text-xs text-red-400">{fields.brandName.errors}</div>
+              </div>
               <div className="lg:col-span-4 lg:col-start-2 sm:col-span-1 mt-3">
                 <TextBox
                   labelName={"First Name"}
@@ -103,7 +113,7 @@ const Dialog = () => {
               <div className="lg:col-span-5 lg:col-start-2 sm:col-span-1 mt-3">
                 <fieldset>
                   <legend className="block text-sm font-medium leading-6 text-gray-900">
-                    Gender
+                    Availability
                   </legend>
                   <div
                     style={{
@@ -112,9 +122,8 @@ const Dialog = () => {
                       alignItems: "center",
                     }}
                   >
-                    <RadioButton label="Male" value="male" name={fields.gender.name} />
-                    <RadioButton label="Female" value="female" name={fields.gender.name} />
-                    <RadioButton label="Other" value="other" name={fields.gender.name} />
+                    <RadioButton label="Available" value="available" name={fields.availability.name} />
+                    <RadioButton label="Unavailable" value="unavailable" name={fields.availability.name} />
                   </div>
                 </fieldset>
               </div>
