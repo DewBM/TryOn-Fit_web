@@ -7,6 +7,12 @@ import SelectBox from "@/app/components/SelectBox";
 import Button from "@/app/components/Button";
 
 export default function Inquiry() {
+  const [selectedValue, setSelectedValue] = useState("");
+
+  const handleChange = (newValue: string) => {
+    setSelectedValue(newValue);
+  };
+  
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +29,7 @@ export default function Inquiry() {
             className="sm:col-span-1 lg:col-span-4 "
           >
             <div className=" sm:col-span-1 lg:col-span-5 text-3xl font-bold  lg:col-start-2 mb-3">
-              <h1>Submit a request assistance</h1>
+              <h1>Submit a Request Assistance</h1>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-5 text-base text-red-600 font-semibold mb-3">
               <p>
@@ -31,35 +37,89 @@ export default function Inquiry() {
                 support staff will respond as soon as possible
               </p>
             </div>
+            
+
             <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-11">
               <p>Order Information</p>
               <hr className="border-b border-#cbd5e1"></hr>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-4 text-lg font-semibold mb-3">
+
               <TextBox
-                labelName={"Order Number"}
-                id={"lg-ordernum"}
+                labelName={"Order ID"}
+                name="orderId"
+                key="orderId"
+                defaultValue=""
                 inputType="text"
+                placeholder=""
+                disabled={false}
               ></TextBox>
+
+               <TextBox
+                labelName={"Product ID"}
+                name="productId"
+                key="productId"
+                defaultValue=""
+                inputType="text"
+                placeholder=""
+                disabled={false}
+              ></TextBox>
+{/* 
+              <TextBox
+                labelName={"Customer ID"}
+                name="customerId"
+                key="customerId"
+                defaultValue=""
+                inputType="text"
+                placeholder=""
+                disabled={false}
+              ></TextBox>
+
+              <TextBox
+                labelName={"Customer Name"}
+                name="customerName"
+                key="customerName"
+                defaultValue=""
+                inputType="text"
+                placeholder=""
+                disabled={false}
+              ></TextBox>
+
+              <TextBox
+                labelName={"Customer Contact Number"}
+                name="customerNum"
+                key="customerNum"
+                defaultValue=""
+                inputType="text"
+                placeholder=""
+                disabled={false}
+              ></TextBox> */}
+
             </div>
+
+
             <div className=" sm:col-span- lg:grid-cols-5 text-xl  font-bold mb-10 mt-11">
               <p>Issue Information</p>
               <hr className="border-b border-#cbd5e1"></hr>
             </div>
-            <div className=" sm:col-span-1 lg:grid-cols-4 text-lg  font-bold mb-3">
+            <div className=" sm:col-span-1 lg:grid-cols-4 text-lg  font-bold  mb-3">
+
               <SelectBox
                 labelName="Select the Issue"
-                id="inquery-issueType"
+                key="issueType"
                 name="issueType"
                 options={[
                   { value: "", label: "" },
-                  { value: "female", label: "Female" },
-                  { value: "male", label: "Male" },
-                  { value: "other", label: "Other" },
+                  { value: "Awaiting and Arrival", label: "Awaiting and Arrival" },
+                  { value: "Ordering and payment", label: "Ordering and payment" },
+                  { value: "Virtual FitOn", label: "Virtual FitOn" },
+                  { value: "Refund", label: "Refund" },
+                  { value: "Account Managment", label: "Account Managment" },
                 ]}
-                autoComplete="gender"
-                value=""
-                onChange={(newValue) => console.log(newValue)}
+                autoComplete="Other"
+                value={selectedValue}
+                onChange={(newValue) => handleChange(newValue)}
+                defaultValue=""
               />
             </div>
             <div className="sm:col-span-1 lg:grid-cols-5 text-lg font-semibold mb-8 mt-8">
@@ -77,14 +137,15 @@ export default function Inquiry() {
                 </span>
               )}
             </div>
+
             <div className=" sm:col-span-1 sm:row-span-2 lg:grid-cols-4 text-lg py-4 font-semibold mb-3">
               <TextBox
-                labelName={"Describe Your Issues"}
-                id={"lg-ordernum"}
-                inputType="text"
+                labelName={"Describe Your Issue"}
+                name={"lg-ordernum"}
+                inputType="text" key={""} defaultValue={"number"}                
               ></TextBox>
             </div>
-            <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-16">
+            {/* <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-16">
               <p>Perfect Solution</p>
               <hr className="border-b border-#cbd5e1"></hr>
             </div>
@@ -103,17 +164,16 @@ export default function Inquiry() {
                 value=""
                 onChange={(newValue) => console.log(newValue)}
               />
-            </div>
+            </div> */}
             <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-16">
               <p>Additional Comments</p>
               <hr className="border-b border-#cbd5e1"></hr>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-4 text-lg font-semibold mb-3">
               <TextBox
-                labelName={"Any Additional COmments or request"}
-                id={"lg-ordernum"}
-                inputType="text"
-              ></TextBox>
+                labelName={"Any Additional Comments or Requests"}
+                name={"lg-ordernum"}
+                inputType="text" key={""} defaultValue={"number"}              ></TextBox>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-4 text-base font-semibold mb-3">
               <Button type="submit" className="  m-1 mt-4 px-10">

@@ -31,7 +31,7 @@ export default function CartAddress() {
     <NavBar/>
 
     <div className="bg-slate-50 p-4 sm:p-6 md:p-8">
-      <div id="page" className="flex flex-col md:flex-row w-full pt-20 md:pt-40">
+      <div id="page" className="flex flex-col md:flex-row w-full pt-20 md:pt-20">
 
         <div className="w-full md:w-3/5 md:ml-20 md:mr-20">
 
