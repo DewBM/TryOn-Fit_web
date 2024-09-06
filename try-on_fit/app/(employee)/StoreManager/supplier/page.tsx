@@ -62,6 +62,7 @@ export type SupplierType = {
   address: string;
   supplier_name: string;
   status: string;
+  register_date : String;
 };
 
 export default function SupplierTable() {
