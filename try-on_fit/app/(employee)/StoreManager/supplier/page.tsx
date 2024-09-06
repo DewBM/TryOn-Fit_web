@@ -35,6 +35,8 @@ import { capitalize } from "@/app/components/utils";
 import { customFetch } from "@/app/utils/auth";
 import { redirect } from "next/navigation";
 import { FaExclamationTriangle } from "react-icons/fa";
+import CreateSup from "./supplier_create/page";
+import EditSup from "./supplier_edit/page";
 
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
@@ -63,13 +65,24 @@ export type SupplierType = {
 };
 
 export default function SupplierTable() {
+  const [isSupDialogOpen, setIsSupDialogOpen] = useState(false);
+  const openSupDialog = () => setIsSupDialogOpen(true);
+  const closeSupDialog = () => setIsSupDialogOpen(false);
+
   const [supplierViewData, setSupplierViewData] = useState<SupplierType>()
   const [isAddDialogOpen, setIsAddDialogOpen ] = useState(false);
   const openAddDialog = (supplier: SupplierType) => {
     setSupplierViewData(supplier)
-    console.log("Open dialog")
-    setIsAddDialogOpen(true);}
+    console.log("Open dialog");
+    setIsAddDialogOpen(true)}
   const closeAddDialog = () => setIsAddDialogOpen(false);
+
+  const [supplierEditData, setSupplierEditData] = useState<SupplierType>();
+  const [isEditDialodOpen, setIsEditDialogOpen] = useState(false);
+  const openEditDialog = (supplier : SupplierType) => {
+    setSupplierEditData(supplier);
+    setIsEditDialogOpen(true);
+  }
   
   // const [suppliers, setSuppliers] = useState<Supplier[]>(initialSuppliers);
   const [suppliers, setSuppliers] = useState<SupplierType[]>([]);
@@ -266,7 +279,10 @@ export default function SupplierTable() {
                       >
                       View
                     </DropdownItem>
-                    <DropdownItem className="customHoverColor customActiveColor">
+                    <DropdownItem 
+                    className="customHoverColor customActiveColor"
+                    onClick={() =>{openEditDialog(supplier)}}                   
+                     >
                       Edit
                     </DropdownItem>
                     <DropdownItem
@@ -386,8 +402,9 @@ export default function SupplierTable() {
             </Dropdown>
             <Button
               className="bg-main-dark text-white"
-              endContent={<PlusIcon />}
+              endContent={<PlusIcon width={undefined} height={undefined} />}
               size="sm"
+              onClick={openSupDialog}
             >
               Add New
             </Button>
@@ -409,6 +426,7 @@ export default function SupplierTable() {
             </select>
           </label>
         </div>
+        
       </div>
     );
   }, [
@@ -438,6 +456,7 @@ export default function SupplierTable() {
             ? "All items selected"
             : `${selectedKeys.size} of ${items.length} selected`}
         </span>
+        
       </div>
     );
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
@@ -503,6 +522,21 @@ export default function SupplierTable() {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
       />
+      {/* <SupAddForm
+          isOpen={isSupDialogOpen}
+          onClose={closeSupDialog}
+        ></SupAddForm> */}
+        <CreateSup
+        isOpen={isSupDialogOpen}
+        onClose={closeSupDialog}
+        >
+        </CreateSup>
+        
+        <EditSup
+        isEditSupOpen={isEditDialodOpen}
+        onCloseEditSup={closeSupDialog}
+        supplierData= {supplierEditData}
+        ></EditSup>
       {/* <ViewSup isOpen={isAddDialogOpen} onClose={closeAddDialog}  data={}/> */}
       <ViewSup isOpen={isAddDialogOpen} onClose={closeAddDialog}  supplierData={supplierViewData}/>
     </>

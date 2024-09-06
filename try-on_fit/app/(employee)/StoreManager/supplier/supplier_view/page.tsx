@@ -3,11 +3,7 @@ import SupplierCard from "@/app/components/SupplierCard";
 import SupplierContactDetailsSection from "@/app/components/SupplierContactDetailsSection";
 import SupplierpersonalDetailsSection from "@/app/components/SupplierpersonaldetailsSection";
 import SupplierCategories from "@/app/components/SupplierCategories";
-import { useLocation } from 'react-router-dom';
-import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/router';
 import { useEffect, useRef } from "react";
-import { useFormState } from "react-dom";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { SupplierType } from "../page";
 
