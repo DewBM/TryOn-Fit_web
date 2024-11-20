@@ -77,7 +77,7 @@ const SupAddForm =({
       open={isOpen}
       className="z-50 bg-white shadow-md"
     >
-      <div className="lg:col-span-6 lg:col-start-4 rounded bg-slate-50 shadow-xl rounded-r-lg pt-6 pb-8 mt-10 mb-10">
+      <div className="lg:col-span-6 lg:col-start-4 rounded bg-slate-50 shadow-xl rounded-r-lg pt-2 pb-8 mt-0 mb-10">
           <form
             id={form.id}
             onSubmit={form.onSubmit}
@@ -86,7 +86,7 @@ const SupAddForm =({
             className="lg:col-span-5 sm:col-span-4"
           >
             <div className="grid grid-cols-11">
-              <div className="lg:col-span-7 lg:col-start-2 sm:col-span-4 mt-2 text-2xl font-extrabold mb-4">
+              <div className="lg:col-span-7 lg:col-start-2 sm:col-span-4 mt-1 text-2xl font-extrabold mb-4">
                 <h1>Supplier Registration</h1>
               </div>
               <div className="lg:col-span-4 lg:col-start-2 sm:col-span-1 mt-3">

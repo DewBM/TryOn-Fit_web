@@ -60,7 +60,7 @@ const EmpAddForm = ({
       open={isOpen}
       className="z-50 bg-white shadow-md"
     >
-      <div className="lg:col-span-6 lg:col-start-4 rounded bg-slate-50 shadow-xl rounded-r-lg pt-6 pb-8 mt-10 mb-10">
+      <div className="lg:col-span-6 lg:col-start-4 rounded bg-slate-50 shadow-xl rounded-r-lg pt-4 pb-8 mt-0 mb-1">
         <form 
           id={form.id}
           onSubmit={form.onSubmit}
@@ -127,7 +127,7 @@ const EmpAddForm = ({
                   { value: "", label: "Select Role" },
                   { value: "CusSupport", label: "Customer Support" },
                   { value: "DisCoordinator", label: "Distribution Coordinator" },
-                  { value: "Stockkeeper", label: "Stockkeeper" },
+                  { value: "Stockkeeper", label: "Stock Keeper" },
                 ]}
                 autoComplete="role"
                 value={selectedValue}
@@ -151,12 +151,12 @@ const EmpAddForm = ({
             </div>
             <div className="lg:col-span-9 lg:col-start-2 sm:col-span-4 mt-3">
               <TextBox
-                labelName="Street Address"
+                labelName="Address"
                 name={fields.streetAddress.name}
                 inputType="text"
                 key={fields.streetAddress.key as React.Key}
                 defaultValue={fields.streetAddress.initialValue as React.HTMLInputTypeAttribute}
-                placeholder="Enter Street Address"
+                placeholder="Enter Address"
               />
               <div className="text-xs text-red-400">{fields.streetAddress.errors}</div>
             </div>
@@ -173,12 +173,12 @@ const EmpAddForm = ({
             </div>
             <div className="lg:col-span-4 lg:col-start-7 sm:col-span-2 mt-3">
               <TextBox
-                labelName="State/Province"
+                labelName="Province"
                 name={fields.stateProvince.name}
                 inputType="text"
                 key={fields.stateProvince.key as React.Key}
                 defaultValue={fields.stateProvince.initialValue as React.HTMLInputTypeAttribute}
-                placeholder="Enter State/Province"
+                placeholder="Enter Province"
               />
               <div className="text-xs text-red-400">{fields.stateProvince.errors}</div>
             </div>
