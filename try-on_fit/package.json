@@ -17,7 +17,6 @@
     "@headlessui/react": "^2.1.2",
     "@hyvor/design": "^0.0.66",
     "@nextui-org/react": "^2.4.2",
-    "axios": "^1.7.5",
     "chart.js": "^4.4.3",
     "framer-motion": "^11.2.12",
     "next": "^14.2.5",
