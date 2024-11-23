@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+
+import React ,{useState}from "react";
 import {
   Table,
   TableHeader,
@@ -24,6 +25,8 @@ import { VerticalDotsIcon } from "@/app/components/VerticalDotsIcon";
 import { ChevronDownIcon } from "@/app/components/ChevronDownIcon";
 import { SearchIcon } from "@/app/components/SearchIcon";
 import { capitalize } from "@/app/components/utils";
+import { useRouter } from "next/navigation";
+
 
 //  data for orders
 const orders = [
@@ -81,6 +84,9 @@ const INITIAL_VISIBLE_COLUMNS = ["orderNumber", "status", "date", "actions"];
 type Order = (typeof orders)[0];
 
 export default function Home() {
+  const router = useRouter();
+  
+  
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -171,8 +177,10 @@ export default function Home() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem className="customHoverColor customActiveColor">
+                  <DropdownItem className="customHoverColor customActiveColor"
+                  >
                     View
+                    
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
