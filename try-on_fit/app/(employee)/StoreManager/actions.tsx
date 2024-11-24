@@ -53,6 +53,8 @@ export async function createEmployee(prevState: unknown, formData: FormData) {
 
 export async function creatSupplier(prevState: unknown, formData: FormData) {
   console.log("formData");
+  const currentDate = new Date().toISOString().split('T')[0];
+
   const submission = parseWithZod(formData, {
     schema: supplierRegistrationSchema,
   });
@@ -72,11 +74,15 @@ export async function creatSupplier(prevState: unknown, formData: FormData) {
     email: formData.get('email'),
     contact_no: formData.get('phone'),
     address : Address,
+    brand_name : formData.get('brandName'),
+    status : formData.get('availability'),
+    register_date : currentDate,
     // gender: formData.get('gender'),
     // streetAddress: formData.get('streetAddress'),
     // city: formData.get('city'),
     // state: formData.get('stateProvince'),
   };
+  console.log(supData);
 
   const params = {
     method: "POST",

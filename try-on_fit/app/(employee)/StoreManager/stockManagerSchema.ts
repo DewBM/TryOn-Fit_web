@@ -38,12 +38,13 @@ export const supplierRegistrationSchema = z.object({
     .refine(validatePhoneNumber, {
       message: "Phone number must be a 10-digit number",
     }),
-  gender: z.enum(["male", "female", "other"], {
-    errorMap: () => ({ message: "Gender is required" })
+  availability: z.enum(["available", "unavailable"], {
+    errorMap: () => ({ message: "Availabilyty is required" })
   }),
   streetAddress: z.string().min(1, "Street Address is required"),
   city: z.string().min(1, "City is required"),
   stateProvince: z.string().min(1, "State/Province is required"),
+  brandName: z.string().min(1,"Brand Name is required"),
 });
 
 console.log("EmployeeRegistrationSchema");

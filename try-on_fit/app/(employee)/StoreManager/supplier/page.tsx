@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import React from "react";
+import Swal from "sweetalert2";
+import ViewSup from "./supplier_view/page"
 import {
   Table,
   TableHeader,
@@ -26,13 +28,16 @@ import { ChevronDownIcon } from "@/app/components/ChevronDownIcon";
 import { SearchIcon } from "@/app/components/SearchIcon";
 import {
   supplierColumns,
-  suppliers as initialSuppliers,
   statusOptions,
 } from "@/app/components/data-3";
 import { capitalize } from "@/app/components/utils";
-import DeleteModal from "@/app/components/DeleteModal";
+// import DeleteModal from "@/app/components/DeleteModal";
 import { customFetch } from "@/app/utils/auth";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
+import { FaExclamationTriangle } from "react-icons/fa";
+import CreateSup from "./supplier_create/page";
+import EditSup from "./supplier_edit/page";
+
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   available: "success",
@@ -41,12 +46,12 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 
 const INITIAL_VISIBLE_COLUMNS = [
   "supplier_name",
-  "contact",
+  "brand_name",
   "status",
   "actions",
 ];
 
-type Supplier = {
+export type SupplierType = {
   key: React.Key;
   supplier_id: string;
   first_name: string;
@@ -60,7 +65,27 @@ type Supplier = {
 };
 
 export default function SupplierTable() {
-  const [suppliers, setSuppliers] = useState<Supplier[]>(initialSuppliers);
+  const [isSupDialogOpen, setIsSupDialogOpen] = useState(false);
+  const openSupDialog = () => setIsSupDialogOpen(true);
+  const closeSupDialog = () => setIsSupDialogOpen(false);
+
+  const [supplierViewData, setSupplierViewData] = useState<SupplierType>()
+  const [isAddDialogOpen, setIsAddDialogOpen ] = useState(false);
+  const openAddDialog = (supplier: SupplierType) => {
+    setSupplierViewData(supplier)
+    console.log("Open dialog");
+    setIsAddDialogOpen(true)}
+  const closeAddDialog = () => setIsAddDialogOpen(false);
+
+  const [supplierEditData, setSupplierEditData] = useState<SupplierType>();
+  const [isEditDialodOpen, setIsEditDialogOpen] = useState(false);
+  const openEditDialog = (supplier : SupplierType) => {
+    setSupplierEditData(supplier);
+    setIsEditDialogOpen(true);
+  }
+  
+  // const [suppliers, setSuppliers] = useState<Supplier[]>(initialSuppliers);
+  const [suppliers, setSuppliers] = useState<SupplierType[]>([]);
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
@@ -76,9 +101,33 @@ export default function SupplierTable() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
 
+  const deleteSupplier = async (supplierId: string) => {
+    console.log(supplierId);
+    const x = { "supplier_id": supplierId };
+    const params = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(x),
+    };
+  
+    const resp = await customFetch("/supplier", params);
+    if (resp) {
+      if (resp.isSuccess) {
+        redirect("/StoreManager/supplier");
+      } else {
+        // handle failure
+      }
+    }
+    console.log(supplierId)
+  };
+  
+
+
   useEffect(() => {
     const getSuppliers = async () => {
-      let suppliers: Supplier[] = await customFetch("/supplier", {
+      let suppliers: SupplierType[] = await customFetch("/supplier", {
         method: "GET",
       });
       if (suppliers) {
@@ -87,17 +136,19 @@ export default function SupplierTable() {
           e.key = e.supplier_id;
           return e;
         });
-
+        console.log(suppliers)
         setSuppliers(suppliers);
       }
     };
     getSuppliers();
   }, []);
 
-  const router = useRouter();
-  const viewSupplier = () => {
-    router.push("/StoreManager/supplier/supplier_view");
-  };
+  // const router = useRouter();
+  // const viewSupplier = (supplirData: Supplier) => {
+  //   console.log(supplirData)
+  //   const serializedObject = encodeURIComponent(JSON.stringify(supplirData));
+  //   router.push(`/StoreManager/supplier/supplier_view?supplier_id=${21}`);
+  // };
 
 
   const pages = Math.ceil(suppliers.length / rowsPerPage);
@@ -140,18 +191,41 @@ export default function SupplierTable() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: Supplier, b: Supplier) => {
-      const first = a[sortDescriptor.column as keyof Supplier] as string;
-      const second = b[sortDescriptor.column as keyof Supplier] as string;
+    return [...items].sort((a: SupplierType, b: SupplierType) => {
+      const first = a[sortDescriptor.column as keyof SupplierType] as string;
+      const second = b[sortDescriptor.column as keyof SupplierType] as string;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
+
+
   const renderCell = React.useCallback(
-    (supplier: Supplier, columnKey: React.Key) => {
-      const cellValue = supplier[columnKey as keyof Supplier];
+    (supplier: SupplierType, columnKey: React.Key) => {
+      const cellValue = supplier[columnKey as keyof SupplierType];
+
+      const handleDeleteClick = () => {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            deleteSupplier(supplier.supplier_id);
+            // setIsDeleteModalOpen(true);
+            Swal.fire("Deleted!", "The supplier has been deleted.", "success").then(() => {
+              window.location.reload();
+            });
+          }
+        });
+        
+      };
 
       switch (columnKey) {
         case "supplier_name":
@@ -165,7 +239,7 @@ export default function SupplierTable() {
               </p>
             </div>
           );
-        case "contact":
+        case "Brand Name":
           return (
             <div className="flex flex-col">
               <p
@@ -200,29 +274,35 @@ export default function SupplierTable() {
                   <DropdownMenu>
                     <DropdownItem
                       className="customHoverColor customActiveColor"
-                      onClick={viewSupplier}
-                    >
+                      onClick={() =>{openAddDialog(supplier)}}
+                      // onClick={openAddDialog}
+                      >
                       View
                     </DropdownItem>
-                    <DropdownItem className="customHoverColor customActiveColor">
+                    <DropdownItem 
+                    className="customHoverColor customActiveColor"
+                    onClick={() =>{openEditDialog(supplier)}}                   
+                     >
                       Edit
                     </DropdownItem>
                     <DropdownItem
                       className="customHoverColor customActiveColor"
-                      onClick={() => setIsDeleteModalOpen(true)}
+                      // onClick={() => {setIsDeleteModalOpen(true);deleteSupplier(supplier.supplier_id); }}
+                      onClick={handleDeleteClick}
                     >
                       Delete
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               </div>
+              
             </div>
           );
         default:
           return cellValue;
       }
     },
-    []
+    [isAddDialogOpen]
   );
 
   const onRowsPerPageChange = React.useCallback(
@@ -322,8 +402,9 @@ export default function SupplierTable() {
             </Dropdown>
             <Button
               className="bg-main-dark text-white"
-              endContent={<PlusIcon />}
+              endContent={<PlusIcon width={undefined} height={undefined} />}
               size="sm"
+              onClick={openSupDialog}
             >
               Add New
             </Button>
@@ -345,6 +426,7 @@ export default function SupplierTable() {
             </select>
           </label>
         </div>
+        
       </div>
     );
   }, [
@@ -374,6 +456,7 @@ export default function SupplierTable() {
             ? "All items selected"
             : `${selectedKeys.size} of ${items.length} selected`}
         </span>
+        
       </div>
     );
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
@@ -439,6 +522,73 @@ export default function SupplierTable() {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
       />
+      {/* <SupAddForm
+          isOpen={isSupDialogOpen}
+          onClose={closeSupDialog}
+        ></SupAddForm> */}
+        <CreateSup
+        isOpen={isSupDialogOpen}
+        onClose={closeSupDialog}
+        >
+        </CreateSup>
+        
+        <EditSup
+        isEditSupOpen={isEditDialodOpen}
+        onCloseEditSup={closeSupDialog}
+        supplierData= {supplierEditData}
+        ></EditSup>
+      {/* <ViewSup isOpen={isAddDialogOpen} onClose={closeAddDialog}  data={}/> */}
+      <ViewSup isOpen={isAddDialogOpen} onClose={closeAddDialog}  supplierData={supplierViewData}/>
     </>
   );
 }
+
+interface DeleteModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+
+const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-black opacity-50"></div>
+      <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+        <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4 flex items-center justify-center">
+          <div className="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10 border border-red-500">
+            <FaExclamationTriangle className="text-red-500" />
+          </div>
+        </div>
+        <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-center">
+          <h3 className="text-lg leading-6 font-medium text-gray-900">
+            Are you sure?
+          </h3>
+        </div>
+        <div className="my-2 mx-10">
+          <p className="text-sm text-gray-500 text-center">
+            This action cannot be undone. All values associated with this field
+            will be lost.
+          </p>
+        </div>
+        <div className="bg-gray-50 px-4 py-3 sm:px-6 text-center">
+          <button
+            onClick={onClose}
+            className=" inline-flex justify-center rounded-md border border-transparent shadow-sm px-8 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+          >
+            Delete field
+          </button>
+        </div>
+        <div className="bg-gray-50 px-4 py-3 sm:px-6 text-center">
+          <button
+            onClick={onClose}
+            className="mt-3 px-12 inline-flex justify-center rounded-md border border-red-500 shadow-sm  py-2 bg-white text-base font-medium text-red-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
