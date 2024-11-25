@@ -1,27 +1,29 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import SupAddForm from "../../supplier_add/page";
 import { SupplierType } from "../page";
+import Button from "@/app/components/Button";
 
-
-const EditSup =({
-    isEditSupOpen,
-    onCloseEditSup,
+const EditSup = ({
+  isEditSupOpen,
+  onCloseEditSup,
   supplierData,
 }: {
-    isEditSupOpen: boolean;
-    onCloseEditSup: () => void;
-  supplierData ?: SupplierType;
+  isEditSupOpen: boolean;
+  onCloseEditSup: () => void;
+  supplierData?: SupplierType;
 }) => {
   console.log("CreateForm");
   return (
-   <SupAddForm
-    isOpen={isEditSupOpen}
-    onClose={onCloseEditSup}
-    defaultValues={supplierData}
-    buttonLabel="Edit Supplier"
-   ></SupAddForm>
+    <SupAddForm
+      isOpen={isEditSupOpen}
+      onClose={onCloseEditSup} 
+      defaultValues={supplierData}
+      buttonLabel="Save"
+      
+    />
+    
   );
 };
 
-export default EditSup ;
+export default EditSup;
