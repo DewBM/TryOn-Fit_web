@@ -46,15 +46,15 @@ const inquiries = [
 ];
 
 const columns = [
-  { uid: "inquiry_id", name: "Inquiry ID" },
-  { uid: "inquiry", name: "Inquiry" },
-  { uid: "name", name: "Customer Name" },
-  { uid: "email", name: "Email" },
-  { uid: "order_id", name: "Order ID" },
-  { uid: "status", name: "Status" },
-  { uid: "date", name: "Date" },
-  { uid: "description", name: "Description" },
-  { uid: "actions", name: "Actions" },
+  { uid: "inquiry_id", name: "Inquiry ID", sortable: true },
+  { uid: "inquiry", name: "Inquiry", sortable: true },
+  { uid: "name", name: "Customer Name", sortable: true },
+  { uid: "email", name: "Email", sortable: true },
+  { uid: "order_id", name: "Order ID", sortable: true },
+  { uid: "status", name: "Status", sortable: true },
+  { uid: "date", name: "Date", sortable: true },
+  { uid: "description", name: "Description", sortable: false },
+  { uid: "actions", name: "Actions", sortable: false },
 ];
 
 const statusOptions = [
