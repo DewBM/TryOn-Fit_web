@@ -17,41 +17,49 @@ import {
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 interface SalesChartProps {
+  selectType: string;
   selectedDates: string[];
   selectedMonth: string;
   selectedYear: string;
+  
 }
 
-const ReportSalesChart: React.FC<SalesChartProps> = ({ selectedDates, selectedMonth, selectedYear }) => {
+const ReportSalesChart: React.FC<SalesChartProps> = ({ selectType,selectedDates, selectedMonth, selectedYear }) => {
   const [chartData, setChartData] = useState<any>(null);
+  
 
   useEffect(() => {
     // Generate mock data based on selection type (for demonstration purposes)
     const fetchSalesData = () => {
       let labels: string[] = [];
       let data: number[] = [];
+      
 
-      if (selectedDates.length > 0) {
+      if (selectedDates.length > 0 && selectType=="date") {
         // If multiple dates are selected
         labels = selectedDates;
         data = selectedDates.map(() => Math.floor(Math.random() * 100)); // Random sales data
-      } else if (selectedMonth) {
+        console.log(selectedDates) 
+      } else if (selectType=="month") {
         // If a month is selected
         const monthName = new Date(2023, parseInt(selectedMonth) - 1).toLocaleString("default", { month: "long" });
         labels = [monthName];
         data = [Math.floor(Math.random() * 1000)]; // Random sales for the selected month
-      } else if (selectedYear) {
+        console.log(selectedMonth)
+         
+ 
+      } else if (selectType=="year") {
+        console.log(selectedYear);
+        console.log("Hii")
         // If a year is selected
         const months = [
           "January", "February", "March", "April", "May", "June",
           "July", "August", "September", "October", "November", "December"
         ];
-        labels = [
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-          ];
-          data = [20,30,40]
-        // data = months.map(() => Math.floor(Math.random() * 1000)); // Random sales for each month in the year
+        labels = months;
+        data = months.map(() => Math.floor(Math.random() * 1000));
+        console.log("data") // Random sales for each month in the year
+        console.log("data33") 
       }
 
       setChartData({

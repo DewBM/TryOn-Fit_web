@@ -6,14 +6,16 @@ interface MultiDatePickerCardProps {
   setSelectedDates: (dates: string[]) => void;
   setSelectedMonth: (month: string) => void;
   setSelectedYear: (year: string) => void;
+  setSelectionType: (selectType: string)=> void;
 }
 
 const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
   setSelectedDates,
   setSelectedMonth,
   setSelectedYear,
+  setSelectionType,
 }) => {
-  const [selectionType, setSelectionType] = useState<"date" | "month" | "year">("date");
+  const [selectionType, setSelectionTypeState] = useState<"date" | "month" | "year">("date");
   const [selectedDates, setSelectedDatesState] = useState<string[]>([]);
   const [selectedMonth, setSelectedMonthState] = useState<string>("1");
   const [selectedYear, setSelectedYearState] = useState<string>("2023");
@@ -62,7 +64,8 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
               value="date"
               checked={selectionType === "date"}
               onChange={(e) => {
-                setSelectionType("date");
+                setSelectionTypeState("date");
+                setSelectionType("date")
                 setSelectedMonth("1"); // Reset to default month and year
                 setSelectedYear("2023");
               }}
@@ -76,6 +79,7 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
               value="month"
               checked={selectionType === "month"}
               onChange={(e) => {
+                setSelectionTypeState("month");
                 setSelectionType("month");
                 setSelectedDates([]); // Clear selected dates
               }}
@@ -89,6 +93,7 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
               value="year"
               checked={selectionType === "year"}
               onChange={(e) => {
+                setSelectionTypeState("year");
                 setSelectionType("year");
                 setSelectedDates([]); // Clear selected dates
                 setSelectedMonth("1"); // Reset to default month
@@ -131,6 +136,7 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
               id="month"
               value={selectedMonth}
               onChange={(e) => {
+                setSelectionType(e.target.value);
                 setSelectedMonthState(e.target.value);
                 setSelectedMonth(e.target.value); // Pass to parent
               }}

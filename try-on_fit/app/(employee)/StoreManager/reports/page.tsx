@@ -10,9 +10,12 @@ import MultiDatePickerCard from "@/app/components/reportsDateCards";
 import ReportSalesChart from "@/app/components/reportSalesChart";
 
 export default function Home() {
+  const [selectType, setSelectionType] = useState<string>("");
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>("1");
   const [selectedYear, setSelectedYear] = useState<string>("2023");
+  console.log("selectType :"+selectType);
+  
 
   return (
     <>
@@ -22,6 +25,7 @@ export default function Home() {
           setSelectedDates={setSelectedDates}
           setSelectedMonth={setSelectedMonth}
           setSelectedYear={setSelectedYear}
+          setSelectionType={setSelectionType}
         />
       </div>
 
@@ -32,6 +36,7 @@ export default function Home() {
           <div className="col-span-4 sm:col-span-3">
             {/* Sales Chart Component */}
             <ReportSalesChart
+              selectType={selectType}
               selectedDates={selectedDates}
               selectedMonth={selectedMonth}
               selectedYear={selectedYear}
