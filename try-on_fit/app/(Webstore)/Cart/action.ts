@@ -1,31 +1,26 @@
-export const fetchCart = async (userId: string, token: string) => {
-    try {
-      const response = await fetch(`http://localhost:8080/cart?userId=${userId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`, // Add the Authorization header
-        },
-      });
+
+import CartItem from "@/app/components/CartItem";
+import { customFetch } from "@/app/utils/auth";
+import { METHODS } from "http";
+import { headers } from "next/headers";
+
+export const fetchCart = async () => {
   
-      console.log("Response:", response); // Log the full response for debugging
+    const resp= await customFetch('/cart', {
+      method:"GET",
+      credentials:"include"
+    });
+    console.log("response:", resp);
   
-      if (!response.ok) {
-        const errorText = await response.text(); // Get response as text
-        console.error("Error fetching cart:", errorText); // Log the error
-        return []; // Return an empty array on error
-      }
-  
-      const data = await response.json();
-      if (data.isSuccess) {
-        return data.cartItems; // Return the cart items
-      } else {
-        console.error("Error fetching cart:", data.msg);
-        return [];
-      }
-    } catch (error) {
-      console.error("Error fetching cart:", error);
-      return [];
+    if (resp) {
+      if (resp.isSuccess) {
+        return resp;
+      }else
+      return {msg: resp.msg}
     }
-  };
-  
+    else {
+      return {msg: "Server Error"};
+    }
+   
+  }
+
