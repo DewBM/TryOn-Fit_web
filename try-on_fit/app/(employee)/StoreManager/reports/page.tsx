@@ -9,6 +9,7 @@ export default function Home() {
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>("1");
   const [selectedYear, setSelectedYear] = useState<string>("2023");
+  const [selectReportType,setDataType ] = useState<string>(" ")
 
   // Mock function to handle downloading the report
   const handleDownload = () => {
@@ -27,6 +28,8 @@ export default function Home() {
     link.click();
     URL.revokeObjectURL(url);
   };
+
+  
 
   return (
     <div className="p-8 space-y-8">
@@ -52,9 +55,7 @@ export default function Home() {
             setSelectedMonth={setSelectedMonth}
             setSelectedYear={setSelectedYear}
             setSelectionType={setSelectionType}
-            setDataType={() => {
-              console.log("Data type not implemented");
-            }}
+            setDataType={setDataType}
           />
         </div>
 
@@ -79,6 +80,7 @@ export default function Home() {
             selectedDates={selectedDates}
             selectedMonth={selectedMonth}
             selectedYear={selectedYear}
+            selectReportType={selectReportType}
           />
         </div>
       </div>

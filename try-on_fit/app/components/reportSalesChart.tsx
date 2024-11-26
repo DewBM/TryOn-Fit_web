@@ -21,6 +21,7 @@ interface SalesChartProps {
   selectedDates: string[];
   selectedMonth: string;
   selectedYear: string;
+  selectReportType: string; // Make sure to include this in the props
 }
 
 const ReportSalesChart: React.FC<SalesChartProps> = ({
@@ -28,6 +29,7 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
   selectedDates,
   selectedMonth,
   selectedYear,
+  selectReportType, // Destructure the prop here
 }) => {
   const [chartData, setChartData] = useState<any>(null);
 
@@ -69,14 +71,14 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
         labels,
         datasets: [
           {
-            label: "Sales Dataset 1",
+            label: "Sales ",
             data: dataset1,
             fill: false,
             borderColor: "rgb(75, 192, 192)", // Cyan color
             tension: 0.1,
           },
           {
-            label: "Sales Dataset 2",
+            label: "Revenue",
             data: dataset2,
             fill: false,
             borderColor: "rgb(255, 99, 132)", // Pink color
@@ -87,7 +89,7 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
     };
 
     fetchSalesData();
-  }, [selectedDates, selectedMonth, selectedYear]);
+  }, [selectedDates, selectedMonth, selectedYear, selectType]);
 
   if (!chartData) {
     return <div>Loading...</div>;
@@ -95,7 +97,10 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
 
   return (
     <div className="rounded-lg border border-stroke bg-white p-6 shadow-md dark:border-strokedark dark:bg-boxdark">
-      <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">Sales Chart</h3>
+      {/* Display the report type */}
+      <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">
+        {selectReportType}
+      </h3>
       <Line data={chartData} />
     </div>
   );
