@@ -6,7 +6,8 @@ interface MultiDatePickerCardProps {
   setSelectedDates: (dates: string[]) => void;
   setSelectedMonth: (month: string) => void;
   setSelectedYear: (year: string) => void;
-  setSelectionType: (selectType: string)=> void;
+  setSelectionType: (selectType: string) => void;
+  setDataType: (dataType: string) => void; // New prop for data type selection
 }
 
 const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
@@ -14,7 +15,9 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
   setSelectedMonth,
   setSelectedYear,
   setSelectionType,
+  setDataType, // New prop
 }) => {
+  const [dataType, setDataTypeState] = useState<"sales" | "orders" | "returns">("sales"); // New state
   const [selectionType, setSelectionTypeState] = useState<"date" | "month" | "year">("date");
   const [selectedDates, setSelectedDatesState] = useState<string[]>([]);
   const [selectedMonth, setSelectedMonthState] = useState<string>("1");
@@ -52,7 +55,27 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
 
   return (
     <div className="rounded-lg border border-stroke bg-white px-8 py-8 shadow-default dark:border-strokedark dark:bg-boxdark">
-      {/* Selection Toggle */}
+      {/* Data Type Selection */}
+      <div className="mb-6">
+        <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200">
+          Select Report Type:
+        </h3>
+        <select
+          value={dataType}
+          onChange={(e) => {
+            const value = e.target.value as "sales" | "orders" | "returns";
+            setDataTypeState(value);
+            setDataType(value); // Pass to parent
+          }}
+          className="mt-1 block w-full rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+        >
+          <option value="sales">Sales and Revenue Data</option>
+          <option value="orders">Orders</option>
+          <option value="returns">Returns</option>
+        </select>
+      </div>
+
+      {/* Selection Type */}
       <div className="mb-6">
         <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200">
           Choose Selection Type:
@@ -63,9 +86,9 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
               type="radio"
               value="date"
               checked={selectionType === "date"}
-              onChange={(e) => {
+              onChange={() => {
                 setSelectionTypeState("date");
-                setSelectionType("date")
+                setSelectionType("date");
                 setSelectedMonth("1"); // Reset to default month and year
                 setSelectedYear("2023");
               }}
@@ -78,7 +101,7 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
               type="radio"
               value="month"
               checked={selectionType === "month"}
-              onChange={(e) => {
+              onChange={() => {
                 setSelectionTypeState("month");
                 setSelectionType("month");
                 setSelectedDates([]); // Clear selected dates
@@ -92,7 +115,7 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
               type="radio"
               value="year"
               checked={selectionType === "year"}
-              onChange={(e) => {
+              onChange={() => {
                 setSelectionTypeState("year");
                 setSelectionType("year");
                 setSelectedDates([]); // Clear selected dates
@@ -119,7 +142,7 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
               type="date"
               id="multi-date"
               onChange={(e) => handleDateChange(e.target.value)}
-              className="mt-1 block w-1/2 rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+              className="mt-1 block w-full rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
             />
           </div>
         )}
@@ -136,11 +159,10 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
               id="month"
               value={selectedMonth}
               onChange={(e) => {
-                setSelectionType(e.target.value);
                 setSelectedMonthState(e.target.value);
                 setSelectedMonth(e.target.value); // Pass to parent
               }}
-              className="mt-1 block w-1/2 rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+              className="mt-1 block w-full rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
             >
               {months.map((month) => (
                 <option key={month.value} value={month.value}>
@@ -166,7 +188,7 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
                 setSelectedYearState(e.target.value);
                 setSelectedYear(e.target.value); // Pass to parent
               }}
-              className="mt-1 block w-1/2 rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+              className="mt-1 block w-full rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
             >
               {years.map((year) => (
                 <option key={year} value={year}>

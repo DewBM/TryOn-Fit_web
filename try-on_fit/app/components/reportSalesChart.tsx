@@ -1,4 +1,4 @@
-"use client";  // Add this line at the top of your file
+"use client"; // Add this line at the top of your file
 
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
@@ -21,55 +21,65 @@ interface SalesChartProps {
   selectedDates: string[];
   selectedMonth: string;
   selectedYear: string;
-  
 }
 
-const ReportSalesChart: React.FC<SalesChartProps> = ({ selectType,selectedDates, selectedMonth, selectedYear }) => {
+const ReportSalesChart: React.FC<SalesChartProps> = ({
+  selectType,
+  selectedDates,
+  selectedMonth,
+  selectedYear,
+}) => {
   const [chartData, setChartData] = useState<any>(null);
-  
 
   useEffect(() => {
     // Generate mock data based on selection type (for demonstration purposes)
     const fetchSalesData = () => {
       let labels: string[] = [];
-      let data: number[] = [];
-      
+      let dataset1: number[] = [];
+      let dataset2: number[] = [];
 
-      if (selectedDates.length > 0 && selectType=="date") {
+      if (selectedDates.length > 0 && selectType === "date") {
         // If multiple dates are selected
         labels = selectedDates;
-        data = selectedDates.map(() => Math.floor(Math.random() * 100)); // Random sales data
-        console.log(selectedDates) 
-      } else if (selectType=="month") {
+        dataset1 = selectedDates.map(() => Math.floor(Math.random() * 100)); // Random sales data for dataset 1
+        dataset2 = selectedDates.map(() => Math.floor(Math.random() * 100)); // Random sales data for dataset 2
+      } else if (selectType === "month") {
         // If a month is selected
-        const monthName = new Date(2023, parseInt(selectedMonth) - 1).toLocaleString("default", { month: "long" });
-        labels = [monthName];
-        data = [Math.floor(Math.random() * 1000)]; // Random sales for the selected month
-        console.log(selectedMonth)
-         
- 
-      } else if (selectType=="year") {
-        console.log(selectedYear);
-        console.log("Hii")
+        const year = parseInt(selectedYear); // Use the selected year
+        const month = parseInt(selectedMonth) - 1; // Month is 0-indexed (0 = January)
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        // Generate the dates for the entire month
+        labels = Array.from({ length: daysInMonth }, (_, i) => `${i + 1}-${selectedMonth}-${year}`);
+        dataset1 = Array.from({ length: daysInMonth }, () => Math.floor(Math.random() * 1000)); // Random data for dataset 1
+        dataset2 = Array.from({ length: daysInMonth }, () => Math.floor(Math.random() * 500)); // Random data for dataset 2
+      } else if (selectType === "year") {
         // If a year is selected
         const months = [
           "January", "February", "March", "April", "May", "June",
-          "July", "August", "September", "October", "November", "December"
+          "July", "August", "September", "October", "November", "December",
         ];
         labels = months;
-        data = months.map(() => Math.floor(Math.random() * 1000));
-        console.log("data") // Random sales for each month in the year
-        console.log("data33") 
+        dataset1 = months.map(() => Math.floor(Math.random() * 1000)); // Random sales for dataset 1
+        dataset2 = months.map(() => Math.floor(Math.random() * 500)); // Random sales for dataset 2
       }
 
+      // Update chart data with multiple datasets
       setChartData({
         labels,
         datasets: [
           {
-            label: "Sales",
-            data,
+            label: "Sales Dataset 1",
+            data: dataset1,
             fill: false,
-            borderColor: "rgb(75, 192, 192)",
+            borderColor: "rgb(75, 192, 192)", // Cyan color
+            tension: 0.1,
+          },
+          {
+            label: "Sales Dataset 2",
+            data: dataset2,
+            fill: false,
+            borderColor: "rgb(255, 99, 132)", // Pink color
             tension: 0.1,
           },
         ],
