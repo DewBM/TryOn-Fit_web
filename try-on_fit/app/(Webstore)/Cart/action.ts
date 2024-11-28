@@ -1,26 +1,25 @@
-
-import CartItem from "@/app/components/CartItem";
 import { customFetch } from "@/app/utils/auth";
-import { METHODS } from "http";
-import { headers } from "next/headers";
 
-export const fetchCart = async () => {
-  
-    const resp= await customFetch('/cart', {
-      method:"GET",
-      credentials:"include"
+export const Cartfetch = async () => {
+  try {
+    const resp = await customFetch('/cart', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
     });
+
     console.log("response:", resp);
-  
-    if (resp) {
-      if (resp.isSuccess) {
-        return resp;
-      }else
-      return {msg: resp.msg}
+
+    if (resp?.isSuccess) {
+      return resp;
+    } else {
+      return { msg: resp?.msg || "Unknown error occurred" };
     }
-    else {
-      return {msg: "Server Error"};
-    }
-   
+  } catch (error) {
+    console.error("Error fetching cart:", error);
+    return { msg: "Network or server error" };
   }
+};
 

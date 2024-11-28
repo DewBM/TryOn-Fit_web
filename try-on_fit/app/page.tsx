@@ -24,6 +24,9 @@ function Home() {
   const handlekidscollections = () => {
     router.push('kidscollection');
   };
+   const handlecart = ()=>{
+    router.push('cart');
+   }
  
   // Define the items array
   const items = [

@@ -8,7 +8,7 @@ import Needhelp from '@/app/components/needhelp';
 import Payment from '@/app/components/payment';
 import Delivaryaddress from '@/app/components/delivaryaddress';
 import Cartcard from '@/app/components/Cartcard';
-import { fetchCart } from './action';
+import {Cartfetch} from './action'
 
 interface CartItems {
   id: number;
@@ -53,7 +53,7 @@ const Page = () => {
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const items = await fetchCart();
+        const items = await Cartfetch();
         if (Array.isArray(items)) {
           setCartItems(items);
           calculateOrderSummary(items);
