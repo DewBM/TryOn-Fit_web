@@ -112,7 +112,7 @@ const Product: React.FC<Props> = ({ images, name, price }) => {
                 <p className="font-semibold">Product Details</p>
                 <p className="text-gray-600">Material: Polyester Material Composition: 92% Polyester, 8% Spandex Model Height 5' 8", wearing size UK 10 (Size Guide) Please bear in mind that...</p>
               </div>
-              <button className="self-end bg-main-dark text-white py-2 px-4 rounded" onClick={() => window.location.href = '/'}>
+              <button className="self-end bg-main-dark text-white py-2 px-4 rounded" onClick={() => window.location.href = '/Productpage'}>
                 View More
               </button>
             </div>
