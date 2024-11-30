@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import SideBarItem from "./SideBarItem";
-import { FiHome, FiSettings, FiShoppingBag, FiTag, FiPackage, FiArrowUp, FiUsers, FiTruck, FiMessageSquare, FiShoppingCart, FiArrowLeftCircle, FiBarChart,FiStar } from "react-icons/fi";
+import { FiHome,FiPlusCircle,FiClock,FiCheckCircle, FiSettings, FiShoppingBag, FiTag, FiPackage, FiArrowUp, FiUsers, FiTruck, FiMessageSquare, FiShoppingCart, FiArrowLeftCircle, FiBarChart,FiStar } from "react-icons/fi";
 
 interface SidebarProps {
   sideBarOpen: boolean;
@@ -46,7 +46,10 @@ const Sidebar: React.FC<SidebarProps> = ({
     ],
     DistributionCoordinator: [
       { label: "DashBoard", route: "/DistributionCoordinator", icon: <FiHome /> },
-      { label: "Orders", route: "/DistributionCoordinator/orders", icon: <FiShoppingCart /> },
+      { label: "Total Orders", route: "/DistributionCoordinator/orders", icon: <FiPackage /> },
+      { label: "New Orders", route: "/DistributionCoordinator/orders", icon: <FiPlusCircle /> },
+      { label: "Processing Orders", route: "/DistributionCoordinator/orders", icon: <FiClock /> },
+      { label: "Shipped Orders", route: "/DistributionCoordinator/orders", icon: <FiCheckCircle /> },
       { label: "Returns", route: "/DistributionCoordinator/return", icon: <FiArrowLeftCircle /> },
     ],
   };

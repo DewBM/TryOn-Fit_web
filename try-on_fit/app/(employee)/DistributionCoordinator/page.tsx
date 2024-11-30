@@ -3,7 +3,7 @@ import Header from "@/app/components/Header/index";
 import CardDataStats from "@/app/components/DashboardCard";
 import OrderVolumeChart from "@/app/components/charts/OrderVolumeChart";
 import ReturnRatesChart from "@/app/components/charts/ReturnRatesChart";
-import { FiPackage, FiClock, FiClipboard, FiCheckCircle } from "react-icons/fi";
+import { FiPackage, FiPlusCircle , FiClock, FiCheckCircle } from "react-icons/fi";
 
 export default function Home() {
   // Data for the Order Volume chart
@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-8 xl:grid-cols-4 2xl:gap-8">
-        <CardDataStats title="Orders Today" total="150">
+        <CardDataStats title="Total Orders Today" total="150">
           <div
             className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
             style={{
@@ -43,7 +43,19 @@ export default function Home() {
             <FiPackage size={25} style={{ stroke: "var(--main-dark)" }} />
           </div>
         </CardDataStats>
-        <CardDataStats title="Pending Orders" total="50">
+        <CardDataStats title="New Orders" total="50">
+          <div
+            className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
+            style={{
+              padding: "10px",
+              backgroundColor: "var(--main-background)",
+              boxShadow: "var(--main-drop-shadow)",
+            }}
+          >
+            <FiPlusCircle size={25} style={{ stroke: "var(--main-dark)" }} />
+          </div>
+        </CardDataStats>
+        <CardDataStats title="Processing Orders" total="50">
           <div
             className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
             style={{
@@ -55,19 +67,7 @@ export default function Home() {
             <FiClock size={25} style={{ stroke: "var(--main-dark)" }} />
           </div>
         </CardDataStats>
-        <CardDataStats title="Orders in Progress" total="50">
-          <div
-            className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
-            style={{
-              padding: "10px",
-              backgroundColor: "var(--main-background)",
-              boxShadow: "var(--main-drop-shadow)",
-            }}
-          >
-            <FiClipboard size={25} style={{ stroke: "var(--main-dark)" }} />
-          </div>
-        </CardDataStats>
-        <CardDataStats title="Completed Orders" total="50">
+        <CardDataStats title="Shipped" total="50">
           <div
             className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
             style={{
