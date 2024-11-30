@@ -3,7 +3,10 @@ export async function customFetch(endpoint: string, options: RequestInit) {
    const url = api + endpoint;
 
    try {
-      let resp = await fetch(url, options);
+      let resp = await fetch(url, {
+         ...options,
+         credentials: 'include'
+      });
       if (resp && resp.ok){
          console.log(resp);
          let body = await resp.json();
