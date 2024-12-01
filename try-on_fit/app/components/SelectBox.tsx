@@ -38,7 +38,7 @@ export default function SelectBox({
           // id={id}
           name={name}
           key={key}
-          autoComplete={autoComplete}
+          title={labelName}
           defaultValue={defaultValue}
           value={value}
           onChange={(e) => onChange(e.target.value)}
