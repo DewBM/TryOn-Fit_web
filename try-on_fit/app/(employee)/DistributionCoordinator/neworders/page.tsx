@@ -49,6 +49,7 @@ const statusOptions = [
   { uid: "shipped", name: "Shipped" },
   { uid: "completed", name: "Completed" },
   { uid: "Confirmed", name: "Confirmed" },
+  { uid: "Delivered", name: "Delivered" },
 ];
 
 const INITIAL_VISIBLE_COLUMNS = [
