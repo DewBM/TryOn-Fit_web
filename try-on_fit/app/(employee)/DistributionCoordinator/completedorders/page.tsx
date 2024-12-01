@@ -28,7 +28,7 @@ const orders = [
     order_id: 1,
     customer_id: "12345",
     order_date: "2023-07-15",
-    order_status: "Confirmed",
+    order_status: "Completed",
     delivery_date: "2023-07-15",
     delivery_address: "Kaluthara",
     sub_total: 2500.0,
@@ -80,7 +80,7 @@ export default function Home() {
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
-    if (visibleColumns === "all") return columns;
+    if (visibleColumns ) return columns;
 
     return columns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid)
