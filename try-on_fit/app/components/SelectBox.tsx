@@ -40,7 +40,7 @@ export default function SelectBox({
           key={key}
           title={labelName}
           defaultValue={defaultValue}
-          value={value}
+          //value={value}
           onChange={(e) => onChange(e.target.value)}
           className="block w-full rounded-md border-0 focus:outline-none py-2.5 pl-1 text-gray-900 ring-1 ring-inset ring-main-light focus:ring-2 focus:ring-inset focus:ring-main-dark text-xs sm:leading-6"
         >

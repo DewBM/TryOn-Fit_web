@@ -20,13 +20,13 @@ export default function Inquiry() {
     setSelectedValue(newValue);
   };
   
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  // const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setSelectedImage(event.target.files[0]);
-    }
-  };
+  // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files) {
+  //     setSelectedImage(event.target.files[0]);
+  //   }
+  // };
 
   const [lastResult, action] = useFormState(inquiryform, undefined);
   const [form, fields] = useForm({
@@ -73,36 +73,36 @@ export default function Inquiry() {
 
               <TextBox
                 labelName={"Order ID"}
-                name={fields.orderId.name}
-                key={fields.orderId.key as React.Key}
+                name={fields.order_id.name}
+                key={fields.order_id.key as React.Key}
                 defaultValue=""
                 inputType="text"
                 placeholder=""
                 disabled={false}
               ></TextBox>
-              <div className="text-xs text-red-400">{fields.orderId.errors}</div>
+              <div className="text-xs text-red-400">{fields.order_id.errors}</div>
 
                <TextBox
                 labelName={"Product ID"}
-                name={fields.productId.name}
-                key={fields.productId.key as React.Key}
+                name={fields.product_id.name}
+                key={fields.product_id.key as React.Key}
                 defaultValue=""
                 inputType="text"
                 placeholder=""
                 disabled={false}
               ></TextBox>
-              <div className="text-xs text-red-400">{fields.productId.errors}</div>
+              <div className="text-xs text-red-400">{fields.product_id.errors}</div>
 
               <TextBox
                 labelName={"Customer ID"}
-                name={fields.customerId.name}
-                key={fields.customerId.key as React.Key}
+                name={fields.customer_id.name}
+                key={fields.customer_id.key as React.Key}
                 defaultValue=""
                 inputType="text"
                 placeholder=""
                 disabled={false}
               ></TextBox>
-              <div className="text-xs text-red-400">{fields.customerId.errors}</div>
+              <div className="text-xs text-red-400">{fields.customer_id.errors}</div>
 
               <TextBox
                 labelName={"Customer Name"}
@@ -116,14 +116,14 @@ export default function Inquiry() {
 
               <TextBox
                 labelName={"Customer Contact Number"}
-                name={fields.contactNumber.name}
-                key={fields.contactNumber.key as React.Key}
+                name={fields.contact_num.name}
+                key={fields.contact_num.key as React.Key}
                 defaultValue=""
                 inputType="text"
                 placeholder=""
                 disabled={false}
               ></TextBox>
-              <div className="text-xs text-red-400">{fields.contactNumber.errors}</div>
+              <div className="text-xs text-red-400">{fields.contact_num.errors}</div>
 
             </div>
 
@@ -136,26 +136,26 @@ export default function Inquiry() {
 
               <SelectBox
                 labelName="Select the Issue"
-                key="issueType"
-                name="issueType"
+                key={fields.issue_type.key as React.Key}
+                name={fields.issue_type.name}
                 options={[
                   { value: "", label: "" },
                   { value: "Awaiting and Arrival", label: "Awaiting and Arrival" },
                   { value: "Ordering and payment", label: "Ordering and payment" },
                   { value: "Virtual FitOn", label: "Virtual FitOn" },
                   { value: "Refund", label: "Refund" },
-                  { value: "Account Managment", label: "Account Managment" },
+                  { value: "Account Management", label: "Account Management" },
                 ]}
                 autoComplete="Other"
                 value={selectedValue}
                 onChange={(newValue) => handleChange(newValue)}
-                defaultValue=""
+                defaultValue=" "
               />
 
                 <TextBox
                 labelName={"Issue Description"}
-                name={fields.issuedescription.name}
-                key={fields.issuedescription.key as React.Key}
+                name={fields.issue_description.name}
+                key={fields.issue_description.key as React.Key}
                 defaultValue=""
                 inputType="text"
                 placeholder=""
@@ -163,7 +163,7 @@ export default function Inquiry() {
               ></TextBox>
               
             </div>
-            <div className="sm:col-span-1 lg:grid-cols-5 text-lg font-semibold mb-8 mt-8">
+            {/* <div className="sm:col-span-1 lg:grid-cols-5 text-lg font-semibold mb-8 mt-8">
               <p className="mb-3">Upload an image (optional)</p>
               <div className="">
                 <input
@@ -178,17 +178,17 @@ export default function Inquiry() {
                   Image uploaded successfully!
                 </span>
               )}
-            </div>
+            </div> */}
 
-            <div className=" sm:col-span-1 sm:row-span-2 lg:grid-cols-4 text-lg py-4 font-semibold mb-3">
+            {/* <div className=" sm:col-span-1 sm:row-span-2 lg:grid-cols-4 text-lg py-4 font-semibold mb-3">
               <TextBox
                 labelName={"Describe Your Issue"}
-                name={fields.issue.name}
+                name={fields.issuedescription.name}
                 inputType="text"
                 defaultValue={"number"} 
-                key={fields.issue.key as React.Key}
+                key={fields.issuedescription.key as React.Key}
               ></TextBox>
-            </div>
+            </div> */}
             {/* <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-16">
               <p>Perfect Solution</p>
               <hr className="border-b border-#cbd5e1"></hr>
@@ -216,9 +216,9 @@ export default function Inquiry() {
             <div className=" sm:col-span-1 lg:grid-cols-4 text-lg font-semibold mb-3">
               <TextBox
                 labelName={"Any Additional Comments or Requests"}
-                name={fields.additionalComments.name}
-                inputType="text" defaultValue={"number"} 
-                key={fields.additionalComments.key as React.Key} 
+                name={fields.additional_comments.name}
+                inputType="text" defaultValue={" "} 
+                key={fields.additional_comments.key as React.Key} 
                 
                 ></TextBox>
             </div>

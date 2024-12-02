@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
+const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
 
 // Contact number validation
 const validatePhoneNumber = (contactNumber: string) => {
@@ -11,19 +11,19 @@ const validatePhoneNumber = (contactNumber: string) => {
 
 export const InquiryFormSchema = z.object({
 
-  orderId: z
+  order_id: z
     .string()
     .min(1, { message: "Order ID cannot be empty" }),
 
-  productId: z
+  product_id: z
     .string()
     .min(1, { message: "Product ID cannot be empty" }),
 
-  customerId: z
+  customer_id: z
     .string()
     .min(1, { message: "Customer ID cannot be empty" }),
 
-  contactNumber: z
+  contact_num: z
     .string()
     .min(1, { message: "Contact Number cannot be empty" })
     .refine(validatePhoneNumber, {
@@ -34,23 +34,22 @@ export const InquiryFormSchema = z.object({
     .string()
     .min(1, { message: "Name cannot be empty" }),
 
-    issue: z
+    issue_type: z
     .enum(["Awaiting and Arrival", "Ordering and payment", "Virtual FitOn", "Refund", "Account Management","Other"], {
-    //   errorMap: () => ({ message: "Please select a valid issue type" }),
+      errorMap: () => ({ message: "Please select a valid issue type" }),
     })
     .default("Other"),
 
-    issuedescription: z
+    issue_description: z
       .string(),
 
-      image: z
-      .any()
-      .refine(
-        (file) => file instanceof File && file.size <= MAX_IMAGE_SIZE,
-        {
-          message: "Image must be a valid file and less than 2MB",
-        }
-      ),
+  //     image: z
+  // .any()
+  // .refine(
+  //   (file) => file instanceof File || (file && typeof file === "object" && file.size <= MAX_IMAGE_SIZE),
+  //   { message: "Image must be a valid file and less than 2MB" } // Wrap `message` inside an object
+  // ),
 
-      additionalComments: z.string(),
+
+      additional_comments: z.string(),
 });

@@ -15,16 +15,18 @@ export async function inquiryform(prevState: unknown, formData : FormData) {
       }
 
    const inquiryData = {
-      orderId: formData.get("orderId"),
-      productId: formData.get("productId"),
-      customerId: formData.get("customerId"),
+      order_id: formData.get("order_id"),
+      product_id: formData.get("product_id"),
+      customer_id: formData.get("customer_id"),
       name: formData.get("name"),
-      contactNumber: formData.get("contactNumber"),
-      issue: formData.get("issue"),
-      image: formData.get("image"),
-      additionalcomments: formData.get("additionalcomments"),
+      contact_num: formData.get("contact_num"),
+      issue_type: formData.get("issue_type"),
+      issue_description: formData.get("issue_description"),
+      //image: formData.get("image"),
+      additional_comments: formData.get("additional_comments"),
    };
-
+   console.log("hii");
+   console.log(inquiryData);
    const params = {
       method: "POST",
       headers: {
@@ -34,8 +36,8 @@ export async function inquiryform(prevState: unknown, formData : FormData) {
    };
 
    const resp = await customFetch("/inquiryForm", params);
-   console.log('New Response: ', resp);
-   console.log(params);
+   //console.log('New Response: ', resp);
+   //console.log(params);
 
    if (resp) {
       if (resp.isSuccess) {
