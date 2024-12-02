@@ -66,6 +66,8 @@ export default function Home() {
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "order_date", direction: "ascending" });
   const [page, setPage] = useState(1);
   const [ordersData, setOrdersData] = useState<Order[]>([]);
+  const [statusUpdated, setStatusUpdated] = useState(false);  // Track if status is updated
+
 
   // Fetch data from the API when the component mounts
   useEffect(() => {
@@ -76,6 +78,7 @@ export default function Home() {
 
         if (data.isSuccess) {
           setOrdersData(data.data);
+          setStatusUpdated(false);
         } else {
           console.error(data.msg);
         }
@@ -85,7 +88,7 @@ export default function Home() {
     };
 
     fetchOrders();
-  }, []);
+  }, [statusUpdated]);
 
   const pages = Math.ceil(ordersData.length / rowsPerPage);
   const hasSearchFilter = Boolean(filterValue);
@@ -98,12 +101,58 @@ export default function Home() {
     );
   }, [visibleColumns]);
 
-  const handleStatusChange = (orderId: number, newStatus: string) => {
-    const updatedOrders = ordersData.map((order) =>
-      order.order_id === orderId ? { ...order, order_status: newStatus } : order
+  // const handleStatusChange = (orderId: number, newStatus: string) => {
+  //   const updatedOrders = ordersData.map((order) =>
+  //     order.order_id === orderId ? { ...order, order_status: newStatus } : order
+  //   );
+  //   setOrdersData(updatedOrders);
+  // };
+
+  const handleStatusChange = async (orderId: number, newStatus: string) => {
+    // Optimistically update the local state
+    setOrdersData((prevOrders) =>
+      prevOrders.map((order) =>
+        order.order_id === orderId
+          ? { ...order, order_status: newStatus }
+          : order
+      )
     );
-    setOrdersData(updatedOrders);
+  
+    try {
+      const response = await fetch("http://localhost:8080/order/updateStatus", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          order_id: orderId,
+          status: newStatus,
+        }),
+      });
+  
+      const result = await response.json();
+  
+      if (!result.isSuccess) {
+        console.error(result.msg);
+        // Revert the state if the server update fails
+        setOrdersData((prevOrders) =>
+          prevOrders.map((order) =>
+            order.order_id === orderId
+              ? { ...order, order_status: "Update!" } // Use default or placeholder status
+              : order
+          )
+        );
+      }else {
+        // Trigger re-fetching of orders after successful update
+        setStatusUpdated(true);  // Mark that the status has been updated
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+      // Optional: Revert state in case of a server error
+    }
   };
+  
+  
 
   const filteredItems = React.useMemo(() => {
     let filteredOrders = [...ordersData];

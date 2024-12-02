@@ -40,13 +40,13 @@ type StatusOption = {
   uid: string;
   name: string;
 };
-const statusOptions: StatusOption[] = [
-  { uid: "processing", name: "Processing" },
-  { uid: "shipped", name: "Shipped" },
-  { uid: "delivered", name: "Delivered" },
-  { uid: "cancelled", name: "Cancelled" },
+const statusOptions = [
+  { uid: "Processing", name: "Processing" },
+  { uid: "Shipped", name: "Shipped" },
+  { uid: "Completed", name: "Completed" },
+  { uid: "Confirmed", name: "Confirmed" },
+  { uid: "Delivered", name: "Delivered" },
 ];
-
 const statusColorMap: Record<string, ChipProps["color"]> = {
   processing: "warning",
   shipped: "primary",
