@@ -43,12 +43,12 @@ const orders = [
 ];
 
 const statusOptions = [
-  { uid: "processing", name: "Processing" },
-  { uid: "shipped", name: "Shipped" },
-  { uid: "delivered", name: "Delivered" },
-  { uid: "cancelled", name: "Cancelled" },
+  { uid: "Processing", name: "Processing" },
+  { uid: "Shipped", name: "Shipped" },
+  { uid: "Completed", name: "Completed" },
+  { uid: "Confirmed", name: "Confirmed" },
+  { uid: "Delivered", name: "Delivered" },
 ];
-
 export default function OrderDetails() {
   const searchParams = useSearchParams();
   const router = useRouter();

@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableHeader,
@@ -23,19 +22,6 @@ import { ChevronDownIcon } from "@/app/components/ChevronDownIcon";
 import { SearchIcon } from "@/app/components/SearchIcon";
 import { useRouter } from "next/navigation";
 
-const orders = [
-  {
-    order_id: 1,
-    customer_id: "12345",
-    order_date: "2023-07-15",
-    order_status: "Processing",
-    delivery_date: "2023-07-15",
-    delivery_address: "Kaluthara",
-    sub_total: 2500.0,
-    discount: 0,
-  },
-];
-
 const columns = [
   { uid: "order_id", name: "Order ID" },
   { uid: "order_date", name: "Order Date" },
@@ -45,9 +31,9 @@ const columns = [
 ];
 
 const statusOptions = [
-  { uid: "processing", name: "Processing" },
-  { uid: "shipped", name: "Shipped" },
-  { uid: "completed", name: "Completed" },
+  { uid: "Processing", name: "Processing" },
+  { uid: "Shipped", name: "Shipped" },
+  { uid: "Completed", name: "Completed" },
   { uid: "Confirmed", name: "Confirmed" },
   { uid: "Delivered", name: "Delivered" },
 ];
@@ -60,40 +46,113 @@ const INITIAL_VISIBLE_COLUMNS = [
   "actions",
 ];
 
-type Order = (typeof orders)[0];
+type Order = {
+  order_id: number;
+  customer_id: string | null;
+  order_date: string | null;
+  order_status: string;
+  delivery_date: string | null;
+  delivery_address: string | null;
+  sub_total: string | null;
+  discount: string | null;
+};
 
 export default function Home() {
   const router = useRouter();
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
-  const [visibleColumns, setVisibleColumns] = useState(
-    new Set(INITIAL_VISIBLE_COLUMNS)
-  );
+  const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: "order_date",
-    direction: "ascending",
-  });
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "order_date", direction: "ascending" });
   const [page, setPage] = useState(1);
-  const [ordersData, setOrdersData] = useState(orders);
+  const [ordersData, setOrdersData] = useState<Order[]>([]);
+  const [statusUpdated, setStatusUpdated] = useState(false);  // Track if status is updated
+
+
+  // Fetch data from the API when the component mounts
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/order/getOrdersByStatus?status=Processing");
+        const data = await response.json();
+
+        if (data.isSuccess) {
+          setOrdersData(data.data);
+          setStatusUpdated(false);
+        } else {
+          console.error(data.msg);
+        }
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchOrders();
+  }, [statusUpdated]);
 
   const pages = Math.ceil(ordersData.length / rowsPerPage);
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
-    if (visibleColumns ) return columns;
+    if (visibleColumns === "all") return columns;
 
     return columns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid)
     );
   }, [visibleColumns]);
 
-  const handleStatusChange = (orderId: number, newStatus: string) => {
-    const updatedOrders = ordersData.map((order) =>
-      order.order_id === orderId ? { ...order, order_status: newStatus } : order
+  // const handleStatusChange = (orderId: number, newStatus: string) => {
+  //   const updatedOrders = ordersData.map((order) =>
+  //     order.order_id === orderId ? { ...order, order_status: newStatus } : order
+  //   );
+  //   setOrdersData(updatedOrders);
+  // };
+
+  const handleStatusChange = async (orderId: number, newStatus: string) => {
+    // Optimistically update the local state
+    setOrdersData((prevOrders) =>
+      prevOrders.map((order) =>
+        order.order_id === orderId
+          ? { ...order, order_status: newStatus }
+          : order
+      )
     );
-    setOrdersData(updatedOrders);
+  
+    try {
+      const response = await fetch("http://localhost:8080/order/updateStatus", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          order_id: orderId,
+          status: newStatus,
+        }),
+      });
+  
+      const result = await response.json();
+  
+      if (!result.isSuccess) {
+        console.error(result.msg);
+        // Revert the state if the server update fails
+        setOrdersData((prevOrders) =>
+          prevOrders.map((order) =>
+            order.order_id === orderId
+              ? { ...order, order_status: "Update!" } // Use default or placeholder status
+              : order
+          )
+        );
+      }else {
+        // Trigger re-fetching of orders after successful update
+        setStatusUpdated(true);  // Mark that the status has been updated
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+      // Optional: Revert state in case of a server error
+    }
   };
+  
+  
 
   const filteredItems = React.useMemo(() => {
     let filteredOrders = [...ordersData];
@@ -179,16 +238,13 @@ export default function Home() {
                   <DropdownItem
                     className="customHoverColor customActiveColor capitalize"
                     onClick={() =>
-                      router.push(
-                        `/DistributionCoordinator/orders/view_neworders?id=${order.order_id}`
-                      )
+                      router.push(`/DistributionCoordinator/orders/view_neworders?id=${order.order_id}`)
                     }
                   >
                     View
                   </DropdownItem>
                   <DropdownItem
                     className="customHoverColor customActiveColor capitalize"
-                    
                   >
                     Save
                   </DropdownItem>
@@ -243,9 +299,7 @@ export default function Home() {
         </TableBody>
       </Table>
       <Pagination
-        classNames={{
-          cursor: "bg-main-dark text-background",
-        }}
+        classNames={{ cursor: "bg-main-dark text-background" }}
         style={{ marginTop: "16px" }}
         total={pages}
         page={page}
