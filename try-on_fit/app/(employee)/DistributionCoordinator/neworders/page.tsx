@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableHeader,
@@ -23,16 +22,17 @@ import { ChevronDownIcon } from "@/app/components/ChevronDownIcon";
 import { SearchIcon } from "@/app/components/SearchIcon";
 import { useRouter } from "next/navigation";
 
-const orders = [
+// Replace this mock data with API fetching logic
+const INITIAL_ORDERS = [
   {
     order_id: 1,
-    customer_id: "12345",
-    order_date: "2023-07-15",
+    customer_id: null,
     order_status: "Confirmed",
-    delivery_date: "2023-07-15",
-    delivery_address: "Kaluthara",
-    sub_total: 2500.0,
-    discount: 0,
+    order_date: null,
+    delivery_date: null,
+    delivery_address: null,
+    sub_total: null,
+    discount: null,
   },
 ];
 
@@ -60,7 +60,7 @@ const INITIAL_VISIBLE_COLUMNS = [
   "actions",
 ];
 
-type Order = (typeof orders)[0];
+type Order = (typeof INITIAL_ORDERS)[0];
 
 export default function Home() {
   const router = useRouter();
@@ -75,14 +75,39 @@ export default function Home() {
     direction: "ascending",
   });
   const [page, setPage] = useState(1);
-  const [ordersData, setOrdersData] = useState(orders);
+  const [ordersData, setOrdersData] = useState<Order[]>(INITIAL_ORDERS);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/order/getOrdersByStatus?status=Confirmed"
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        // Ensure data is an array
+        if (Array.isArray(data)) {
+          setOrdersData(data);
+        } else {
+          console.error("Expected an array but got:", data);
+          setOrdersData([]); // Set to empty array if data is not an array
+        }
+      } catch (error) {
+        console.error("Failed to fetch orders:", error);
+        setOrdersData([]); // Set to empty array on error
+      }
+    };
+
+    fetchOrders();
+  }, []);
 
   const pages = Math.ceil(ordersData.length / rowsPerPage);
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
-
     return columns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid)
     );
@@ -96,21 +121,18 @@ export default function Home() {
   };
 
   const filteredItems = React.useMemo(() => {
-    let filteredOrders = [...ordersData];
-
+    let filteredOrders = Array.isArray(ordersData) ? [...ordersData] : [];
     if (hasSearchFilter) {
       filteredOrders = filteredOrders.filter((order) =>
         order.order_id.toString().includes(filterValue.toString())
       );
     }
-
     return filteredOrders;
   }, [ordersData, filterValue]);
 
   const items = React.useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
+    const start = (page - 1 ) * rowsPerPage;
     const end = start + rowsPerPage;
-
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
@@ -188,7 +210,6 @@ export default function Home() {
                   </DropdownItem>
                   <DropdownItem
                     className="customHoverColor customActiveColor capitalize"
-                    
                   >
                     Save
                   </DropdownItem>

@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableHeader,
@@ -22,19 +21,6 @@ import { VerticalDotsIcon } from "@/app/components/VerticalDotsIcon";
 import { ChevronDownIcon } from "@/app/components/ChevronDownIcon";
 import { SearchIcon } from "@/app/components/SearchIcon";
 import { useRouter } from "next/navigation";
-
-const orders = [
-  {
-    order_id: 1,
-    customer_id: "12345",
-    order_date: "2023-07-15",
-    order_status: "Processing",
-    delivery_date: "2023-07-15",
-    delivery_address: "Kaluthara",
-    sub_total: 2500.0,
-    discount: 0,
-  },
-];
 
 const columns = [
   { uid: "order_id", name: "Order ID" },
@@ -60,28 +46,52 @@ const INITIAL_VISIBLE_COLUMNS = [
   "actions",
 ];
 
-type Order = (typeof orders)[0];
+type Order = {
+  order_id: number;
+  customer_id: string | null;
+  order_date: string | null;
+  order_status: string;
+  delivery_date: string | null;
+  delivery_address: string | null;
+  sub_total: string | null;
+  discount: string | null;
+};
 
 export default function Home() {
   const router = useRouter();
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
-  const [visibleColumns, setVisibleColumns] = useState(
-    new Set(INITIAL_VISIBLE_COLUMNS)
-  );
+  const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: "order_date",
-    direction: "ascending",
-  });
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "order_date", direction: "ascending" });
   const [page, setPage] = useState(1);
-  const [ordersData, setOrdersData] = useState(orders);
+  const [ordersData, setOrdersData] = useState<Order[]>([]);
+
+  // Fetch data from the API when the component mounts
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/order/getOrdersByStatus?status=Processing");
+        const data = await response.json();
+
+        if (data.isSuccess) {
+          setOrdersData(data.data);
+        } else {
+          console.error(data.msg);
+        }
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
 
   const pages = Math.ceil(ordersData.length / rowsPerPage);
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
-    if (visibleColumns ) return columns;
+    if (visibleColumns === "all") return columns;
 
     return columns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid)
@@ -179,16 +189,13 @@ export default function Home() {
                   <DropdownItem
                     className="customHoverColor customActiveColor capitalize"
                     onClick={() =>
-                      router.push(
-                        `/DistributionCoordinator/orders/view_neworders?id=${order.order_id}`
-                      )
+                      router.push(`/DistributionCoordinator/orders/view_neworders?id=${order.order_id}`)
                     }
                   >
                     View
                   </DropdownItem>
                   <DropdownItem
                     className="customHoverColor customActiveColor capitalize"
-                    
                   >
                     Save
                   </DropdownItem>
@@ -243,9 +250,7 @@ export default function Home() {
         </TableBody>
       </Table>
       <Pagination
-        classNames={{
-          cursor: "bg-main-dark text-background",
-        }}
+        classNames={{ cursor: "bg-main-dark text-background" }}
         style={{ marginTop: "16px" }}
         total={pages}
         page={page}
