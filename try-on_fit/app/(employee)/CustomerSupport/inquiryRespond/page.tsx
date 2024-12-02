@@ -46,7 +46,6 @@ export default function InquiryReport() {
         </p>
       </div>
 
-
       {/* Product Image */}
       <div className="mb-6">
         <h2 className="text-xl font-bold mb-4 border-b border-#cbd5e1">Product Image</h2>
