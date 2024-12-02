@@ -49,7 +49,7 @@ const UserProfilePage: React.FC = () => {
         if (user && user.customer_id) {
           setCustomer_id(user.customer_id);
 
-          // Fetch user data using the retrieved customer_id
+          // Fetch user data 
           const userData = await customFetch(
             "http://localhost:8080/customer/getCustomerByCustomer_id?customer_id=${user.customer_id}",
             {
