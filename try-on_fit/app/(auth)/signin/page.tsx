@@ -14,6 +14,7 @@ import { parseWithZod } from "@conform-to/zod";
 import React from "react";
 import Form from "@/app/components/Form";
 
+
 export default function Signin() {
   const [lastResult, action] = useFormState(signin, undefined);
   const [form, fields] = useForm({
@@ -76,7 +77,7 @@ export default function Signin() {
           <div className="sm:col-span-4 font-medium leading-6 text-sm ml-44">
             <Link
               className="underline  text-red-400"
-              href="http://localhost:8080/signup"
+              href="http://localhost:8081/signup"
             >
               Froget password ?
             </Link>
@@ -91,7 +92,7 @@ export default function Signin() {
               Don't have an account ?
               <Link
                 className="underline text-main-dark"
-                href="http://localhost:8080/signup"
+                href="http://localhost:8081/signup"
               >
                 Register here
               </Link>

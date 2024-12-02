@@ -39,15 +39,11 @@ import CreateSup from "./supplier_create/page";
 import EditSup from "./supplier_edit/page";
 
 
-const statusColorMap: Record<string, ChipProps["color"]> = {
-  available: "success",
-  unavailable: "danger",
-};
+
 
 const INITIAL_VISIBLE_COLUMNS = [
   "supplier_name",
   "brand_name",
-  "status",
   "actions",
 ];
 
@@ -172,14 +168,7 @@ export default function SupplierTable() {
         supplier.supplier_name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-    if (
-      statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
-      filteredSuppliers = filteredSuppliers.filter((supplier) =>
-        Array.from(statusFilter).includes(supplier.status)
-      );
-    }
+    
 
     return filteredSuppliers;
   }, [suppliers, filterValue, statusFilter]);
@@ -251,17 +240,7 @@ export default function SupplierTable() {
               </p>
             </div>
           );
-        case "status":
-          return (
-            <Chip
-              className="capitalize border-none gap-1 text-default-600"
-              color={statusColorMap[supplier.status]}
-              size="sm"
-              variant="dot"
-            >
-              {cellValue}
-            </Chip>
-          );
+        
         case "actions":
           return (
             <div className="relative flex justify-end items-center gap-2">
@@ -342,35 +321,7 @@ export default function SupplierTable() {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  className="bg-main-lighter border-[0.5px] border-stroke"
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  size="sm"
-                  variant="flat"
-                >
-                  Status
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem
-                    className="customHoverColor customActiveColor capitalize"
-                    key={status.uid}
-                  >
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
+            
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button

@@ -188,7 +188,7 @@ export default function Signup() {
                 Register
                 <Link
                   className="underline text-main-dark"
-                  href="http://localhost:8080/signin"
+                  href="http://localhost:8081/signin"
                 ></Link>
               </Button>
             </div>
@@ -197,7 +197,7 @@ export default function Signup() {
                 Do you have an account?&nbsp;
                 <Link
                   className="underline text-main-dark"
-                  href="http://localhost:8080/signin"
+                  href="http://localhost:8081/signin"
                 >
                   Login
                 </Link>

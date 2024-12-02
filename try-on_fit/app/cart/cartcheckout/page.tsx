@@ -65,7 +65,7 @@ export default function CartCheckout() {
         <> 
             <NavBar />
             <div className="bg-slate-50 shadow-md rounded p-4 md:p-6 mb-10 mx-2">
-                <div id="page" className="flex flex-col md:flex-row w-full p-4 sm:p-6 md:p-8 mt-40 ">
+                <div id="page" className="flex flex-col md:flex-row w-full p-4 sm:p-6 md:p-8 mt-20 ">
                     
                     <div className="w-full md:w-3/5 md:ml-20 md:mr-20">
                         <div className="bg-white shadow-md rounded p-4 md:p-6 mb-10 mx-2"> 

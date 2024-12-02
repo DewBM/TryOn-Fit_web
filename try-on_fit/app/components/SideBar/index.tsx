@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import SideBarItem from "./SideBarItem";
-import { FiHome, FiSettings, FiShoppingBag, FiTag, FiPackage, FiArrowUp, FiUsers, FiTruck, FiMessageSquare, FiShoppingCart, FiArrowLeftCircle, FiBarChart,FiStar } from "react-icons/fi";
+import { FiHome,FiPlusCircle,FiClock,FiCheckCircle,FiRotateCcw , FiSettings, FiShoppingBag, FiTag, FiPackage, FiArrowUp, FiUsers, FiTruck, FiMessageSquare, FiShoppingCart, FiArrowLeftCircle, FiBarChart,FiStar } from "react-icons/fi";
 
 interface SidebarProps {
   sideBarOpen: boolean;
@@ -33,10 +33,10 @@ const Sidebar: React.FC<SidebarProps> = ({
       { label: "DashBoard", route: "/StoreManager", icon: <FiHome /> },
       { label: "Employee", route: "/StoreManager/employee", icon: <FiUsers /> },
       { label: "Supplier",route: "/StoreManager/supplier",icon: <FiTruck />, },
-      { label: "Inquiry",route: "/StoreManager/inquiry",icon: <FiMessageSquare />, },
-      { label: "Order",route: "/StoreManager/orders",icon: <FiShoppingCart />, },
-      { label: "Return",route: "/StoreManager/return",icon: <FiArrowLeftCircle />, },
-      { label: "Reports",route: "/reports",icon: <FiBarChart />, },
+     // { label: "Inquiry",route: "/StoreManager/inquiry",icon: <FiMessageSquare />, },
+      //{ label: "Order",route: "/StoreManager/orders",icon: <FiShoppingCart />, },
+     // { label: "Return",route: "/StoreManager/return",icon: <FiArrowLeftCircle />, },
+      { label: "Reports",route: "/StoreManager/reports",icon: <FiBarChart />, },
     ],
     CustomerSupport: [
       { label: "DashBoard", route: "/CustomerSupport", icon: <FiHome /> },
@@ -46,11 +46,16 @@ const Sidebar: React.FC<SidebarProps> = ({
     ],
     DistributionCoordinator: [
       { label: "DashBoard", route: "/DistributionCoordinator", icon: <FiHome /> },
-      { label: "Orders", route: "/DistributionCoordinator/orders", icon: <FiShoppingCart /> },
-      { label: "Returns", route: "/DistributionCoordinator/return", icon: <FiArrowLeftCircle /> },
+      { label: "Total Orders", route: "/DistributionCoordinator/orders", icon: <FiPackage /> },
+      { label: "New Orders", route: "/DistributionCoordinator/neworders", icon: <FiPlusCircle /> },
+      { label: "Processing Orders", route: "/DistributionCoordinator/processingorders", icon: <FiClock /> },
+      { label: "Completed Orders", route: "/DistributionCoordinator/completedorders", icon: <FiCheckCircle /> },
+      { label: "Shipped Orders", route: "/DistributionCoordinator/shippedorders", icon: <FiTruck /> }, 
+      { label: "Delivered Orders", route: "/DistributionCoordinator/deliveredorders", icon: <FiArrowLeftCircle /> },
+      { label: "Returns", route: "/DistributionCoordinator/return", icon: <FiRotateCcw  /> },
     ],
   };
-
+  
   const sidebarItems = sidebarItemsByRole[role] || [];
 
   return (
@@ -59,14 +64,14 @@ const Sidebar: React.FC<SidebarProps> = ({
         sideBarOpen ? "translate-x-0" : "-translate-x-full sm:ml-0"
       } lg:translate-x-0`}
     >
-      <div className="items-center">
+      <div className="items-center ">
         <img
           src="/images/Fashion_logo.svg"
           className="h-18 w-18 align-middle px-12 mt-6 mb-3"
           alt="Fashion Logo"
         />
       </div>
-      <nav className="p-5">
+      <nav className="py-5 px-4 text-md">
         <ul className="space-y-4">
           {sidebarItems.map((item, index) => (
             <SideBarItem

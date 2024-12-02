@@ -1,4 +1,4 @@
-'use server'
+'use client'
 
 import { redirect } from 'next/navigation'
 import { customFetch } from "../utils/auth";
@@ -29,8 +29,9 @@ export async function signin(prevState: unknown, formData: FormData) {
      body: JSON.stringify(signinData),
    };
 
-   const resp = await customFetch("/auth/signin", params);
-   console.log(resp);
+    const resp = await customFetch("/auth/signin", params);
+    console.log('New Response: ', resp);
+   
    if (resp) {
       if (resp.isSuccess) {
          switch (resp.role) {

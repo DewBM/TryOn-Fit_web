@@ -5,15 +5,43 @@ import Layout from "./layout";
 import TextBox from "@/app/components/TextBox";
 import SelectBox from "@/app/components/SelectBox";
 import Button from "@/app/components/Button";
+import { inquiryform } from "@/app/(employee)/CustomerSupport/actions";
+import { useForm } from "@conform-to/react";
+import { parseWithZod } from "@conform-to/zod";
+import { InquiryFormSchema } from "@/app/(employee)/CustomerSupport/schema";
+import { useFormState } from "react-dom";
+
+
 
 export default function Inquiry() {
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedValue, setSelectedValue] = useState("");
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setSelectedImage(event.target.files[0]);
-    }
+  const handleChange = (newValue: string) => {
+    setSelectedValue(newValue);
   };
+  
+  // const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
+  // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files) {
+  //     setSelectedImage(event.target.files[0]);
+  //   }
+  // };
+
+  const [lastResult, action] = useFormState(inquiryform, undefined);
+  const [form, fields] = useForm({
+    //lastResult,
+
+    onValidate({ formData }) {
+      const result = parseWithZod(formData, { schema: InquiryFormSchema });
+      console.log(result);
+      return result;
+    },
+
+    shouldValidate: "onBlur",
+    shouldRevalidate: "onInput",
+  });
+
   return (
     <Layout>
       <div className="grid  lg:grid-cols-12 lg:grid-rows-12">
@@ -21,9 +49,13 @@ export default function Inquiry() {
           <form
             // action={}
             className="sm:col-span-1 lg:col-span-4 "
+            action={action}
+            id={form.id}
+            onSubmit={form.onSubmit}
+
           >
             <div className=" sm:col-span-1 lg:col-span-5 text-3xl font-bold  lg:col-start-2 mb-3">
-              <h1>Submit a request assistance</h1>
+              <h1>Submit a Request Assistance</h1>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-5 text-base text-red-600 font-semibold mb-3">
               <p>
@@ -31,44 +63,114 @@ export default function Inquiry() {
                 support staff will respond as soon as possible
               </p>
             </div>
+            
+
             <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-11">
               <p>Order Information</p>
               <hr className="border-b border-#cbd5e1"></hr>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-4 text-lg font-semibold mb-3">
+
               <TextBox
-                labelName={"Order Number"}
-                id={"lg-ordernum"}
+                labelName={"Order ID"}
+                name={fields.order_id.name}
+                key={fields.order_id.key as React.Key}
+                defaultValue=""
                 inputType="text"
+                placeholder=""
+                disabled={false}
               ></TextBox>
+              <div className="text-xs text-red-400">{fields.order_id.errors}</div>
+
+               <TextBox
+                labelName={"Product ID"}
+                name={fields.product_id.name}
+                key={fields.product_id.key as React.Key}
+                defaultValue=""
+                inputType="text"
+                placeholder=""
+                disabled={false}
+              ></TextBox>
+              <div className="text-xs text-red-400">{fields.product_id.errors}</div>
+
+              <TextBox
+                labelName={"Customer ID"}
+                name={fields.customer_id.name}
+                key={fields.customer_id.key as React.Key}
+                defaultValue=""
+                inputType="text"
+                placeholder=""
+                disabled={false}
+              ></TextBox>
+              <div className="text-xs text-red-400">{fields.customer_id.errors}</div>
+
+              <TextBox
+                labelName={"Customer Name"}
+                name={fields.name.name}
+                key={fields.name.key as React.Key}
+                defaultValue=""
+                inputType="text"
+                placeholder=""
+                disabled={false}
+              ></TextBox>
+
+              <TextBox
+                labelName={"Customer Contact Number"}
+                name={fields.contact_num.name}
+                key={fields.contact_num.key as React.Key}
+                defaultValue=""
+                inputType="text"
+                placeholder=""
+                disabled={false}
+              ></TextBox>
+              <div className="text-xs text-red-400">{fields.contact_num.errors}</div>
+
             </div>
+
+
             <div className=" sm:col-span- lg:grid-cols-5 text-xl  font-bold mb-10 mt-11">
               <p>Issue Information</p>
               <hr className="border-b border-#cbd5e1"></hr>
             </div>
-            <div className=" sm:col-span-1 lg:grid-cols-4 text-lg  font-bold mb-3">
+            <div className=" sm:col-span-1 lg:grid-cols-4 text-lg  font-bold  mb-3">
+
               <SelectBox
                 labelName="Select the Issue"
-                id="inquery-issueType"
-                name="issueType"
+                key={fields.issue_type.key as React.Key}
+                name={fields.issue_type.name}
                 options={[
                   { value: "", label: "" },
-                  { value: "female", label: "Female" },
-                  { value: "male", label: "Male" },
-                  { value: "other", label: "Other" },
+                  { value: "Awaiting and Arrival", label: "Awaiting and Arrival" },
+                  { value: "Ordering and payment", label: "Ordering and payment" },
+                  { value: "Virtual FitOn", label: "Virtual FitOn" },
+                  { value: "Refund", label: "Refund" },
+                  { value: "Account Management", label: "Account Management" },
                 ]}
-                autoComplete="gender"
-                value=""
-                onChange={(newValue) => console.log(newValue)}
+                autoComplete="Other"
+                value={selectedValue}
+                onChange={(newValue) => handleChange(newValue)}
+                defaultValue=" "
               />
+
+                <TextBox
+                labelName={"Issue Description"}
+                name={fields.issue_description.name}
+                key={fields.issue_description.key as React.Key}
+                defaultValue=""
+                inputType="text"
+                placeholder=""
+                disabled={false}
+              ></TextBox>
+              
             </div>
-            <div className="sm:col-span-1 lg:grid-cols-5 text-lg font-semibold mb-8 mt-8">
+            {/* <div className="sm:col-span-1 lg:grid-cols-5 text-lg font-semibold mb-8 mt-8">
               <p className="mb-3">Upload an image (optional)</p>
               <div className="">
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
+                  title="Upload an image"
                 />
               </div>
               {selectedImage && (
@@ -76,15 +178,18 @@ export default function Inquiry() {
                   Image uploaded successfully!
                 </span>
               )}
-            </div>
-            <div className=" sm:col-span-1 sm:row-span-2 lg:grid-cols-4 text-lg py-4 font-semibold mb-3">
+            </div> */}
+
+            {/* <div className=" sm:col-span-1 sm:row-span-2 lg:grid-cols-4 text-lg py-4 font-semibold mb-3">
               <TextBox
-                labelName={"Describe Your Issues"}
-                id={"lg-ordernum"}
+                labelName={"Describe Your Issue"}
+                name={fields.issuedescription.name}
                 inputType="text"
+                defaultValue={"number"} 
+                key={fields.issuedescription.key as React.Key}
               ></TextBox>
-            </div>
-            <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-16">
+            </div> */}
+            {/* <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-16">
               <p>Perfect Solution</p>
               <hr className="border-b border-#cbd5e1"></hr>
             </div>
@@ -103,17 +208,19 @@ export default function Inquiry() {
                 value=""
                 onChange={(newValue) => console.log(newValue)}
               />
-            </div>
+            </div> */}
             <div className=" sm:col-span-1 lg:grid-cols-5 text-xl  font-bold mb-10 mt-16">
               <p>Additional Comments</p>
               <hr className="border-b border-#cbd5e1"></hr>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-4 text-lg font-semibold mb-3">
               <TextBox
-                labelName={"Any Additional COmments or request"}
-                id={"lg-ordernum"}
-                inputType="text"
-              ></TextBox>
+                labelName={"Any Additional Comments or Requests"}
+                name={fields.additional_comments.name}
+                inputType="text" defaultValue={" "} 
+                key={fields.additional_comments.key as React.Key} 
+                
+                ></TextBox>
             </div>
             <div className=" sm:col-span-1 lg:grid-cols-4 text-base font-semibold mb-3">
               <Button type="submit" className="  m-1 mt-4 px-10">

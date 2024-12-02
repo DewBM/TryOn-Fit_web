@@ -18,7 +18,7 @@ export default function NavBar() {
   const router = useRouter();
 
     const handleAddToCart = () => {
-        router.push('cart/cartcheckout'); 
+        router.push('Cart'); 
     };
      const handleFitOn = ()=>{
       router.push('FitOn')

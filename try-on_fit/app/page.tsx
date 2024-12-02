@@ -24,7 +24,7 @@ function Home() {
   const handlekidscollections = () => {
     router.push('kidscollection');
   };
-
+ 
   // Define the items array
   const items = [
     {
@@ -36,6 +36,11 @@ function Home() {
       images: ['/images/men/5.jpeg'],
       name: 'Shirt',
       price: 2900,
+    },
+    {
+      images:['/images/women/13.webp'],
+      name: 'Long Frock',
+      price: 3999,
     },
     {
       images: ['/images/women/4.webp'],

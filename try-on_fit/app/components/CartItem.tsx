@@ -4,6 +4,7 @@ import IncrementDecrementButton from "./IncrementDecrementButton";
 import DeleteButton from "./DeleteButton";
 import AvailabilityStatus from "./AvailabilityStatus";
 
+
 export default function CartItem({
 
   name, color, price, size, status, isSelected, onCheckboxChange
