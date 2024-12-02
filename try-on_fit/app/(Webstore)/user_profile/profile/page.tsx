@@ -1,60 +1,72 @@
 "use client";
 
-import Button from "@/app/components/Button";
-import PasswordBox from "@/app/components/PasswordBox";
-import Link from "next/link";
-import TextBox from "@/app/components/TextBox";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import TextB_Dsble from "@/app/components/TextB_Dsble";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 import NavBar from "@/app/components/NavBar";
 import Footer from "@/app/components/Footer";
+import TextBde_Dsble from "@/app/components/TextBde_Dsble";
 import { customFetch } from "@/app/utils/auth";
 
 interface UserProfileProps {
-  fullName: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  mobile: string;
-  gender: string;
-  shippingAddress_1: string;
-  shippingAddress_2: string;
-  creditCard: string;
+  address_line_1: string;
+  address_line_2: string;
+  city: string;
+  district: string;
+  postal_code: string;
 }
 
 const UserProfilePage: React.FC = () => {
   const router = useRouter();
 
   const [userInfo, setUserInfo] = useState<UserProfileProps>({
-    fullName: "",
+    first_name: "",
+    last_name: "",
     email: "",
-    mobile: "",
-    gender: "",
-    shippingAddress_1: "",
-    shippingAddress_2: "",
-    creditCard: "",
+    address_line_1: "",
+    address_line_2: "",
+    city: "",
+    district: "",
+    postal_code: "",
   });
 
+  const [customer_id, setCustomer_id] = useState<string | null>(null);
+
   useEffect(() => {
+    // Fetch the logged-in user's customer ID and user information
     const fetchUserData = async () => {
       try {
-        const customer_id = "customer_id_here"; 
+        const user = await customFetch("/auth/getUserById", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-        const response = await fetch(
-          `http://localhost:8080/customer/${customer_id}`, 
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json", 
-            },
+        if (user && user.customer_id) {
+          setCustomer_id(user.customer_id);
+
+          // Fetch user data using the retrieved customer_id
+          const userData = await customFetch(
+            "http://localhost:8080/customer/getCustomerByCustomer_id?customer_id=${user.customer_id}",
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (userData) {
+            setUserInfo(userData);
+          } else {
+            console.error("Failed to fetch user data");
           }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          setUserInfo(data); 
         } else {
-          console.error("Failed to fetch user data");
+          console.error("Failed to retrieve customer ID");
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -99,42 +111,47 @@ const UserProfilePage: React.FC = () => {
               </h2>
             </div>
             <div className="lg:col-span-5 lg:col-start-1 my-4 mx-6">
-              <TextB_Dsble
-                labelName="Full Name"
-                name="Full_name"
+              <TextBde_Dsble
+                labelName="First Name"
+                name="first_name"
                 inputType="text"
-                key="F_name"
-                defaultValue={userInfo.fullName}
+                defaultValue={userInfo.first_name}
+                disabled={true}
+              />
+            </div>
+            <div className="lg:col-span-5 lg:col-start-1 my-4 mx-6">
+              <TextBde_Dsble
+                labelName="Last Name"
+                name="last_name"
+                inputType="text"
+                defaultValue={userInfo.last_name}
                 disabled={true}
               />
             </div>
             <div className="lg:col-span-5 lg:col-start-7 my-4 mx-6">
-              <TextB_Dsble
+              <TextBde_Dsble
                 labelName="Email"
                 name="email"
                 inputType="text"
-                key="email"
                 defaultValue={userInfo.email}
                 disabled={true}
               />
             </div>
             <div className="lg:col-span-5 lg:col-start-1 my-4 mx-6">
-              <TextB_Dsble
-                labelName="Mobile"
-                name="mobile"
+              <TextBde_Dsble
+                labelName="Address Line 1"
+                name="address_line_1"
                 inputType="text"
-                key="mobile"
-                defaultValue={userInfo.mobile}
+                defaultValue={userInfo.address_line_1}
                 disabled={true}
               />
             </div>
             <div className="lg:col-span-5 lg:col-start-7 my-4 mx-6">
-              <TextB_Dsble
-                labelName="Gender"
-                name="gender"
+              <TextBde_Dsble
+                labelName="Address Line 2"
+                name="address_line_2"
                 inputType="text"
-                key="gender"
-                defaultValue={userInfo.gender}
+                defaultValue={userInfo.address_line_2}
                 disabled={true}
               />
             </div>
@@ -145,36 +162,33 @@ const UserProfilePage: React.FC = () => {
               Address Information
             </h2>
             <div className="my-4 mx-6">
-              <TextB_Dsble
-                labelName="Shipping Address"
-                name="shippingAddress"
+              <TextBde_Dsble
+                labelName="City"
+                name="city"
                 inputType="text"
-                key="shippingAddress"
-                defaultValue={userInfo.shippingAddress_1}
+                defaultValue={userInfo.city}
                 disabled={true}
               />
             </div>
             <div className="my-4 mx-6">
-              <TextB_Dsble
-                labelName="Billing Address"
-                name="billingAddress"
+              <TextBde_Dsble
+                labelName="District"
+                name="district"
                 inputType="text"
-                key="billingAddress"
-                defaultValue={userInfo.shippingAddress_2}
+                defaultValue={userInfo.district}
                 disabled={true}
               />
             </div>
           </div>
 
           <div className="border rounded p-4 my-6">
-            <h2 className="text-2xl font-bold mb-6 mx-6">Payment Methods</h2>
+            <h2 className="text-2xl font-bold mb-6 mx-6">Postal Code</h2>
             <div className="my-4 mx-6">
-              <TextB_Dsble
-                labelName="Saved Credit Card"
-                name="creditCard"
+              <TextBde_Dsble
+                labelName="Postal Code"
+                name="postal_code"
                 inputType="text"
-                key="creditCard"
-                defaultValue={userInfo.creditCard}
+                defaultValue={userInfo.postal_code}
                 disabled={true}
               />
             </div>
