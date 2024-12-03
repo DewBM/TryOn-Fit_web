@@ -52,4 +52,8 @@ export const InquiryFormSchema = z.object({
 
 
       additional_comments: z.string(),
+
+    // date: z
+    // .date(),
+    // .default(() => new Date()),
 });

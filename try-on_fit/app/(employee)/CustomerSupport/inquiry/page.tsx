@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -19,67 +20,57 @@ import {
   ChipProps,
   SortDescriptor,
 } from "@nextui-org/react";
-import { PlusIcon } from "@/app/components/PlusIcon";
+//import { PlusIcon } from "@/app/components/PlusIcon";
+import { customFetch } from "@/app/utils/auth";
 import { VerticalDotsIcon } from "@/app/components/VerticalDotsIcon";
 import { ChevronDownIcon } from "@/app/components/ChevronDownIcon";
 import { SearchIcon } from "@/app/components/SearchIcon";
 import { capitalize } from "@/app/components/utils";
+import { statusOptions } from "@/app/components/data";
 
-// Sample data for customer inquiries
-const inquiries = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    status: "open",
-    inquiry: "Product issue",
-    date: "2023-07-15",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane@example.com",
-    status: "closed",
-    inquiry: "Billing question",
-    date: "2023-07-12",
-  },
-];
 
 const columns = [
   { uid: "inquiry_id", name: "Inquiry ID", sortable: true },
-  { uid: "inquiry", name: "Inquiry", sortable: true },
-  { uid: "name", name: "Customer Name", sortable: true },
-  { uid: "email", name: "Email", sortable: true },
   { uid: "order_id", name: "Order ID", sortable: true },
-  { uid: "status", name: "Status", sortable: true },
+  { uid: "product_id", name: "Product ID", sortable: true },
+  { uid: "name", name: "Customer Name", sortable: true },
+  { uid: "customer_id", name: "Customer ID", sortable: true },
   { uid: "date", name: "Date", sortable: true },
   { uid: "description", name: "Description", sortable: false },
-  { uid: "actions", name: "Actions", sortable: false },
+  { uid: "issue_type", name: "Issue Type", sortable: false },
+  { uid: "status", name: "Status", sortable: false },
+
 ];
 
-const statusOptions = [
-  { uid: "open", name: "Open" },
-  { uid: "closed", name: "Closed" },
-  { uid: "pending", name: "Pending" },
-];
 
-const statusColorMap: Record<string, ChipProps["color"]> = {
-  open: "warning",
-  closed: "success",
-  pending: "danger",
-};
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "inquiry_id",
-  "inquiry",
-  "status",
-  "date",
-  "actions",
+  "Inquiry ID",
+  "Date",
+  "Status",
+  "Issue Type",
 ];
 
-type Inquiry = (typeof inquiries)[0];
+export type inquiryType = {
+  key: React.Key;
+  inquiry_id: string;
+  order_id: string;
+  product_id: string;
+  customer_id: string;
+  name : string;
+  contact_num: string;
+  status: string;
+  date : String;
+  issue_type:string;
+  issue_description:string;
+  additional_comments:string;
+
+};
+
+
 
 export default function App() {
+
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -87,12 +78,15 @@ export default function App() {
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
+
+  const [inquiries, setInquiries] = useState<inquiryType[]>([]);
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "date",
     direction: "ascending",
   });
+
   const [page, setPage] = React.useState(1);
 
   const pages = Math.ceil(inquiries.length / rowsPerPage);
@@ -111,21 +105,47 @@ export default function App() {
     let filteredInquiries = [...inquiries];
 
     if (hasSearchFilter) {
-      filteredInquiries = filteredInquiries.filter((inquiry) =>
-        inquiry.inquiry.toLowerCase().includes(filterValue.toLowerCase())
+      filteredInquiries = filteredInquiries.filter((inquiry_id) =>
+        inquiry_id.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
       statusFilter !== "all" &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredInquiries = filteredInquiries.filter((inquiry) =>
-        Array.from(statusFilter).includes(inquiry.status)
+      filteredInquiries = filteredInquiries.filter((inquiry_id) =>
+        Array.from(statusFilter).includes(inquiry_id.status)
       );
     }
 
     return filteredInquiries;
   }, [inquiries, filterValue, statusFilter]);
+
+  
+  useEffect(() => {
+    const getInquiry = async () => {
+      let inquiries: inquiryType[] = await customFetch("/inquiryForm", 
+        {
+        method: "GET",
+      });
+      if (Array.isArray(inquiries)) {
+        inquiries = inquiries.map((e) => {
+          
+          e.key = e.inquiry_id;
+          return e;
+        });
+        // console.log(suppliers)
+        setInquiries(inquiries);
+      }
+      getInquiry();
+      console.log(inquiries);
+      // setInquiries(inquiries);
+    };
+    
+    getInquiry();
+  }, []);
+
+  
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -135,9 +155,9 @@ export default function App() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: Inquiry, b: Inquiry) => {
-      const first = a[sortDescriptor.column as keyof Inquiry] as string;
-      const second = b[sortDescriptor.column as keyof Inquiry] as string;
+    return [...items].sort((a: inquiryType , b: inquiryType) => {
+      const first = a[sortDescriptor.column as keyof inquiryType] as string;
+      const second = b[sortDescriptor.column as keyof inquiryType] as string;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
@@ -145,21 +165,51 @@ export default function App() {
   }, [sortDescriptor, items]);
 
   const renderCell = React.useCallback(
-    (inquiry: Inquiry, columnKey: React.Key) => {
-      const cellValue = inquiry[columnKey as keyof Inquiry];
+    (inquiry: inquiryType, columnKey: React.Key) => {
+      const cellValue = inquiry[columnKey as keyof inquiryType];
 
       switch (columnKey) {
-        case "status":
+        case "Inquiry ID":
           return (
-            <Chip
-              className="capitalize border-none gap-1 text-default-600"
-              color={statusColorMap[inquiry.status]}
-              size="sm"
-              variant="dot"
-            >
-              {cellValue}
-            </Chip>
+            <div className="flex flex-col">
+              <p
+                className="text-bold text-small capitalize main-darker"
+              >
+                {cellValue}
+              </p>
+            </div>
           );
+        case "Issue Type":
+          return (
+            <div className="flex flex-col">
+              <p
+                className="text-bold text-small capitalize main-darker"
+              >
+                {cellValue}
+              </p>
+              </ div>
+          );
+          case "Status":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize main-darker">
+                {cellValue}
+              </p>
+              </ div>
+          );
+
+          case "Date":
+            return (
+              <div className="flex flex-col">
+                <p className="text-bold text-small capitalize main-darker">
+                  {new Date(cellValue as string | number | Date).toLocaleDateString()} 
+                  {cellValue}
+                </p>
+              </div>
+            );
+            
+
+       
         case "actions":
           return (
             <div className="relative flex justify-end items-center gap-2">
@@ -170,8 +220,10 @@ export default function App() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem className="customHoverColor customActiveColor">
-                    View
+                  <DropdownItem className="customHoverColor customActiveColor"
+                  //onClick={() => openRespondDialog(inquiry)}
+                  >
+                    Respond
                   </DropdownItem>
                   
                 </DropdownMenu>
@@ -182,6 +234,7 @@ export default function App() {
           return cellValue;
       }
     },
+    
     []
   );
 
@@ -221,7 +274,7 @@ export default function App() {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Dropdown>
+            {/* <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   className="bg-main-lighter border-[0.5px] border-stroke"
@@ -247,7 +300,7 @@ export default function App() {
                   </DropdownItem>
                 ))}
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -278,13 +331,6 @@ export default function App() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              className="bg-main-dark text-white"
-              endContent={<PlusIcon />}
-              size="sm"
-            >
-              Add New
-            </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -380,7 +426,7 @@ export default function App() {
         {(column) => (
           <TableColumn
             key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
+            align={column.uid === "actions  " ? "center" : "start"}
             allowsSorting={column.sortable}
           >
             {column.name}
@@ -389,7 +435,7 @@ export default function App() {
       </TableHeader>
       <TableBody emptyContent={"No inquiries found"} items={sortedItems}>
         {(item) => (
-          <TableRow key={item.id}>
+          <TableRow key={item.key}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Header from "@/app/components/Header/index";
 import CardDataStats from "@/app/components/DashboardCard";
-import { FiMessageSquare, FiCheckSquare } from "react-icons/fi";
+import { FiMessageSquare, FiCheckSquare, FiClock } from "react-icons/fi";
 import Ratings from "@/app/components/CustomerRatings";
 import InquiriesLineChart from "@/app/components/charts/InquiriesLineChart";
 import FeedbackCard from "@/app/components/CustomerFeedbacks";
@@ -29,6 +29,7 @@ export default function Home() {
                   />
                 </div>
               </CardDataStats>
+
               <CardDataStats title="Responded Inquiries" total="26">
                 <div
                   className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
@@ -39,6 +40,22 @@ export default function Home() {
                   }}
                 >
                   <FiCheckSquare
+                    size={25}
+                    style={{ stroke: "var(--main-dark)" }}
+                  />
+                </div>
+              </CardDataStats>
+
+              <CardDataStats title="Pending Inquiries" total="80">
+                <div
+                  className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
+                  style={{
+                    padding: "10px",
+                    backgroundColor: "var(--main-background)",
+                    boxShadow: "var(--main-drop-shadow)",
+                  }}
+                >
+                  <FiClock
                     size={25}
                     style={{ stroke: "var(--main-dark)" }}
                   />
