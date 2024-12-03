@@ -13,6 +13,7 @@ import AddAddressModal from "@/app/components/AddAddressModal";
 import EditAddressModal from "@/app/components/EditAddressModal";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+export{handlePayment} from "../Cartcheckout/action"
 
 function Page() {
   const [cartItems, setCartItems] = useState([]);
@@ -72,9 +73,10 @@ function Page() {
     script.async = true;
 
     script.onload = () => {
-      // Initialize PayHere event handlers
+     
       payhere.onCompleted = function (orderId) {
         alert("Payment completed. OrderID: " + orderId);
+        window.location.href = `/Invoice?orderId=${orderId}`
       };
 
       payhere.onDismissed = function () {
@@ -86,10 +88,10 @@ function Page() {
       };
     };
 
-    // Append the script to the body
+
     document.body.appendChild(script);
 
-    // Cleanup: Remove the script on component unmount
+
     return () => {
       document.body.removeChild(script);
     };
@@ -102,29 +104,30 @@ function Page() {
       return;
     }
 
-    // Payment configuration object
     const payment = {
       sandbox: true, 
       merchant_id: "1228889", 
-      return_url: "http://localhost:3000/return", // Ensure these URLs match PayHere settings
+      hash:"6D34958F4147F1AAF2A029C5E42D7D27",
+      return_url: "http://localhost:3000/Invoice", 
       cancel_url: "http://localhost:3000/cancel",
       notify_url: "http://localhost:3000/notify",
       order_id: "12345",
-      items: "Sample Item Payment",
-      amount: orderSummary.total.toString(),
+      items: cartItems,
+      amount: "1000.00" ,
       currency: "LKR",
-      first_name: "John",
+      first_name: currentAddress.name,
       last_name: "Doe",
       email: "john.doe@example.com",
-      phone: "0771234567",
-      address: "No. 1, Galle Road",
-      city: "Colombo",
-      country: "Sri Lanka",
+      phone: currentAddress.contactNumber,
+      address: currentAddress.village,
+      city: currentAddress.town,
+      country: currentAddress.country,
     };
 
    
     payhere.startPayment(payment);
   };
+ 
 
   return (
     <div>
@@ -166,9 +169,11 @@ function Page() {
               quantity={[item.quantity.toString()]}
               onDelete={() => handleDelete(item.id)}
               onQuantityChange={(newQuantity) => handleQuantityChange(item.id, newQuantity)}
+              
             />
           ))}
         </div>
+
 
         {/* Order summary */}
         <div className="flex flex-col w-[30%] space-y-5">
@@ -212,7 +217,6 @@ function Page() {
         </div>
       </div>
 
-      {/* Modals for address */}
       <AddAddressModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} />
       <EditAddressModal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} currentAddress={currentAddress} />
       <Footer />

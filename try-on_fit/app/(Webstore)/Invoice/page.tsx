@@ -1,7 +1,11 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import logo from "../../../public/images/logo.png"
+import Logopic from "../../../public/images/logo.png"
+import  { useRouter } from 'next/navigation';
+import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
+import Image from 'next/image';
+
 
 type OrderSummary = {
   subtotal: number;
@@ -20,6 +24,7 @@ type Checkout = {
 };
 
 function InvoicePage() {
+  const router = useRouter();
   const [cartItems, setCartItems] = useState<Checkout[]>([]);
   const [orderSummary, setOrderSummary] = useState<OrderSummary>({
     subtotal: 0,
@@ -28,6 +33,9 @@ function InvoicePage() {
     total: 0,
   });
 
+  const handlecustomer=()=>{
+    router.push('/faq')
+  }
   useEffect(() => {
     // Retrieve checkout items from localStorage
     const checkoutFromLocalStorage = localStorage.getItem('checkout');
@@ -50,7 +58,7 @@ function InvoicePage() {
       <div className="flex justify-end mb-4">
         <button
           type="button"
-          className="bg-black text-white py-2 px-4 rounded"
+          className="bg-main-dark text-white py-2 px-4 rounded"
           onClick={() => window.print()}
         >
           <i className="fa fa-print mr-2"></i> Print
@@ -59,14 +67,14 @@ function InvoicePage() {
       <div className="border rounded-lg shadow-lg bg-white">
         <div className="p-8" id="invoice">
           <h1 className="text-3xl font-bold text-center text-gray-700 mb-8">Invoice</h1>
-          <div className="flex justify-between mb-8">
-            <img src="../../../public/images/logo.png" alt="Logo" className="h-12" />
-            
-            <div className="text-right">
+          <div className="flex justify-center mb-8 ">
+        
+            <div className="text-center">
+          
               <h2 className="font-bold text-lg">TryOnFit</h2>
               <p>No.66/A, Kaduwela Road, Battaramulla</p>
               <p>Western, Sri Lanka</p>
-              <p>+94 77 123 456</p>
+              <p>+94 11 123 456</p>
               <p>TryOnFit.customercare@gmail.com</p>
             </div>
           </div>
@@ -122,11 +130,10 @@ function InvoicePage() {
           <div className="mt-8 text-center">
             <p className="font-bold">Thank you!</p>
             <p className="text-sm text-gray-500">
-              For any inquiries, contact us via{' '}
-              <a href="mailto:TryOnFit.customercare@gmail.com" className="text-blue-500 underline">
-                TryOnFit.customercare@gmail.com
-              </a>
-            </p>
+              Further Informations Contact Our Help Center.</p>
+
+              <button className='align-middle border bg-main-dark font-bold text-white  px-8 py-4 rounded-lg ' onClick={handlecustomer}><span className='p-4'><SupportAgentRoundedIcon/></span>Help Center</button>
+        
           </div>
         </div>
       </div>
