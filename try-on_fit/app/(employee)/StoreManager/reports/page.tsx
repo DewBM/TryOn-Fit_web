@@ -1,36 +1,60 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MultiDatePickerCard from "@/app/components/reportsDateCards";
 import ReportSalesChart from "@/app/components/reportSalesChart";
 import { customFetch } from "@/app/utils/auth";
 
-async function getReportData(datesReport: { startDate: string; endDate: string }): Promise<any> {
-  const queryString = new URLSearchParams(datesReport).toString();
-  const url = `/report?${queryString}`;
-  console.log(url);
-
-  const resp = await customFetch(url, { method: "GET" });
-
-  console.log("Response Data:", resp);
-  return resp;
-}
-
 export default function Home() {
-  const [selectType, setSelectionType] = useState<string>("");
+  const [selectType, setSelectionType] = useState<string>("date");
   const [selectedDates, setSelectedDates] = useState<{ startDate: string; endDate: string }>({ startDate: "", endDate: "" });
   const [selectedMonth, setSelectedMonth] = useState<string>("1");
-  const [selectedYear, setSelectedYear] = useState<string>("2023");
+  const [selectedYear, setSelectedYear] = useState<string>("2024");
   const [selectReportType, setDataType] = useState<string>("");
+  const [reportData, setreportDataArray] = useState<reportDataArrayType>({suppliers: [], revenues: []});
+  
+
+  type reportDataArrayType = {
+    suppliers: number[];
+    revenues: number[];
+  };
+
+  useEffect(() => {
+    const getReportData = async () => {
+      try {
+        // Construct the query string for the API request
+        const queryString = new URLSearchParams({
+          startDate: selectedDates.startDate,
+          endDate: selectedDates.endDate,
+          selectionType: selectType, // Include selectedType in the query string
+        }).toString();
+
+        // Define the API URL
+        const url = `/report?${queryString}`;
+        console.log("Fetching data from:", url);
+
+        // Fetch the data
+        const reportDataArray: any = await customFetch(url, {
+          method: "GET",
+        });
+
+        // Set the fetched data in state
+        console.log("Fetched Report Data:", reportDataArray);
+        setreportDataArray(reportDataArray.responseData);
+      } catch (error) {
+        console.error("Error fetching report data:", error);
+      }
+    };
+
+    getReportData();
+  }, [selectedDates, selectType, selectReportType]); // Add selectType as a dependency
 
   // Function to handle downloading the report
   const handleDownload = async () => {
-    const reportData = await getReportData({
-      startDate: selectedDates.startDate,
-        endDate: selectedDates.endDate
-    });
-    console.log("startDate", selectedDates.startDate);
-    // console.log("Fetched Report Data:", reportData);
+    console.log("Selected Start Date:", selectedDates.startDate);
+    console.log("Selected End Date:", selectedDates.endDate);
+    console.log("Selected reportType:", selectReportType);
+    console.log("Selected Type:", selectType);
 
     const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -64,7 +88,7 @@ export default function Home() {
             setSelectedDates={(dates: { startDate: string; endDate: string }) => setSelectedDates(dates)}
             setSelectedMonth={setSelectedMonth}
             setSelectedYear={setSelectedYear}
-            setSelectionType={setSelectionType}
+            setSelectionType={setSelectionType} // Updates selectType
             setDataType={setDataType}
           />
         </div>
@@ -77,7 +101,7 @@ export default function Home() {
               Sales Overview
             </h2>
             <button
-              onClick={handleDownload}
+              onClick={()=>window.print()}
               className="bg-main-dark text-white rounded-md px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2"
             >
               Download Report
@@ -91,7 +115,10 @@ export default function Home() {
             selectedMonth={selectedMonth}
             selectedYear={selectedYear}
             selectReportType={selectReportType}
-          />
+            reportData={reportData}
+            // revenue={reportData[0]?.revenue || []} // Provide a default value to handle empty arrays
+/>
+
         </div>
       </div>
     </div>

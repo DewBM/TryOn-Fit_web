@@ -86,7 +86,7 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
                 setSelectionTypeState("date");
                 setSelectionType("date");
                 setSelectedMonth("1");
-                setSelectedYear("2023");
+                setSelectedYear("2024");
               }}
               className="mr-2"
             />
@@ -101,6 +101,7 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
                 setSelectionTypeState("month");
                 setSelectionType("month");
                 setSelectedDates({ startDate: "", endDate: "" });
+                setSelectedYear("2024");
               }}
               className="mr-2"
             />
@@ -116,6 +117,7 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
                 setSelectionType("year");
                 setSelectedDates({ startDate: "", endDate: "" });
                 setSelectedMonth("1");
+                setSelectedYear("2024");
               }}
               className="mr-2"
             />
