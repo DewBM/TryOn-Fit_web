@@ -2,9 +2,10 @@
 
 import React, { useState } from 'react';
 import { Card, CardHeader, CardBody } from '@nextui-org/react';
-import { Dialog } from '@headlessui/react';
+import { Dialog, DialogPanel } from '@headlessui/react';
 import Image from 'next/image'; // Correct Image import from next/image
 import ItemCard from './Helper/ItemCard';
+import { ProductType } from '../types/custom_types';
 
 interface Props {
   images: string[]; // Changed to an array of strings
@@ -12,7 +13,16 @@ interface Props {
   price: string;
 }
 
-const Product: React.FC<Props> = ({ images, name, price }) => {
+const Product: React.FC<ProductType> = ({
+  variant_id,
+  product_id,
+  name,
+  color,
+  design,
+  price,
+  description,
+  img_front
+}) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupImageUrl, setPopupImageUrl] = useState('');
   const [selectedSize, setSelectedSize] = useState('');
@@ -31,17 +41,15 @@ const Product: React.FC<Props> = ({ images, name, price }) => {
     <>
       <Card className="w-80 py-4  flex justify-center">
         <CardBody className="overflow-visible justify-center items-center pt-2">
-          {images.map((imgSrc, index) => (
             <Image
-              key={index}
-              alt={`Card background ${index}`}
+              key={variant_id}
+              alt={`Card background ${variant_id}`}
               className="object-contain rounded-lg cursor-pointer"
-              src={imgSrc}
+              src={img_front}
               width={270} // Set the width
               height={200} 
-              onClick={() => handleImageClick(imgSrc)}
+              onClick={() => handleImageClick(img_front)}
             />
-          ))}
         </CardBody>
         <CardHeader className="pb-0 pt-0 px-4 flex-col items-center">
           <ItemCard name={name} price={price} />
@@ -54,7 +62,7 @@ const Product: React.FC<Props> = ({ images, name, price }) => {
 
       {/* Popup Dialog */}
       <Dialog open={isPopupOpen} onClose={closePopup} className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-        <Dialog.Panel className="bg-white rounded-lg overflow-hidden w-full max-w-4xl p-6 md:p-8 relative">
+        <DialogPanel className="bg-white rounded-lg overflow-hidden w-full max-w-4xl p-6 md:p-8 relative">
           <button className="absolute top-4 right-4 text-2xl font-bold" onClick={closePopup}>
             &times;
           </button>
@@ -77,14 +85,12 @@ const Product: React.FC<Props> = ({ images, name, price }) => {
               <div className="mb-4">
                 <label className="font-semibold mb-2">Color</label>
                 <div className="flex">
-                  {['#000000', '#FFFFFF', '#FF0000'].map((color, index) => (
                     <div
-                      key={index}
+                      key={variant_id}
                       className={`w-12 h-12 rounded mr-2 cursor-pointer border-3 ${selectedColor === color ? 'border-black shadow-lg' : 'border-gray-300'}`}
                       style={{ backgroundColor: color }}
                       onClick={() => setSelectedColor(color)}
                     />
-                  ))}
                 </div>
               </div>
               <div className="mb-4">
@@ -104,20 +110,20 @@ const Product: React.FC<Props> = ({ images, name, price }) => {
               <button className="bg-main-dark text-white py-2 px-4 rounded mb-4" onClick={() => window.location.href = '/cart/cartcheckout'}>
                 Add to Cart
               </button>
-              <button className="bg-main-dark text-white py-2 px-4 rounded mb-4" onClick={() => window.location.href = '/FitOn'}>
+              <button className="bg-main-dark text-white py-2 px-4 rounded mb-4" onClick={() => console.log("Fiton Variant ID: ", variant_id)}>
                 Add to FitOn
               </button>
               <hr className="my-4" />
               <div className="mb-4">
                 <p className="font-semibold">Product Details</p>
-                <p className="text-gray-600">Material: Polyester Material Composition: 92% Polyester, 8% Spandex Model Height 5' 8", wearing size UK 10 (Size Guide) Please bear in mind that...</p>
+                <p className="text-gray-600">{description}</p>
               </div>
               <button className="self-end bg-main-dark text-white py-2 px-4 rounded" onClick={() => window.location.href = '/Productpage'}>
                 View More
               </button>
             </div>
           </div>
-        </Dialog.Panel>
+        </DialogPanel>
       </Dialog>
     </>
   );
