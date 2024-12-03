@@ -3,11 +3,11 @@
 import React, { useState } from "react";
 
 interface MultiDatePickerCardProps {
-  setSelectedDates: (dates: string[]) => void;
+  setSelectedDates: (dates: { startDate: string; endDate: string }) => void;
   setSelectedMonth: (month: string) => void;
   setSelectedYear: (year: string) => void;
   setSelectionType: (selectType: string) => void;
-  setDataType: (dataType: string) => void; // New prop for data type selection
+  setDataType: (dataType: string) => void;
 }
 
 const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
@@ -15,16 +15,19 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
   setSelectedMonth,
   setSelectedYear,
   setSelectionType,
-  setDataType, // New prop
+  setDataType,
 }) => {
-  const [dataType, setDataTypeState] = useState<"sales" | "orders" | "returns">("sales"); // New state
+  const [dataType, setDataTypeState] = useState<"sales" | "orders" | "returns">("sales");
   const [selectionType, setSelectionTypeState] = useState<"date" | "month" | "year">("date");
-  const [selectedDates, setSelectedDatesState] = useState<string[]>([]);
+  const [selectedDates, setSelectedDatesState] = useState<{ startDate: string; endDate: string }>({
+    startDate: "",
+    endDate: "",
+  });
   const [selectedMonth, setSelectedMonthState] = useState<string>("1");
   const [selectedYear, setSelectedYearState] = useState<string>("2023");
 
   const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 50 }, (_, i) => currentYear - i); // Last 50 years
+  const years = Array.from({ length: 50 }, (_, i) => currentYear - i);
   const months = [
     { value: "1", label: "January" },
     { value: "2", label: "February" },
@@ -40,17 +43,10 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
     { value: "12", label: "December" },
   ];
 
-  // Handle multiple dates selection
-  const handleDateChange = (date: string) => {
-    if (selectedDates.includes(date)) {
-      const updatedDates = selectedDates.filter((d) => d !== date);
-      setSelectedDatesState(updatedDates);
-      setSelectedDates(updatedDates); // Pass to parent
-    } else {
-      const updatedDates = [...selectedDates, date];
-      setSelectedDatesState(updatedDates);
-      setSelectedDates(updatedDates); // Pass to parent
-    }
+  const handleDateChange = (field: "startDate" | "endDate", value: string) => {
+    const updatedDates = { ...selectedDates, [field]: value };
+    setSelectedDatesState(updatedDates);
+    setSelectedDates(updatedDates); // Pass to parent
   };
 
   return (
@@ -89,7 +85,7 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
               onChange={() => {
                 setSelectionTypeState("date");
                 setSelectionType("date");
-                setSelectedMonth("1"); // Reset to default month and year
+                setSelectedMonth("1");
                 setSelectedYear("2023");
               }}
               className="mr-2"
@@ -104,7 +100,7 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
               onChange={() => {
                 setSelectionTypeState("month");
                 setSelectionType("month");
-                setSelectedDates([]); // Clear selected dates
+                setSelectedDates({ startDate: "", endDate: "" });
               }}
               className="mr-2"
             />
@@ -118,8 +114,8 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
               onChange={() => {
                 setSelectionTypeState("year");
                 setSelectionType("year");
-                setSelectedDates([]); // Clear selected dates
-                setSelectedMonth("1"); // Reset to default month
+                setSelectedDates({ startDate: "", endDate: "" });
+                setSelectedMonth("1");
               }}
               className="mr-2"
             />
@@ -133,15 +129,29 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
         {selectionType === "date" && (
           <div>
             <label
-              htmlFor="multi-date"
+              htmlFor="start-date"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Select Multiple Dates
+              Start Date
             </label>
             <input
               type="date"
-              id="multi-date"
-              onChange={(e) => handleDateChange(e.target.value)}
+              id="start-date"
+              value={selectedDates.startDate}
+              onChange={(e) => handleDateChange("startDate", e.target.value)}
+              className="mt-1 block w-full rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+            />
+            <label
+              htmlFor="end-date"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4"
+            >
+              End Date
+            </label>
+            <input
+              type="date"
+              id="end-date"
+              value={selectedDates.endDate}
+              onChange={(e) => handleDateChange("endDate", e.target.value)}
               className="mt-1 block w-full rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
             />
           </div>

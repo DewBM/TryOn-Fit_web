@@ -18,10 +18,10 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 interface SalesChartProps {
   selectType: string;
-  selectedDates: string[];
+  selectedDates: { startDate: string; endDate: string }; // Update the type to match the new selectedDates format
   selectedMonth: string;
   selectedYear: string;
-  selectReportType: string; // Make sure to include this in the props
+  selectReportType: string; // Include this in the props
 }
 
 const ReportSalesChart: React.FC<SalesChartProps> = ({
@@ -29,7 +29,7 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
   selectedDates,
   selectedMonth,
   selectedYear,
-  selectReportType, // Destructure the prop here
+  selectReportType,
 }) => {
   const [chartData, setChartData] = useState<any>(null);
 
@@ -40,11 +40,11 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
       let dataset1: number[] = [];
       let dataset2: number[] = [];
 
-      if (selectedDates.length > 0 && selectType === "date") {
-        // If multiple dates are selected
-        labels = selectedDates;
-        dataset1 = selectedDates.map(() => Math.floor(Math.random() * 100)); // Random sales data for dataset 1
-        dataset2 = selectedDates.map(() => Math.floor(Math.random() * 100)); // Random sales data for dataset 2
+      if (selectedDates.startDate && selectedDates.endDate && selectType === "date") {
+        // If a range of dates is selected
+        labels = [selectedDates.startDate, selectedDates.endDate];
+        dataset1 = [Math.floor(Math.random() * 100), Math.floor(Math.random() * 100)]; // Random sales data for dataset 1
+        dataset2 = [Math.floor(Math.random() * 100), Math.floor(Math.random() * 100)]; // Random sales data for dataset 2
       } else if (selectType === "month") {
         // If a month is selected
         const year = parseInt(selectedYear); // Use the selected year
@@ -71,7 +71,7 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
         labels,
         datasets: [
           {
-            label: "Sales ",
+            label: "Sales",
             data: dataset1,
             fill: false,
             borderColor: "rgb(75, 192, 192)", // Cyan color

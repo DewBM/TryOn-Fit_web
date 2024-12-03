@@ -3,24 +3,36 @@
 import { useState } from "react";
 import MultiDatePickerCard from "@/app/components/reportsDateCards";
 import ReportSalesChart from "@/app/components/reportSalesChart";
+import { customFetch } from "@/app/utils/auth";
+
+async function getReportData(datesReport: { startDate: string; endDate: string }): Promise<any> {
+  const queryString = new URLSearchParams(datesReport).toString();
+  const url = `/report?${queryString}`;
+  console.log(url);
+
+  const resp = await customFetch(url, { method: "GET" });
+
+  console.log("Response Data:", resp);
+  return resp;
+}
 
 export default function Home() {
   const [selectType, setSelectionType] = useState<string>("");
-  const [selectedDates, setSelectedDates] = useState<string[]>([]);
+  const [selectedDates, setSelectedDates] = useState<{ startDate: string; endDate: string }>({ startDate: "", endDate: "" });
   const [selectedMonth, setSelectedMonth] = useState<string>("1");
   const [selectedYear, setSelectedYear] = useState<string>("2023");
-  const [selectReportType,setDataType ] = useState<string>(" ")
+  const [selectReportType, setDataType] = useState<string>("");
 
-  // Mock function to handle downloading the report
-  const handleDownload = () => {
-    const data = {
-      type: selectType,
-      dates: selectedDates,
-      month: selectedMonth,
-      year: selectedYear,
-    };
+  // Function to handle downloading the report
+  const handleDownload = async () => {
+    const reportData = await getReportData({
+      startDate: selectedDates.startDate,
+        endDate: selectedDates.endDate
+    });
+    console.log("startDate", selectedDates.startDate);
+    // console.log("Fetched Report Data:", reportData);
 
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
@@ -28,8 +40,6 @@ export default function Home() {
     link.click();
     URL.revokeObjectURL(url);
   };
-
-  
 
   return (
     <div className="p-8 space-y-8">
@@ -51,7 +61,7 @@ export default function Home() {
             Filter Options
           </h2>
           <MultiDatePickerCard
-            setSelectedDates={setSelectedDates}
+            setSelectedDates={(dates: { startDate: string; endDate: string }) => setSelectedDates(dates)}
             setSelectedMonth={setSelectedMonth}
             setSelectedYear={setSelectedYear}
             setSelectionType={setSelectionType}
@@ -68,7 +78,7 @@ export default function Home() {
             </h2>
             <button
               onClick={handleDownload}
-              className="bg-main-dark text-white rounded-md  px-4 py-2 text-sm font-medium   focus:outline-none focus:ring-2 "
+              className="bg-main-dark text-white rounded-md px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2"
             >
               Download Report
             </button>
