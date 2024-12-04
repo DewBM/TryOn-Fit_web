@@ -11,25 +11,25 @@ const lowStockItems = [
     id: 1,
     name: "Crop top",
     quantity: 10,
-    image: "/images/1.webp",
+    image: "/images/women/1.webp",
   },
   {
     id: 2,
     name: "Blouse",
     quantity: 5,
-    image: "/images/2.webp",
+    image: "/images/women/2.webp",
   },
   {
     id: 3,
     name: "Blouse",
     quantity: 8,
-    image: "/images/3.webp",
+    image: "/images/women/3.webp",
   },
   {
     id: 4,
     name: "Blouse",
     quantity: 11,
-    image: "/images/4.webp",
+    image: "/images/women/4.webp",
   },
 ];
 

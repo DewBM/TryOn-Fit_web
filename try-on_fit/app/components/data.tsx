@@ -23,7 +23,7 @@ const products = [
     supplier_id: "345",
     status: "available",
     price: "Rs.2000.00",
-    avatar: "/images/1.webp",
+    avatar: "/images/women/1.webp",
   },
   {
     id: 2,
@@ -31,7 +31,7 @@ const products = [
     quantity: "123",
     supplier_id: "123",
     status: "unavailable",
-    avatar: "/images/2.webp",
+    avatar: "/images/women/2.webp",
     price: "Rs.2000.00",
   },
   {
@@ -40,7 +40,7 @@ const products = [
     quantity: "890",
     supplier_id: "567",
     status: "available",
-    avatar: "/images/3.webp",
+    avatar: "/images/women/3.webp",
     price: "Rs.2000.00",
   },
   {
@@ -49,7 +49,7 @@ const products = [
     quantity: "456",
     supplier_id: "897",
     status: "unavailable",
-    avatar: "/images/4.webp",
+    avatar: "/images/women/4.webp",
     price: "Rs.2000.00",
   },
   {
@@ -58,7 +58,7 @@ const products = [
     quantity: "900",
     supplier_id: "3487",
     status: "available",
-    avatar: "/images/5.webp",
+    avatar: "/images/women/5.webp",
     price: "Rs.2000.00",
   },
   {
@@ -66,7 +66,7 @@ const products = [
     product_name: "Blouse",
     quantity: "234",
     supplier_id: "57",
-    avatar: "/images/1.webp",
+    avatar: "/images/women/1.webp",
     status: "available",
     price: "Rs.2000.00",
   },
@@ -76,7 +76,7 @@ const products = [
     quantity: "543",
     supplier_id: "5",
     status: "available",
-    avatar: "/images/5.webp",
+    avatar: "/images/women/5.webp",
     price: "Rs.2000.00",
   },
   {
@@ -85,7 +85,7 @@ const products = [
     quantity: "12",
     supplier_id: "7",
     status: "available",
-    avatar: "/images/1.webp",
+    avatar: "/images/women/1.webp",
     price: "Rs.2000.00",
   },
   {

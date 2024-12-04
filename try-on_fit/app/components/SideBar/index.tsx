@@ -27,7 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     StockKeeper: [
       { label: "DashBoard", route: "/StockKeeper", icon: <FiHome /> },
       { label: "Products", route: "/StockKeeper/Product", icon: <FiPackage /> },
-      { label: "Restock", route: "/restock", icon: <FiArrowUp />  },
+      // { label: "Restock", route: "/restock", icon: <FiArrowUp />  },
     ],
     StoreManager: [
       { label: "DashBoard", route: "/StoreManager", icon: <FiHome /> },
