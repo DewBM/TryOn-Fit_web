@@ -1,210 +1,183 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
-import React, { useState, useEffect } from "react";
-import Footer from "@/app/components/Footer";
+import React, { useEffect, useState } from "react";
 import NavBar from "@/app/components/NavBar";
-import TextBox from "@/app/components/TextBox";
+import Footer from "@/app/components/Footer";
+import { fetchCustomerDetails } from "../action";
 import Image from "next/image";
-import { AiOutlineEdit } from "react-icons/ai";
 
-interface UserProfileProps {
-  fullName: string;
+interface Customer {
+  customer_id: string;
+  user_id: number;
+  first_name: string;
+  last_name: string;
   email: string;
-  mobile: string;
-  gender: string;
-  shippingAddress_1: string;
-  shippingAddress_2: string;
-  creditCard: string;
+  profile_picture_url: string;
 }
 
-const EditUserProfilePage: React.FC = () => {
-  const searchParams = useSearchParams();
-  const [formData, setFormData] = useState<UserProfileProps>({
-    fullName: "",
-    email: "",
-    mobile: "",
-    gender: "",
-    shippingAddress_1: "",
-    shippingAddress_2: "",
-    creditCard: "",
-  });
+interface Address {
+  address_id: number;
+  customer_id: number;
+  supplier_id: null | number;
+  emp_id: null | number;
+  address_line_1: string;
+  address_line_2: string;
+  city: string;
+  district: string;
+  postal_code: string;
+}
+
+const CustomerProfile: React.FC = () => {
+  const [customer, setCustomer] = useState<Customer | null>(null);
+  const [address, setAddress] = useState<Address | null>(null);
+  const [error, setError] = useState<string>("");
+
+  const customerId = 2;
 
   useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
-    const userId = params.get("userId");
+    const getCustomerDetails = async () => {
+      try {
+        const data = await fetchCustomerDetails(customerId);
+        if (data.isSuccess) {
+          setCustomer(data.data.customer);
+          setAddress(data.data.address);
+        } else {
+          setError(data.msg || "Failed to fetch customer details");
+        }
+      } catch (err: any) {
+        setError(err.message || "An error occurred");
+      }
+    };
 
-    if (userId) {
-      fetch(`/api/user/${userId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setFormData(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-        });
-    }
-  }, [searchParams]);
+    getCustomerDetails();
+  }, [customerId]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Updated Profile Data:", formData);
-  };
+  if (error) {
+    return <div className="text-red-500 text-center mt-4">{error}</div>;
+  }
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <NavBar />
-      <div className="relative  mt-8 mr-12 p-4">
-        <button
-          onClick={handleSubmit}
-          className="absolute top-0 right-0 bg-main-dark border-main-dark border-1 text-white px-4 py-2 rounded-md hover:bg-white hover:text-main-dark"
-        >
-          Save Changes
-        </button>
-      </div>
-      <div className="grid bg-main lg:grid-cols-12 my-4 w-auto mb-0 sm:grid-cols-6 rounded mx-8">
-        <div className="relative lg:col-span-3 mt-6 mb-12 border rounded-md flex flex-col justify-center items-center h-[400px]">
-          <Image
-            src="/images/Profile_Photo.webp"
-            alt="Profile Photo"
-            width={200}
-            height={200}
-            className="border-1 rounded-full shadow-2xl"
-          />
-          <button
-            className="absolute top-2 right-2 bg-white  text-main-dark rounded-full p-2 hover:bg-main-dark hover:text-white"
-            title="Edit Photo"
-            onClick={() => console.log("Edit Photo Clicked")}
-          >
-            <AiOutlineEdit />
-          </button>
-          <div className="mt-4 text-lg font-bold">{formData.fullName}</div>
-        </div>
+      <div className="flex-grow p-8">
+        <div className="max-w-7xl mx-auto bg-white shadow rounded-lg p-6">
+          {/* Header Section */}
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold text-gray-800">Edit Profile</h1>
+            <button className="bg-main-dark text-white px-6 py-2 rounded-lg hover:bg-brown-500">
+              Save Changes
+            </button>
+          </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="lg:col-span-9 p-2 lg:col-start-4 mx-4 my-4"
-        >
-          <div className="relative grid lg:grid-cols-12 border rounded p-4">
-            <div className="lg:col-span-12">
-              <h2 className="text-2xl font-bold mb-6 mx-6 flex items-center">
+          {/* Profile Image and Personal Information */}
+          <div className="flex gap-8 items-start mb-8">
+            {/* Profile Image */}
+            <div className="w-1/4">
+              <div className="relative w-40 h-40 rounded-full overflow-hidden mx-auto">
+                <Image
+                  src={customer?.profile_picture_url || "/default-avatar.png"}
+                  alt="Profile Image"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
+              <button className="mt-4 text-sm text-brown-600 flex items-center justify-center">
+                <span className="material-icons">edit</span> 
+              </button>
+            </div>
+
+            {/* Personal Information Form */}
+            <div className="flex-1">
+              <h2 className="text-lg font-semibold text-gray-700 mb-4">
                 Personal Information
-                <button
-                  className="absolute top-2 right-2 bg-white  text-main-dark rounded-full p-1 hover:bg-main-dark hover:text-white"
-                  title="Edit Personal Information"
-                  onClick={() =>
-                    console.log("Edit Personal Information Clicked")
-                  }
-                >
-                  <AiOutlineEdit className="text-lg" />
-                </button>
               </h2>
-            </div>
-            <div className="lg:col-span-5 lg:col-start-1 my-4 mx-6">
-              <TextBox
-                labelName="Full Name"
-                name="fullName"
-                inputType="text"
-                value={formData.fullName}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="lg:col-span-5 lg:col-start-7 my-4 mx-6">
-              <TextBox
-                labelName="Email"
-                name="email"
-                inputType="text"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="lg:col-span-5 lg:col-start-1 my-4 mx-6">
-              <TextBox
-                labelName="Mobile"
-                name="mobile"
-                inputType="text"
-                value={formData.mobile}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="lg:col-span-5 lg:col-start-7 my-4 mx-6">
-              <TextBox
-                labelName="Gender"
-                name="gender"
-                inputType="text"
-                value={formData.gender}
-                onChange={handleChange}
-              />
+              <form className="grid grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    defaultValue={`${customer?.first_name} ${customer?.last_name}`}
+                    className="w-full border-gray-300 rounded-lg px-4 py-2"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    defaultValue={customer?.email}
+                    className="w-full border-gray-300 rounded-lg px-4 py-2"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">
+                    Mobile
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter mobile number"
+                    className="w-full border-gray-300 rounded-lg px-4 py-2"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">
+                    Gender
+                  </label>
+                  <select className="w-full border-gray-300 rounded-lg px-4 py-2">
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+              </form>
             </div>
           </div>
 
-          <div className="relative border rounded p-4 my-6">
-            <h2 className="text-2xl font-bold mb-6 mx-6 flex items-center">
+          {/* Address Information */}
+          <div className="mb-8">
+            <h2 className="text-lg font-semibold text-gray-700 mb-4">
               Address Information
-              <button
-                className="absolute top-2 right-2 bg-white text-main-dark rounded-full p-1 hover:bg-main-dark hover:text-white"
-                title="Edit Address Information"
-                onClick={() => console.log("Edit Address Information Clicked")}
-              >
-                <AiOutlineEdit className="text-lg" />
-              </button>
             </h2>
-            <div className="my-4 mx-6">
-              <TextBox
-                labelName="Shipping Address"
-                name="shippingAddress_1"
-                inputType="text"
-                value={formData.shippingAddress_1}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="my-4 mx-6">
-              <TextBox
-                labelName="Billing Address"
-                name="shippingAddress_2"
-                inputType="text"
-                value={formData.shippingAddress_2}
-                onChange={handleChange}
-              />
-            </div>
+            <form className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="block text-gray-600 font-medium mb-1">
+                  Shipping Address
+                </label>
+                <input
+                  type="text"
+                  defaultValue={address?.address_line_1}
+                  className="w-full border-gray-300 rounded-lg px-4 py-2"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600 font-medium mb-1">
+                  Billing Address
+                </label>
+                <input
+                  type="text"
+                  defaultValue={address?.address_line_2}
+                  className="w-full border-gray-300 rounded-lg px-4 py-2"
+                />
+              </div>
+            </form>
           </div>
 
-          <div className="relative border rounded p-4 my-6">
-            <h2 className="text-2xl font-bold mb-6 mx-6 flex items-center">
+          {/* Payment Methods */}
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700 mb-4">
               Payment Methods
-              <button
-                className="absolute top-2 right-2 bg-white text-main-dark rounded-full p-1 hover:bg-main-dark hover:text-white"
-                title="Edit Payment Methods"
-                onClick={() => console.log("Edit Payment Methods Clicked")}
-              >
-                <AiOutlineEdit className="text-lg" />
-              </button>
             </h2>
-            <div className="my-4 mx-6">
-              <TextBox
-                labelName="Saved Credit Card"
-                name="creditCard"
-                inputType="text"
-                value={formData.creditCard}
-                onChange={handleChange}
-              />
+            <div className="p-4 border rounded-lg">
+              <p className="text-gray-600">Saved Credit Card</p>
             </div>
           </div>
-          
-        </form>
+        </div>
       </div>
-      
       <Footer />
     </div>
   );
 };
 
-export default EditUserProfilePage;
+export default CustomerProfile;

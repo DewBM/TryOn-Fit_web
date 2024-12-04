@@ -1,17 +1,25 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
 import NavBar from "@/app/components/NavBar";
 import Footer from "@/app/components/Footer";
-import TextBde_Dsble from "@/app/components/TextBde_Dsble";
-import { customFetch } from "@/app/utils/auth";
+import { fetchCustomerDetails } from "./action";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-interface UserProfileProps {
+interface Customer {
+  customer_id: string;
+  user_id: number;
   first_name: string;
   last_name: string;
   email: string;
+  profile_picture_url: string;
+}
+
+interface Address {
+  address_id: number;
+  customer_id: number;
+  supplier_id: null | number;
+  emp_id: null | number;
   address_line_1: string;
   address_line_2: string;
   city: string;
@@ -19,180 +27,114 @@ interface UserProfileProps {
   postal_code: string;
 }
 
-const UserProfilePage: React.FC = () => {
+const CustomerProfile: React.FC = () => {
+  const [customer, setCustomer] = useState<Customer | null>(null);
+  const [address, setAddress] = useState<Address | null>(null);
+  const [error, setError] = useState<string>("");
   const router = useRouter();
 
-  const [userInfo, setUserInfo] = useState<UserProfileProps>({
-    first_name: "",
-    last_name: "",
-    email: "",
-    address_line_1: "",
-    address_line_2: "",
-    city: "",
-    district: "",
-    postal_code: "",
-  });
-
-  const [customer_id, setCustomer_id] = useState<string | null>(null);
+  const customerId = 2; // Replace with dynamically fetched customer ID
 
   useEffect(() => {
-    // Fetch the logged-in user's customer ID and user information
-    const fetchUserData = async () => {
+    const getCustomerDetails = async () => {
       try {
-        const user = await customFetch("/auth/getUserById", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (user && user.customer_id) {
-          setCustomer_id(user.customer_id);
-
-          // Fetch user data 
-          const userData = await customFetch(
-            "http://localhost:8080/customer/getCustomerByCustomer_id?customer_id=${user.customer_id}",
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-
-          if (userData) {
-            setUserInfo(userData);
-          } else {
-            console.error("Failed to fetch user data");
-          }
+        const data = await fetchCustomerDetails(customerId);
+        if (data.isSuccess) {
+          setCustomer(data.data.customer);
+          setAddress(data.data.address);
         } else {
-          console.error("Failed to retrieve customer ID");
+          setError(data.msg || "Failed to fetch customer details");
         }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+      } catch (err: any) {
+        setError(err.message || "An error occurred");
       }
     };
 
-    fetchUserData();
-  }, []);
+    getCustomerDetails();
+  }, [customerId]);
 
-  const handleProfile = () => {
-    router.push("/user_profile/profile/edit_profile");
-  };
+  if (error) {
+    return <div className="text-red-500 text-center mt-4">{error}</div>;
+  }
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col bg-gray-50 relative">
       <NavBar />
-      <div className="relative mt-5 mb-4 mx-3 p-4">
-        <button
-          onClick={handleProfile}
-          className="absolute top-0 right-0 bg-white border-main-dark border-1 text-main-dark px-4 py-2 rounded-md hover:bg-main-dark hover:text-white z-10"
-        >
-          Edit Profile
-        </button>
-      </div>
-      <div className="grid bg-main lg:grid-cols-12 my-4 w-auto mb-0 sm:grid-cols-6 rounded mx-8">
-        <div className="lg:col-span-3 mt-6 mb-12 border rounded-md flex flex-col justify-center items-center h-[400px]">
-          <Image
-            src="/images/Profile_Photo.webp"
-            alt="Profile Photo"
-            width={200}
-            height={200}
-            className="border-1 rounded-full shadow-2xl"
-          />
-          <div className="mt-4 text-lg font-bold">{userInfo.email}</div>
+      <div className="flex-grow p-6 relative">
+        {/* Edit Button in Top-Right Corner */}
+        <div className="absolute top-6 right-6">
+          <button
+            onClick={() => router.push("/user_profile/profile/edit_profile")} // Navigate to the edit profile page
+            className="bg-main-dark text-white px-6 py-3 rounded-lg hover:bg-main-light shadow-md"
+          >
+            Edit Profile
+          </button>
         </div>
 
-        <div className="lg:col-span-9 p-2 lg:col-start-4 mx-4 my-4">
-          <div className="grid lg:grid-cols-12 border rounded p-4">
-            <div className="lg:col-span-12">
-              <h2 className="text-2xl font-bold mb-6 mx-6">
-                Personal Information
-              </h2>
-            </div>
-            <div className="lg:col-span-5 lg:col-start-1 my-4 mx-6">
-              <TextBde_Dsble
-                labelName="First Name"
-                name="first_name"
-                inputType="text"
-                defaultValue={userInfo.first_name}
-                disabled={true}
-              />
-            </div>
-            <div className="lg:col-span-5 lg:col-start-1 my-4 mx-6">
-              <TextBde_Dsble
-                labelName="Last Name"
-                name="last_name"
-                inputType="text"
-                defaultValue={userInfo.last_name}
-                disabled={true}
-              />
-            </div>
-            <div className="lg:col-span-5 lg:col-start-7 my-4 mx-6">
-              <TextBde_Dsble
-                labelName="Email"
-                name="email"
-                inputType="text"
-                defaultValue={userInfo.email}
-                disabled={true}
-              />
-            </div>
-            <div className="lg:col-span-5 lg:col-start-1 my-4 mx-6">
-              <TextBde_Dsble
-                labelName="Address Line 1"
-                name="address_line_1"
-                inputType="text"
-                defaultValue={userInfo.address_line_1}
-                disabled={true}
-              />
-            </div>
-            <div className="lg:col-span-5 lg:col-start-7 my-4 mx-6">
-              <TextBde_Dsble
-                labelName="Address Line 2"
-                name="address_line_2"
-                inputType="text"
-                defaultValue={userInfo.address_line_2}
-                disabled={true}
-              />
-            </div>
-          </div>
+        <div className="bg-white shadow-md rounded-lg p-6 mb-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            Customer Profile
+          </h1>
 
-          <div className="border rounded p-4 my-6">
-            <h2 className="text-2xl font-bold mb-6 mx-6">
-              Address Information
-            </h2>
-            <div className="my-4 mx-6">
-              <TextBde_Dsble
-                labelName="City"
-                name="city"
-                inputType="text"
-                defaultValue={userInfo.city}
-                disabled={true}
-              />
+          {customer && (
+            <div className="items-center mb-6">
+              {/* Profile Picture and Customer Details */}
+              <div className="p-6 border w-full">
+                <div className="relative w-36 h-36 rounded-full overflow-hidden mb-4 p-2">
+                  <Image
+                    src={customer.profile_picture_url || "/default-avatar.png"}
+                    alt="Profile Picture"
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                </div>
+                <div className="p-2">
+                  <h2 className="text-lg font-semibold text-gray-700 p-2">
+                    {customer.first_name} {customer.last_name}
+                  </h2>
+                  <p className="text-gray-600 p-2">{customer.email}</p>
+                </div>
+              </div>
             </div>
-            <div className="my-4 mx-6">
-              <TextBde_Dsble
-                labelName="District"
-                name="district"
-                inputType="text"
-                defaultValue={userInfo.district}
-                disabled={true}
-              />
-            </div>
-          </div>
+          )}
 
-          <div className="border rounded p-4 my-6">
-            <h2 className="text-2xl font-bold mb-6 mx-6">Postal Code</h2>
-            <div className="my-4 mx-6">
-              <TextBde_Dsble
-                labelName="Postal Code"
-                name="postal_code"
-                inputType="text"
-                defaultValue={userInfo.postal_code}
-                disabled={true}
-              />
+          {address && (
+            <div className="p-6 border">
+              <h1 className="text-lg font-semibold text-gray-700 p-2">
+                Address Details
+              </h1>
+              <p className="text-gray-600 mt-2 p-2">
+                <span className="font-medium">Address Line 1:</span>{" "}
+                <span className="bg-gray-100 px-2 py-1 rounded text-gray-800">
+                  {address.address_line_1}
+                </span>
+              </p>
+              <p className="text-gray-600 mt-1 p-2">
+                <span className="font-medium">Address Line 2:</span>{" "}
+                <span className="bg-gray-100 px-2 py-1 rounded text-gray-800">
+                  {address.address_line_2}
+                </span>
+              </p>
+              <p className="text-gray-600 mt-1 p-2">
+                <span className="font-medium">City:</span>{" "}
+                <span className="bg-gray-100 px-2 py-1 rounded text-gray-800">
+                  {address.city}
+                </span>
+              </p>
+              <p className="text-gray-600 mt-1 p-2">
+                <span className="font-medium">District:</span>{" "}
+                <span className="bg-gray-100 px-2 py-1 rounded text-gray-800">
+                  {address.district}
+                </span>
+              </p>
+              <p className="text-gray-600 mt-1 p-2 flex items-center">
+                <span className="font-medium text-gray-800 mr-2">Postal Code:</span>
+                <span className="bg-gray-100 px-2 py-1 rounded text-gray-800">
+                  {address.postal_code}
+                </span>
+              </p>
             </div>
-          </div>
+          )}
         </div>
       </div>
       <Footer />
@@ -200,4 +142,4 @@ const UserProfilePage: React.FC = () => {
   );
 };
 
-export default UserProfilePage;
+export default CustomerProfile;
