@@ -14,7 +14,7 @@ interface Props {
   price: string;
 }
 
-const Product: React.FC<ProductType> = ({
+const ProductA: React.FC<ProductType> = ({
   variant_id,
   product_id,
   name,
@@ -156,4 +156,4 @@ const Product: React.FC<ProductType> = ({
   );
 };
 
-export default Product;
+export default ProductA;

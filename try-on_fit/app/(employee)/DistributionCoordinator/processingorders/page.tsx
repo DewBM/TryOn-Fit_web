@@ -76,10 +76,37 @@ export default function Home() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
-  const handleViewDetails = (order: Order) => {
-    setSelectedOrder(order);
-    setIsDialogOpen(true);
-  };
+  
+  // const handleViewDetails = (order: Order) => {
+  //   setSelectedOrder(order); // Set the basic order info first
+  //   setIsDialogOpen(true);   // Open the dialog
+  // };
+  
+  // useEffect(() => {
+  //   const fetchOrderDetails = async () => {
+  //     if (!selectedOrder || !selectedOrder.order_id) return;
+  
+  //     try {
+  //       const response = await fetch(
+  //         `http://localhost:8080/order/getOrderDetails?id=${selectedOrder.order_id}`
+  //       );
+  //       const data = await response.json();
+  
+  //       if (data.isSuccess) {
+  //         setSelectedOrder((prevOrder) => ({ ...prevOrder, ...data.data }));
+  //       } else {
+  //         console.error(data.msg);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching order details:", error);
+  //     }
+  //   };
+  
+  //   if (isDialogOpen) {
+  //     fetchOrderDetails(); // Fetch details only when dialog opens
+  //   }
+  // }, [selectedOrder, isDialogOpen]);
+  
 
   useEffect(() => {
     const fetchOrders = async () => {

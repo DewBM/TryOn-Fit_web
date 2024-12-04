@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import {
   Table,
@@ -29,6 +29,21 @@ import { columns, products, statusOptions } from "@/app/components/data";
 import { capitalize } from "@/app/components/utils";
 import DeleteModal from "@/app/components/DeleteModal";
 import { useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
+
+interface Supplier {
+  supplier_id: number;
+  name: string;
+}
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   available: "success",
@@ -50,6 +65,52 @@ const ProductPage = () => {
   };
 
   type User = (typeof products)[0];
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedSupplier, setSelectedSupplier] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+
+  // Fetch suppliers and categories
+  useEffect(() => {
+    // fetch("/api/suppliers") // Replace with your API endpoint
+    //   .then((res) => res.json())
+    //   .then((data) => setSuppliers(data));
+
+    // fetch("/api/categories") // Replace with your API endpoint
+    //   .then((res) => res.json())
+    //   .then((data) => setCategories(data));
+  }, []);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setFile(event.target.files[0]);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (selectedSupplier && selectedCategory && file) {
+      const formData = new FormData();
+      formData.append("supplier_id", selectedSupplier.toString());
+      formData.append("category_id", selectedCategory.toString());
+      formData.append("file", file);
+
+      fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      }).then((response) => {
+        if (response.ok) {
+          alert("Form submitted successfully!");
+          setDialogOpen(false);
+        } else {
+          alert("Failed to submit the form.");
+        }
+      });
+    }
+  };
 
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
@@ -278,6 +339,7 @@ const ProductPage = () => {
               className="bg-main-dark text-white"
               endContent={<PlusIcon />}
               size="sm"
+              onClick={() => setDialogOpen(true)}
             >
               Add New
             </Button>
@@ -397,6 +459,68 @@ const ProductPage = () => {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
       />
+
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} fullWidth>
+        <DialogTitle>Select Options and Upload File</DialogTitle>
+        <DialogContent>
+          {/* Supplier Dropdown */}
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Supplier</InputLabel>
+            <Select
+              value={selectedSupplier || ""}
+              onChange={(e) => setSelectedSupplier(Number(e.target.value))}
+            >
+              <MenuItem value="">Select Supplier</MenuItem>
+              {suppliers.map((supplier) => (
+                <MenuItem key={supplier.supplier_id} value={supplier.supplier_id}>
+                  {supplier.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Category Dropdown */}
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Category</InputLabel>
+            <Select
+              value={selectedCategory || ""}
+              onChange={(e) => setSelectedCategory(Number(e.target.value))}
+            >
+              <MenuItem value="">Select Category</MenuItem>
+              {categories.map((category) => (
+                <MenuItem key={category} value={category}>
+                  {category}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* File Input */}
+          <FormControl fullWidth margin="normal">
+            <input type="file" onChange={handleFileChange} />
+          </FormControl>
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+          <Button
+            variant="solid"
+            color="primary"
+            disabled={!selectedSupplier || !selectedCategory}
+            onClick={() => alert("File downloaded")}
+          >
+            Download File
+          </Button>
+          <Button
+            variant="solid"
+            color="secondary"
+            disabled={!selectedSupplier || !selectedCategory || !file}
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

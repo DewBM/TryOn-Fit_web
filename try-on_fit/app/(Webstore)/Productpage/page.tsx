@@ -7,6 +7,7 @@ import RatingStar from '@/app/components/RatingStar';
 import ReviewSection from '@/app/components/Review';
 
 
+
 const ProductPage = () => {
     const [images, setImages] = useState({
         img1: "https://static-01.daraz.lk/p/caccb75f3a806f44c05773e7ebc596dc.jpg_750x750.jpg_.webp",
@@ -145,7 +146,7 @@ const ProductPage = () => {
                             <span className='py-4 px-6 rounded-lg'>{amount}</span>
                             <button className='bg-gray-200 py-2 px-4 rounded-lg text-main-dark text-3xl' onClick={() => setAmount((prev) => prev + 1)}>+</button>
                         </div>
-                        <button className='bg-main-dark text-white font-semibold py-3 px-8 rounded-xl h-full' >Add to Cart</button>
+                       <button className='bg-main-dark text-white font-semibold py-3 px-8 rounded-xl h-full' >Add to Cart</button>
                         <button className='bg-main-dark text-white font-semibold py-3 px-8 rounded-xl h-full'>Add to Fiton</button>
                     </div>
                 </div>

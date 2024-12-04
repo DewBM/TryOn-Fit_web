@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Button from '../app/components/Button';
 import aboutusimg from '../public/images/aboutus.png';
@@ -9,6 +9,8 @@ import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import { useRouter } from 'next/navigation'; // Use 'next/navigation' for hooks
 import Product from './components/Product';
+import { ProductType } from './types/custom_types';
+import { fetchProducts } from './(Webstore)/action';
 
 function Home() {
   const router = useRouter();
@@ -29,133 +31,325 @@ function Home() {
    }
  
   // Define the items array
-  const items = [
-    {
-      images: ['/images/women/1.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/men/5.jpeg'],
-      name: 'Shirt',
-      price: 2900,
-    },
-    {
-      images:['/images/women/13.webp'],
-      name: 'Long Frock',
-      price: 3999,
-    },
-    {
-      images: ['/images/women/4.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/men/1.webp'],
-      name: 't-shirts',
-      price: 2900,
-    },
-    {
-      images: ['/images/women/5.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/men/4.webp'],
-      name: 'T-shirts',
-      price: 2900,
-    },
-    {
-      images: ['/images/men/1.webp'],
-      name: 'Sleeve shirt',
-      price: 2900,
-    },
-    {
-      images: ['/images/women/5.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/men/1.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/men/1.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/women/5.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/men/4.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/women/1.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/men/5.jpeg'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/women/4.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/men/6.jpeg'],
-      name: 'Sleeveless shirts',
-      price: 2900,
-    },
-    {
-      images: ['/images/men/9.jpeg'],
-      name: 'Trouser',
-      price: 2900,
-    },
-    {
-      images: ['/images/women/4.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/men/10.jpeg'],
-      name: 'Trouser',
-      price: 2900,
-    },
-    {
-      images: ['/images/women/5.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/men/4.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/men/1.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/men/1.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-    {
-      images: ['/images/women/5.webp'],
-      name: 'Sleeve Blouse',
-      price: 2900,
-    },
-  ];
+
+  // const items = [
+  //   {
+  //     images: ['/images/women/1.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/5.jpeg'],
+  //     name: 'Shirt',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images:['/images/women/13.webp'],
+  //     name: 'Long Frock',
+  //     price: 3999,
+  //   },
+  //   {
+  //     images: ['/images/women/4.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/1.webp'],
+  //     name: 't-shirts',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/women/5.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/4.webp'],
+  //     name: 'T-shirts',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/1.webp'],
+  //     name: 'Sleeve shirt',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/women/5.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/1.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/1.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },  // const items = [
+  //   {
+  //     images: ['/images/women/1.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/5.jpeg'],
+  //     name: 'Shirt',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images:['/images/women/13.webp'],
+  //     name: 'Long Frock',
+  //     price: 3999,
+  //   },
+  //   {
+  //     images: ['/images/women/4.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/1.webp'],
+  //     name: 't-shirts',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/women/5.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/4.webp'],
+  //     name: 'T-shirts',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/1.webp'],
+  //     name: 'Sleeve shirt',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/women/5.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/1.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/1.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/women/5.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/4.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/women/1.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/5.jpeg'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/women/4.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/6.jpeg'],
+  //     name: 'Sleeveless shirts',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/9.jpeg'],
+  //     name: 'Trouser',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/women/4.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/10.jpeg'],
+  //     name: 'Trouser',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/women/5.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/4.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/1.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/1.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/women/5.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  // ];
+  //   {
+  //     images: ['/images/women/5.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/4.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/women/1.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/5.jpeg'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/women/4.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/6.jpeg'],
+  //     name: 'Sleeveless shirts',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/9.jpeg'],
+  //     name: 'Trouser',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/women/4.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/10.jpeg'],
+  //     name: 'Trouser',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/women/5.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/4.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/1.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/men/1.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  //   {
+  //     images: ['/images/women/5.webp'],
+  //     name: 'Sleeve Blouse',
+  //     price: 2900,
+  //   },
+  // ];
+
+
+  const [items, setItems] = useState<ProductType[]>([]);
+  // const[search,setsearch] = useState<ProductType[]>([]);
+
+  // useEffect(() => {
+  //   const searchProducts = async () => {
+  //     try {
+  //       const result: any = await fetchProducts("setsearch");
+
+  //       if (result.isSuccess) {
+  //         setItems(result.data);
+  //         console.log("Products: ", result.data);
+  //       }
+  //       else {
+  //         alert(result.msg);
+  //         console.error("Search Error: ", result.error);
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to fetch cart items:", error);
+  //       setItems([]); // Handle error gracefully
+  //     }
+  //   };
+
+  //   searchProducts();
+  // }, [setsearch]);
+
+
+  const Component = ({ searchPrompt }: { searchPrompt: string }) => {
+    const [items, setItems] = useState([]);
+  
+    useEffect(() => {
+      const searchProducts = async () => {
+        try {
+          const result: any = await fetchProducts(searchPrompt);
+  
+          if (result.isSuccess) {
+            setItems(result.data);
+            console.log("Products: ", result.data);
+          } else {
+            alert(result.msg || "Error fetching products");
+            console.error("Search Error: ", result.error || result.msg);
+          }
+        } catch (error) {
+          console.error("Failed to fetch products:", error);
+          setItems([]); // Clear items on error
+        }
+      };
+  
+      if (searchPrompt) {
+        searchProducts();
+      }
+    }, [searchPrompt]); 
+  
+  
+    return (
+      <div>
+        {items.length > 0 ? (
+          items.map((item: any) => <div key={item.id}>{item.name}</div>)
+        ) : (
+          <p>No products found</p>
+        )}
+      </div>
+    );
+  }; 
 
   return (
     <div>
@@ -179,9 +373,14 @@ function Home() {
             {items.map((item, index) => (
               <Product 
                 key={index}
-                images={item.images}
+                img_front={item.img_front}
                 name={item.name}
-                price={item.price}
+                price={item.price} 
+                product_id={item.product_id} 
+                variant_id={item.variant_id} 
+                color={item.color} 
+                design={item.design} 
+                description={item.description}              
               />
             ))}
           </div>
@@ -252,3 +451,7 @@ function Home() {
 }
 
 export default Home;
+function userState(arg0: never[]): [any, any] {
+  throw new Error('Function not implemented.');
+}
+
