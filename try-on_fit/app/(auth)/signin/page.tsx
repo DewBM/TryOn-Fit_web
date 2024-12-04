@@ -77,7 +77,7 @@ export default function Signin() {
           <div className="sm:col-span-4 font-medium leading-6 text-sm ml-44">
             <Link
               className="underline  text-red-400"
-              href="http://localhost:8081/signup"
+              href="http://localhost:8080/signup"
             >
               Froget password ?
             </Link>
@@ -92,7 +92,7 @@ export default function Signin() {
               Don't have an account ?
               <Link
                 className="underline text-main-dark"
-                href="http://localhost:8081/signup"
+                href="http://localhost:8080/signup"
               >
                 Register here
               </Link>
