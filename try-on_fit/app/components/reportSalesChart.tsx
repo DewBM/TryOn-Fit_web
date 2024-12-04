@@ -17,7 +17,10 @@ type reportDataArrayType = {
   suppliers: number[];
   revenues: number[];
 };
-
+type reportmonthDataArrayType = {
+  suppliers: number[];
+  revenues: number[];
+};
 // Register chart elements
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -27,7 +30,9 @@ interface SalesChartProps {
   selectedMonth: string;
   selectedYear: string;
   selectReportType: string;
-  reportData: reportDataArrayType
+  reportData: reportDataArrayType;
+  reportMonthData: reportmonthDataArrayType
+  reportYearData: reportDataArrayType;
   // revenue: number[];
 }
 
@@ -38,6 +43,8 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
   selectedYear,
   selectReportType,
   reportData,
+  reportMonthData,
+  reportYearData
   // revenue,
 }) => {
   const [chartData, setChartData] = useState<any>(null);
@@ -50,7 +57,7 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
       let dataset1: number[] = [];
       let dataset2: number[] = [];
 
-      console.log("Report Data:", reportData);
+      console.log("Report helooo:", reportYearData);
 
       if (selectedDates.startDate && selectedDates.endDate && selectType === "date") {
         if (reportData && reportData.suppliers)
@@ -65,22 +72,22 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
       console.log("Labels:", labels);
       console.log("Dataset1:", dataset1);
 
-      } else if (selectType === "month") {
+      } else if (selectType === "month" ) {
         const year = parseInt(selectedYear);
         const month = parseInt(selectedMonth) - 1;
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        labels = Array.from({ length: daysInMonth }, (_, i) => `${i + 1}-${selectedMonth}-${year}`);
-        dataset1 = Array.from({ length: daysInMonth }, () => Math.random() * 1000);
-        dataset2 = Array.from({ length: daysInMonth }, () => Math.random() * 500);
+        labels = reportMonthData.suppliers.map((supplier) => supplier.toString());
+        dataset1 = reportMonthData.revenues
+        // dataset2 = Array.from({ length: daysInMonth }, () => Math.random() * 500);
       } else if (selectType === "year") {
         const months = [
           "January", "February", "March", "April", "May", "June",
           "July", "August", "September", "October", "November", "December",
         ];
-        labels = months;
-        dataset1 = months.map(() => Math.random() * 1000);
-        dataset2 = months.map(() => Math.random() * 500);
+        labels = reportYearData.suppliers.map((supplier) => supplier.toString());
+        dataset1 = reportYearData.revenues
+        // dataset2 = months.map(() => Math.random() * 500);
       }
 
       setChartData({
@@ -105,7 +112,7 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
     };
 
     fetchSalesData();
-  }, [selectedDates, selectedMonth, selectedYear, selectType, reportData]);
+  }, [selectedDates, selectedMonth, selectedYear, selectType, reportData,reportMonthData,reportYearData]);
 
   if (!chartData) {
     return <div>Loading...</div>;

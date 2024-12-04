@@ -24,7 +24,7 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
     endDate: "",
   });
   const [selectedMonth, setSelectedMonthState] = useState<string>("1");
-  const [selectedYear, setSelectedYearState] = useState<string>("2023");
+  const [selectedYear, setSelectedYearState] = useState<string>("2024");
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 50 }, (_, i) => currentYear - i);
@@ -87,6 +87,7 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
                 setSelectionType("date");
                 setSelectedMonth("1");
                 setSelectedYear("2024");
+                window.location.reload();
               }}
               className="mr-2"
             />
@@ -159,31 +160,40 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
           </div>
         )}
 
-        {selectionType === "month" && (
-          <div>
-            <label
-              htmlFor="month"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-              Select Month
-            </label>
-            <select
-              id="month"
-              value={selectedMonth}
-              onChange={(e) => {
-                setSelectedMonthState(e.target.value);
-                setSelectedMonth(e.target.value); // Pass to parent
-              }}
-              className="mt-1 block w-full rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
-            >
-              {months.map((month) => (
-                <option key={month.value} value={month.value}>
-                  {month.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+
+
+
+{selectionType === "month" && (
+  <div>
+    <label
+      htmlFor="month"
+      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+    >
+      Select Month
+    </label>
+    <select
+  id="month"
+  value={selectedMonth}
+  onChange={(e) => {
+    const selectedValue = e.target.value;
+    setSelectedMonthState(selectedValue); // Update local state in MultiDatePickerCard
+    setSelectedMonth(selectedValue); // Update parent state
+  }}
+  className="mt-1 block w-full rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+>
+  {months.map((month) => (
+    <option key={month.value} value={month.value}>
+      {month.label}
+    </option>
+  ))}
+</select>
+  </div>
+)}
+
+
+
+
+
 
         {selectionType === "year" && (
           <div>

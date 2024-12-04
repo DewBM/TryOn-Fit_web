@@ -12,7 +12,9 @@ export default function Home() {
   const [selectedYear, setSelectedYear] = useState<string>("2024");
   const [selectReportType, setDataType] = useState<string>("");
   const [reportData, setreportDataArray] = useState<reportDataArrayType>({suppliers: [], revenues: []});
-  
+  const [reportMonthData, setreportMonthDataArray] = useState<reportDataArrayType>({suppliers: [], revenues: []});
+  const [reportYearData, setreportYearDataArray] = useState<reportDataArrayType>({suppliers: [], revenues: []});
+
 
   type reportDataArrayType = {
     suppliers: number[];
@@ -23,11 +25,14 @@ export default function Home() {
     const getReportData = async () => {
       try {
         // Construct the query string for the API request
+        if(selectedDates.startDate !== "" && selectedDates.endDate !== ""&& selectType == "date"){
         const queryString = new URLSearchParams({
-          startDate: selectedDates.startDate,
-          endDate: selectedDates.endDate,
+          startDate: selectedDates.startDate ,
+          endDate: selectedDates.endDate ,
           selectionType: selectType, // Include selectedType in the query string
+         
         }).toString();
+        
 
         // Define the API URL
         const url = `/report?${queryString}`;
@@ -37,17 +42,78 @@ export default function Home() {
         const reportDataArray: any = await customFetch(url, {
           method: "GET",
         });
-
+      
         // Set the fetched data in state
         console.log("Fetched Report Data:", reportDataArray);
         setreportDataArray(reportDataArray.responseData);
-      } catch (error) {
-        console.error("Error fetching report data:", error);
-      }
-    };
 
-    getReportData();
-  }, [selectedDates, selectType, selectReportType]); // Add selectType as a dependency
+
+
+
+
+
+      }else if (selectedMonth !== "" && selectType == "month") {
+        console.log("Selected month:", selectedMonth);
+        const queryString = new URLSearchParams({
+          month: selectedMonth,
+          selectionType: selectType,
+          year: selectedYear,
+        }).toString();
+
+        const url = `/report?${queryString}`;
+        console.log("Fetching data from:", url);
+
+        const reportDataArray: any = await customFetch(url, { method: "GET" });
+        console.log("report  month data:", reportDataArray);
+        setreportMonthDataArray(reportDataArray.responseMonthlyData);
+      }
+      
+      
+      
+      
+      
+      
+      
+      else if(selectedYear !== "" && selectType == "year"){
+        const queryString = new URLSearchParams({
+          year: selectedYear,
+          selectionType: selectType, // Include selectedType in the query string
+        }).toString();
+        
+
+        // Define the API URL
+        const url = `/report?${queryString}`;
+        console.log("Fetching data from:", url);
+
+        // Fetch the data
+        const reportyearDataArray: any = await customFetch(url, {
+          method: "GET",
+        });
+      
+        // Set the fetched data in state
+        console.log("Fetched Report Data:", reportyearDataArray);
+        setreportYearDataArray(reportyearDataArray.responseMyearlyData);
+
+
+
+
+
+
+      }else{
+        console.log("No data to fetch");
+      }
+
+
+
+
+      } catch (error) {
+              console.error("Error fetching report data:", error);
+            }
+          };
+      
+          getReportData();
+        }, [selectedDates, selectType, selectReportType,selectedMonth,selectedYear]); // Add selectType as a dependency
+
 
   // Function to handle downloading the report
   const handleDownload = async () => {
@@ -116,6 +182,8 @@ export default function Home() {
             selectedYear={selectedYear}
             selectReportType={selectReportType}
             reportData={reportData}
+            reportMonthData={reportMonthData}
+            reportYearData={reportYearData}
             // revenue={reportData[0]?.revenue || []} // Provide a default value to handle empty arrays
 />
 
