@@ -1,21 +1,28 @@
 'use client'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NavBar from '@/app/components/NavBar';
 import Footer from '@/app/components/Footer';
 import { useRouter } from 'next/navigation';
 
 const FitOn = () => {
-    const [images, setImages] = useState({
-        img1: "https://static-01.daraz.lk/p/caccb75f3a806f44c05773e7ebc596dc.jpg_750x750.jpg_.webp",
-        img2: "https://static-01.daraz.lk/p/ceefebfb5c10ec9ed4aa3c2545772fa1.jpg_750x750.jpg_.webp",
-        img3: "https://static-01.daraz.lk/p/bbd4e0ab09951ab9dbce9a5cbfecd129.jpg_750x750.jpg_.webp",
-        img4: "https://static-01.daraz.lk/p/caccb75f3a806f44c05773e7ebc596dc.jpg_750x750.jpg_.webp",
-        img5: "https://static-01.daraz.lk/p/bbd4e0ab09951ab9dbce9a5cbfecd129.jpg_750x750.jpg_.webp",
-    });
+    const [images, setImages] = useState([]);
 
-    const [activeImg, setActiveImage] = useState(images.img1);
+    const [activeImg, setActiveImage] = useState();
     const [amount, setAmount] = useState(1);
     const router = useRouter();
+
+    function getArray<T>(key: string): T[] {
+        const storedValue = localStorage.getItem(key);
+        return storedValue ? JSON.parse(storedValue) : [];
+    }
+
+    useEffect(() => {
+        const loadImages = async () => {
+            const image_paths = getArray<string>('generated_images');
+        }
+
+        loadImages();
+    }, []);
 
     return (
         <div>
@@ -25,7 +32,7 @@ const FitOn = () => {
                     <p className="text-2xl font-bold font-sans pt-2">Fit On Room</p>
                 </div>
                 <div className='px-48 py-10 flex flex-row gap-2'>
-                    <div className='flex flex-col gap-7 justify-between h-full'>
+                    {/* <div className='flex flex-col gap-7 justify-between h-full'>
                         {Object.values(images).map((img, index) => (
                             <img
                                 key={index}
@@ -35,7 +42,7 @@ const FitOn = () => {
                                 onClick={() => setActiveImage(img)}
                             />
                         ))}
-                    </div>
+                    </div> */}
                     <div className='flex-grow flex flex-col items-center'>
                         <img
                             src={activeImg}
