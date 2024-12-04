@@ -31,7 +31,7 @@ const CustomerProfile: React.FC = () => {
   const [address, setAddress] = useState<Address | null>(null);
   const [error, setError] = useState<string>("");
 
-  const customerId = 2;
+  const customerId = 3;
 
   useEffect(() => {
     const getCustomerDetails = async () => {
@@ -81,7 +81,7 @@ const CustomerProfile: React.FC = () => {
                 />
               </div>
               <button className="mt-4 text-sm text-brown-600 flex items-center justify-center">
-                <span className="material-icons">edit</span> 
+                <span className="material-icons">edit</span>
               </button>
             </div>
 
@@ -117,8 +117,8 @@ const CustomerProfile: React.FC = () => {
                   </label>
                   <input
                     type="text"
-                    placeholder="Enter mobile number"
-                    className="w-full border-gray-300 rounded-lg px-4 py-2"
+                    placeholder="07012356341"
+                    className="w-full placeholder-black border-gray-300 rounded-lg px-4 py-2"
                   />
                 </div>
                 <div>

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import NavBar from "@/app/components/NavBar";
 import Footer from "@/app/components/Footer";
 import { fetchCustomerDetails } from "./action";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 interface Customer {
@@ -31,9 +30,11 @@ const CustomerProfile: React.FC = () => {
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [address, setAddress] = useState<Address | null>(null);
   const [error, setError] = useState<string>("");
+  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const router = useRouter();
 
-  const customerId = 2; // Replace with dynamically fetched customer ID
+  const customerId = 3; // Replace with dynamically fetched customer ID
 
   useEffect(() => {
     const getCustomerDetails = async () => {
@@ -52,6 +53,14 @@ const CustomerProfile: React.FC = () => {
 
     getCustomerDetails();
   }, [customerId]);
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setUploadedImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
 
   if (error) {
     return <div className="text-red-500 text-center mt-4">{error}</div>;
@@ -77,25 +86,58 @@ const CustomerProfile: React.FC = () => {
           </h1>
 
           {customer && (
-            <div className="items-center mb-6">
-              {/* Profile Picture and Customer Details */}
-              <div className="p-6 border w-full">
-                <div className="relative w-36 h-36 rounded-full overflow-hidden mb-4 p-2">
-                  <Image
-                    src={customer.profile_picture_url || "/default-avatar.png"}
-                    alt="Profile Picture"
-                    layout="fill"
-                    objectFit="cover"
+            <div className="mb-6 flex">
+            {/* Profile Picture Upload and Customer Details */}
+            <div className="p-6 border w-1/2">
+              <div className="relative w-36 h-36 rounded-full overflow-hidden mb-4 p-2">
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt="Uploaded Preview"
+                    className="w-full h-full object-cover"
                   />
-                </div>
-                <div className="p-2">
-                  <h2 className="text-lg font-semibold text-gray-700 p-2">
-                    {customer.first_name} {customer.last_name}
-                  </h2>
-                  <p className="text-gray-600 p-2">{customer.email}</p>
-                </div>
+                ) : (
+                  <img
+                    src={
+                      customer.profile_picture_url || "/default-avatar.png"
+                    }
+                    alt="Profile Picture"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+              <div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="block text-gray-700 font-medium"
+                />
+              </div>
+              <div className="p-2">
+                <h2 className="text-lg font-semibold text-gray-700 p-2">
+                  {customer.first_name} {customer.last_name}
+                </h2>
+                <p className="text-gray-600 p-2">{customer.email}</p>
               </div>
             </div>
+            
+            {/* Tips Section */}
+            <div className="p-6 border w-1/2">
+              <div className="m-2">
+                <h2 className="text-lg font-semibold text-saddlebrown">Tips for Uploading Your Picture for the Virtual Fit-On Feature</h2>
+                <ul className="list-disc ml-6 mt-2 text-red-400">
+                  <li>Choose a plain, neutral background.</li>
+                  <li>Wear clothes that contrast with the background.</li>
+                  <li>Ensure good lighting to avoid shadows.</li>
+                  <li>Upload a front-facing photo (selfie or straight-on shot).</li>
+                  <li>Include your head, shoulders, and chest area.</li>
+                  <li>Do not use filters or overly edited images.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
           )}
 
           {address && (
@@ -128,7 +170,9 @@ const CustomerProfile: React.FC = () => {
                 </span>
               </p>
               <p className="text-gray-600 mt-1 p-2 flex items-center">
-                <span className="font-medium text-gray-800 mr-2">Postal Code:</span>
+                <span className="font-medium text-gray-800 mr-2">
+                  Postal Code:
+                </span>
                 <span className="bg-gray-100 px-2 py-1 rounded text-gray-800">
                   {address.postal_code}
                 </span>
