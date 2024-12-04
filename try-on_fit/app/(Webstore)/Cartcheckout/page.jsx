@@ -13,7 +13,8 @@ import AddAddressModal from "@/app/components/AddAddressModal";
 import EditAddressModal from "@/app/components/EditAddressModal";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
-export{handlePayment} from "../Cartcheckout/action"
+import{handlePayment} from "../Cartcheckout/action"
+import { handleOrder } from '../Cartcheckout/action';
 
 function Page() {
   const [cartItems, setCartItems] = useState([]);
@@ -75,8 +76,26 @@ function Page() {
     script.onload = () => {
      
       payhere.onCompleted = function (orderId) {
-        alert("Payment completed. OrderID: " + orderId);
+        // alert("Payment completed. OrderID: " + orderId);
+        try {
+          const orderData = {
+            customer_id: 1, // Replace with the actual customer ID
+            order_items: cartItems.map((item) => ({
+              product_id: item.id,
+              quantity: item.quantity,
+            })),
+          };
+
+          const result = handleOrder(orderData);
+          console.log('Order created successfully:', result);
+
         window.location.href = `/Invoice?orderId=${orderId}`
+        window.location.href = `/Invoice?orderId=${result.order_id}`;
+      } catch (error) {
+        console.error('Error processing order:', error);
+        alert('Failed to create order. Please contact support.');
+      }
+    
       };
 
       payhere.onDismissed = function () {
