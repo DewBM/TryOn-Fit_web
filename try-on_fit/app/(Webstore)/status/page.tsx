@@ -23,13 +23,15 @@ function page() {
         />
          <Statusslider />
          <div className="space-y-3">
-         <Statuscard
+         {/* <Statuscard
             images={["/images/1.webp"]}
             title={["Sleeeve Blouse"]}
             color={["Brown"]}
             price={["RS2900"]}
             quality={["1"]}
-          />
+            orderId = 
+            sttus
+          /> */}
            {/* <Statuscard
             images={["/images/2.webp"]}
             title={["Sleeeve Blouse"]}
