@@ -6,6 +6,7 @@ import { Dialog, DialogPanel } from '@headlessui/react';
 import Image from 'next/image'; // Correct Image import from next/image
 import ItemCard from './Helper/ItemCard';
 import { ProductType } from '../types/custom_types';
+import { fitOn } from '../(Webstore)/action';
 
 interface Props {
   images: string[]; // Changed to an array of strings
@@ -36,6 +37,32 @@ const Product: React.FC<ProductType> = ({
   const closePopup = () => {
     setIsPopupOpen(false);
   };
+
+  function setArray<T>(key: string, value: T[]): void {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+  
+  // Function to get an array from localStorage
+  function getArray<T>(key: string): T[] {
+    const storedValue = localStorage.getItem(key);
+    return storedValue ? JSON.parse(storedValue) : [];
+  }
+
+  const handleFiton = async (variant_id: string) => {
+    console.log("Variant ID: ", variant_id);
+    const resp = await fitOn(variant_id);
+
+    if (resp.isSuccess && resp.data) {
+      const images = getArray<string>('generated_images');
+      images.push(resp.data);
+
+      setArray<string>('generated_images', images);
+      console.log('generated image id added to local storage: ', resp.data);
+    }
+    else {
+      console.error("Error in generating image. file is empty or response failed");
+    }
+  }
 
   return (
     <>
@@ -110,7 +137,7 @@ const Product: React.FC<ProductType> = ({
               <button className="bg-main-dark text-white py-2 px-4 rounded mb-4" onClick={() => window.location.href = '/cart/cartcheckout'}>
                 Add to Cart
               </button>
-              <button className="bg-main-dark text-white py-2 px-4 rounded mb-4" onClick={() => console.log("Fiton Variant ID: ", variant_id)}>
+              <button className="bg-main-dark text-white py-2 px-4 rounded mb-4" onClick={() => handleFiton(variant_id)}>
                 Add to FitOn
               </button>
               <hr className="my-4" />
