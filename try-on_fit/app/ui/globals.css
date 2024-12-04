@@ -139,3 +139,12 @@ option:hover {
   color: blue;
 }
 
+.content-blurred {
+  filter: blur(5px);  
+  pointer-events: none; 
+}
+
+
+.modal-backdrop {
+  z-index: 9999; 
+}
