@@ -27,6 +27,8 @@ import { ChevronDownIcon } from "@/app/components/ChevronDownIcon";
 import { SearchIcon } from "@/app/components/SearchIcon";
 import { capitalize } from "@/app/components/utils";
 import { statusOptions } from "@/app/components/data";
+import ViewInq  from "../inquiryRespond/page";
+import { BsWindowSidebar } from "react-icons/bs";
 
 
 const columns = [
@@ -124,28 +126,33 @@ export default function App() {
   
   useEffect(() => {
     const getInquiry = async () => {
-      let inquiries: inquiryType[] = await customFetch("/inquiryForm", 
+      let inquiries: inquiryType[] = await customFetch("/inquirylist", 
         {
         method: "GET",
       });
-      if (Array.isArray(inquiries)) {
-        inquiries = inquiries.map((e) => {
+        // inquiries = inquiries.map((e) => {
           
-          e.key = e.inquiry_id;
-          return e;
-        });
-        // console.log(suppliers)
-        setInquiries(inquiries);
-      }
-      getInquiry();
+        //   e.key = e.inquiry_id;
+        //   return e;
+        // });
+        // // console.log(suppliers)
+        // setInquiries(inquiries);
+
+        const inquiriesWithKeys = inquiries.map((item) => ({
+          ...item,
+          key: item.inquiry_id, // Assign `inquiry_id` as `key`
+        }));
+  
+        setInquiries(inquiriesWithKeys);
+        
+      
+      
       console.log(inquiries);
       // setInquiries(inquiries);
     };
     
     getInquiry();
-  }, []);
-
-  
+  }, []);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -401,47 +408,127 @@ export default function App() {
     []
   );
 
+
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [selectInq, setSelectInq] = useState<inquiryType>({
+    key: "",
+    inquiry_id: "",
+    order_id: "",
+    product_id: "",
+    customer_id: "",
+    name: "",
+    contact_num: "",
+    status: "",
+    date: "",
+    issue_type: "",
+    issue_description: "",
+    additional_comments: "",
+  });
+  // const [popupClose, setPopupClose] = useState(false);
+
+  function handleRowClick( inquiry:inquiryType){
+
+    console.log("dfghfgfd");
+    setPopupOpen(true);
+    setSelectInq(inquiry);
+
+
+  }
+
+
+
+
   return (
-    <Table
-      isCompact
-      removeWrapper
-      aria-label="Customer Inquiry Table"
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      checkboxesProps={{
-        classNames: {
-          wrapper: "after:bg-main-dark after:text-background text-background",
-        },
-      }}
-      classNames={classNames}
-      selectedKeys={selectedKeys}
-      selectionMode="multiple"
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions  " ? "center" : "start"}
-            allowsSorting={column.sortable}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={"No inquiries found"} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.key}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    // <Table
+    //   isCompact
+    //   removeWrapper
+    //   aria-label="Customer Inquiry Table"
+    //   bottomContent={bottomContent}
+    //   bottomContentPlacement="outside"
+    //   checkboxesProps={{
+    //     classNames: {
+    //       wrapper: "after:bg-main-dark after:text-background text-background",
+    //     },
+    //   }}
+    //   classNames={classNames}
+    //   selectedKeys={selectedKeys}
+    //   selectionMode="multiple"
+    //   sortDescriptor={sortDescriptor}
+    //   topContent={topContent}
+    //   topContentPlacement="outside"
+    //   onSelectionChange={setSelectedKeys}
+    //   onSortChange={setSortDescriptor}
+    // >
+    //   <TableHeader columns={headerColumns}>
+    //     {(column) => (
+    //       <TableColumn
+    //         key={column.uid}
+    //         align={column.uid === "actions  " ? "center" : "start"}
+    //         allowsSorting={column.sortable}
+    //       >
+    //         {column.name}
+    //       </TableColumn>
+    //     )}
+    //   </TableHeader>
+    //   <TableBody emptyContent={"No inquiries found"} items={sortedItems}>
+    //     {(item) => (
+    //       <TableRow>
+    //         {(columnKey) => (
+    //           <TableCell>{renderCell(item, columnKey)}</TableCell>
+    //         )}
+    //       </TableRow>
+    //     )}
+    //   </TableBody>
+    // </Table>
+  //  <p></p>
+  <>
+  <div className="p-4">
+  <div className="overflow-x-auto">
+    <table className="min-w-full bg-white border border-gray-300 rounded-md">
+      <thead className="bg-gray-100">
+        <tr>
+          <th className="px-4 py-2 text-left border-b">Inquiry ID</th>
+          <th className="px-4 py-2 text-left border-b">Order ID</th>
+          <th className="px-4 py-2 text-left border-b">Product ID</th>
+          <th className="px-4 py-2 text-left border-b">Customer ID</th>
+          <th className="px-4 py-2 text-left border-b">Issue Type</th>
+          <th className="px-4 py-2 text-left border-b">Description</th>
+          <th className="px-4 py-2 text-left border-b">Contact</th>
+          <th className="px-4 py-2 text-left border-b">Status</th>
+          <th className="px-4 py-2 text-left border-b">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {inquiries.map((inquiry) => (
+          <tr key={inquiry.inquiry_id} className="hover:bg-gray-50" onClick={() => handleRowClick(inquiry)}>
+            <td className="px-4 py-2 border-b">{inquiry.inquiry_id}</td>
+            <td className="px-4 py-2 border-b">{inquiry.order_id}</td>
+            <td className="px-4 py-2 border-b">{inquiry.product_id}</td>
+            <td className="px-4 py-2 border-b">{inquiry.customer_id}</td>
+            <td className="px-4 py-2 border-b">{inquiry.issue_type}</td>
+            <td className="px-4 py-2 border-b">
+              {inquiry.issue_description}
+            </td>
+            <td className="px-4 py-2 border-b">{inquiry.contact_num}</td>
+            <td
+              className={`px-4 py-2 border-b ${
+                inquiry.status === "solved"
+                  ? "text-green-600"
+                  : "text-yellow-600"
+              }`}
+            >
+              {inquiry.status}
+            </td>
+            <td className="px-4 py-2 border-b">
+              {new Date(inquiry.date).toLocaleDateString()}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  </div>
+  <ViewInq isOpen={popupOpen} onClose = {()=>{ window.location.reload()}} inquiryData={selectInq} />
+</>
   );
 }

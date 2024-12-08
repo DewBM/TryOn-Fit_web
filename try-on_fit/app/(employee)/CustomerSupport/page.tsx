@@ -11,10 +11,10 @@ export default function Home() {
   return (
     <>
       <div className="container mx-auto p-3">
-        <div className="grid grid-cols-12 gap-12">
+        {/* <div className="grid grid-cols-12 gap-12"> */}
           <div className="col-span-12 md:col-span-8">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-8 xl:grid-cols-2 2xl:gap-8">
-              <CardDataStats title="Total Inquiries Today" total="80">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-8 xl:grid-cols-3 2xl:gap-8">
+              <CardDataStats title="Total Inquiries " total="11">
                 <div
                   className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
                   style={{
@@ -30,7 +30,7 @@ export default function Home() {
                 </div>
               </CardDataStats>
 
-              <CardDataStats title="Responded Inquiries" total="26">
+              <CardDataStats title="Responded Inquiries" total="1">
                 <div
                   className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
                   style={{
@@ -46,7 +46,7 @@ export default function Home() {
                 </div>
               </CardDataStats>
 
-              <CardDataStats title="Pending Inquiries" total="80">
+              <CardDataStats title="Pending Inquiries" total="10">
                 <div
                   className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
                   style={{
@@ -70,10 +70,10 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="col-span-12  md:col-span-4 pl-2">
+          {/* <div className="col-span-12  md:col-span-4 pl-2">
           <FeedbackCard /> 
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
       </div>
     </>
   );
