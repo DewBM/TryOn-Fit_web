@@ -33,7 +33,8 @@ interface SalesChartProps {
   reportData: reportDataArrayType;
   reportMonthData: reportmonthDataArrayType
   reportYearData: reportDataArrayType;
-  // revenue: number[];
+  reportType : string;
+  
 }
 
 const ReportSalesChart: React.FC<SalesChartProps> = ({
@@ -44,8 +45,9 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
   selectReportType,
   reportData,
   reportMonthData,
-  reportYearData
-  // revenue,
+  reportYearData,
+  reportType,
+  
 }) => {
   const [chartData, setChartData] = useState<any>(null);
   
@@ -112,7 +114,7 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
     };
 
     fetchSalesData();
-  }, [selectedDates, selectedMonth, selectedYear, selectType, reportData,reportMonthData,reportYearData]);
+  }, [selectedDates, selectedMonth, selectedYear, selectType, reportData,reportMonthData,reportYearData,reportType]);
 
   if (!chartData) {
     return <div>Loading...</div>;
@@ -121,7 +123,7 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
   return (
     <div className="rounded-lg border border-stroke bg-white p-6 shadow-md dark:border-strokedark dark:bg-boxdark">
       <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">
-        {selectReportType}
+        {reportType}
       </h3>
       <Line data={chartData} />
     </div>
