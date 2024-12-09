@@ -34,7 +34,7 @@ import { useRouter } from "next/navigation";
 const INITIAL_VISIBLE_COLUMNS = [
   "employee_name",
   "role",
-  "phone_number",
+  // "phone_number",
   "actions",
 ];
 

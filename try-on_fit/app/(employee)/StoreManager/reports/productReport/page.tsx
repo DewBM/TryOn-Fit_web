@@ -5,7 +5,7 @@ import MultiDatePickerCard from "@/app/components/reportsDateCards";
 import ReportSalesChart from "@/app/components/reportSalesChart";
 import { customFetch } from "@/app/utils/auth";
 import router from "next/router";
-import { useRouter } from "next/navigation";
+import MultiDatePickerCard2 from "@/app/components/ReportsProductCard";
 
 export default function Home() {
   const [selectType, setSelectionType] = useState<string>("date");
@@ -139,33 +139,31 @@ export default function Home() {
     link.click();
     URL.revokeObjectURL(url);
   };
+  const handleNavigation = (path: string) => {
+    // Log the target path for debugging purposes
+    console.log(`Navigating to: ${path}`);
+    
+    // Navigate to the specified path
+    router.push(path);
+  };
   
-  
-  const router = useRouter();
-  function haddlereport (){
-
-  router.push("/StoreManager/reports/productReport");
-  }
 
   return (
     <div className="p-8 space-y-8">
       {/* Header Section */}
-      <div className="flex flex-row">
-      <button
-      onClick={haddlereport}
-      className="bg-main-dark text-white rounded-md  py-4 text-sm font-medium focus:outline-none focus:ring-2 w-56"
-      >
-      ProductS Wise
-    </button>
       <div className="text-center">
-      
+      <button
+      onClick={() => handleNavigation("/supplier-report")}
+      className="bg-main-dark text-white rounded-md px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 w-56"
+      >
+      Product Wise
+    </button>
         <h1 className="text-3xl font-extrabold text-gray-800 dark:text-white">
-        Reports according to Supplier
+        Reports according to Products
         </h1>
         <p className="mt-2 text-gray-500 dark:text-gray-400">
           Track sales, revenue, orders, and returns with ease.
         </p>
-      </div>
       </div>
 
       {/* Main Content Layout */}
@@ -175,7 +173,7 @@ export default function Home() {
           <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
             Filter Options
           </h2>
-          <MultiDatePickerCard
+          <MultiDatePickerCard2
             setSelectedDates={(dates: { startDate: string; endDate: string }) => setSelectedDates(dates)}
             setSelectedMonth={setSelectedMonth}
             setSelectedYear={setSelectedYear}
