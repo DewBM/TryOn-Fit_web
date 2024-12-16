@@ -63,12 +63,13 @@ export default function Home() {
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "order_date", direction: "ascending" });
+  // const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "order_date", direction: "ascending" });
   const [page, setPage] = useState(1);
   const [ordersData, setOrdersData] = useState<Order[]>([]);
   const [statusUpdated, setStatusUpdated] = useState(false);  // Track if status is updated
-
-
+  const trackOrder = (orderId: number) => {
+    router.push(`/DistributionCoordinator/processingorders/view_orders?order_id=${orderId}`);
+  }; 
   // Fetch data from the API when the component mounts
   useEffect(() => {
     const fetchOrders = async () => {
@@ -173,15 +174,23 @@ export default function Home() {
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
-  const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: Order, b: Order) => {
-      const first = a[sortDescriptor.column as keyof Order] as string;
-      const second = b[sortDescriptor.column as keyof Order] as string;
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
+  
 
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
+
+  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
+      column: "order_id",  // Sort by 'order_id'
+      direction: "ascending",  // In ascending order
     });
-  }, [sortDescriptor, items]);
+ const sortedItems = React.useMemo(() => {
+     return [...items].sort((a: Order, b: Order) => {
+       const first = a[sortDescriptor.column as keyof Order] as string | number;
+       const second = b[sortDescriptor.column as keyof Order] as string | number;
+   
+       if (first < second) return sortDescriptor.direction === "ascending" ? -1 : 1;
+       if (first > second) return sortDescriptor.direction === "ascending" ? 1 : -1;
+       return 0; // If values are equal
+     });
+   }, [sortDescriptor, items]);
 
   const renderCell = React.useCallback(
     (order: Order, columnKey: React.Key) => {
@@ -235,12 +244,10 @@ export default function Home() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem
-                    className="customHoverColor customActiveColor capitalize"
-                    onClick={() =>
-                      router.push(`/DistributionCoordinator/orders/view_neworders?id=${order.order_id}`)
-                    }
-                  >
+                     <DropdownItem
+                                                         className="customHoverColor customActiveColor capitalize"
+                                                         onClick={() => trackOrder(order.order_id)}
+                                                     >
                     View
                   </DropdownItem>
                   <DropdownItem
