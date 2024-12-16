@@ -11,7 +11,7 @@ interface MultiDatePickerCardProps {
   setReportTypeState: (reportType: string) => void;
 }
 
-const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
+const MultiDatePickerCard2: React.FC<MultiDatePickerCardProps> = ({
   setSelectedDates,
   setSelectedMonth,
   setSelectedYear,
@@ -85,9 +85,9 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
           onChange={handleReportTypeChange}
           className="mt-1 block w-full rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
         >
-          <option value="Revenue by Supplier">Revenue by Supplier</option>
-          <option value="Cost of Goods by Supplier">Cost of Goods by Supplier</option>
-          <option value="Profit or Losses by Supplier">Profit or Losses by Supplier</option>
+          <option value="Revenue by Supplier">Revenue by products</option>
+          <option value="Cost of Goods by Supplier">Cost of Goods by products</option>
+          <option value="Profit or Losses by Supplier">Profit or Losses by products</option>
         </select>
       </div>
 
@@ -246,4 +246,4 @@ const MultiDatePickerCard: React.FC<MultiDatePickerCardProps> = ({
   );
 };
 
-export default MultiDatePickerCard;
+export default MultiDatePickerCard2;
