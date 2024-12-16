@@ -148,3 +148,15 @@ option:hover {
 .modal-backdrop {
   z-index: 9999; 
 }
+
+.subtotal-cell {
+  font-weight: bold;
+  text-align: right;
+  background-color: #f3f4f6; /* Light gray */
+  padding: 8px 16px;
+}
+
+/* Ensure modal is always on top */
+div[data-nextui-modal] {
+  z-index: 1050; /* Higher than other components */
+}
