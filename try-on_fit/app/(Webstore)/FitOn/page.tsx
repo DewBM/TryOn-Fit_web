@@ -5,21 +5,41 @@ import Footer from '@/app/components/Footer';
 import { useRouter } from 'next/navigation';
 
 const FitOn = () => {
-    const [images, setImages] = useState([]);
-
-    const [activeImg, setActiveImage] = useState();
+    const [activeImg, setActiveImage] = useState<string>();
     const [amount, setAmount] = useState(1);
     const router = useRouter();
 
-    function getArray<T>(key: string): T[] {
+    const [images, setImages] = useState<string[]>([]);
+
+    function getArray(key: string) {
         const storedValue = localStorage.getItem(key);
         return storedValue ? JSON.parse(storedValue) : [];
     }
 
     useEffect(() => {
         const loadImages = async () => {
-            const image_paths = getArray<string>('generated_images');
-        }
+            const imagePaths = getArray("generated_images");
+
+            const loadedImages = await Promise.all(
+                imagePaths.map(async (path: string) => {
+                    try {
+                        const res = await fetch(`http://localhost:8080/fiton?imagePath=${encodeURIComponent(path)}`, {credentials:'include'});
+                        if (!res.ok) {
+                            console.error(`Failed to fetch image for path: ${path}`);
+                            return null;
+                        }
+                        const blob = await res.blob();
+                        return URL.createObjectURL(blob); // Create object URL for rendering
+                    } catch (err) {
+                        console.error("Error fetching image:", err);
+                        return null;
+                    }
+                })
+            );
+
+            // Filter null values and update state
+            setImages(loadedImages.filter((img) => img !== null) as string[]);
+        };
 
         loadImages();
     }, []);
@@ -55,7 +75,7 @@ const FitOn = () => {
                         </div>
                     </div>
                     <div className='flex flex-col gap-7 justify-between h-full'>
-                        {Object.values(images).map((img, index) => (
+                        {images.map((img, index) => (
                             <img
                                 key={index}
                                 src={img}
