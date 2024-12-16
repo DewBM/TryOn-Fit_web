@@ -1,161 +1,184 @@
 "use client";
-import Button from "@/app/components/Button";
-import PasswordBox from "@/app/components/PasswordBox";
-import Link from "next/link";
-import TextBox from "@/app/components/TextBox";
-import Image from "next/image";
-import { useRouter } from "next/navigation"; // Update import statement
-import React from "react";
-import TextB_Dsble from "@/app/components/TextB_Dsble";
+import React, { useEffect, useState } from "react";
 import NavBar from "@/app/components/NavBar";
 import Footer from "@/app/components/Footer";
+import { fetchCustomerDetails } from "./action";
+import { useRouter } from "next/navigation";
 
-interface UserProfileProps {
-  fullName: string;
+interface Customer {
+  customer_id: string;
+  user_id: number;
+  first_name: string;
+  last_name: string;
   email: string;
-  mobile: string;
-  gender: string;
-  shippingAddress_1: string;
-  shippingAddress_2: string;
-  creditCard: string;
+  profile_picture_url: string;
 }
 
-const userInfo: UserProfileProps = {
-  fullName: "Matheesha Pathirana",
-  email: "matheeshapathirana@gmail.com",
-  mobile: "0776677890",
-  gender: "Male",
-  shippingAddress_1: "123, Nugegoda.",
-  shippingAddress_2: "456, Papiliyana, Nugegoda.",
-  creditCard: "**** **** **** 1234",
-};
+interface Address {
+  address_id: number;
+  customer_id: number;
+  supplier_id: null | number;
+  emp_id: null | number;
+  address_line_1: string;
+  address_line_2: string;
+  city: string;
+  district: string;
+  postal_code: string;
+}
 
-const UserProfilePage: React.FC<UserProfileProps> = ({
-  fullName,
-  email,
-  mobile,
-  gender,
-  shippingAddress_1,
-  shippingAddress_2,
-  creditCard,
-}) => {
+const CustomerProfile: React.FC = () => {
+  const [customer, setCustomer] = useState<Customer | null>(null);
+  const [address, setAddress] = useState<Address | null>(null);
+  const [error, setError] = useState<string>("");
+  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleProfile = () => {
-    router.push("/user_profile/profile/edit_profile");
+  const customerId = 3; // Replace with dynamically fetched customer ID
+
+  useEffect(() => {
+    const getCustomerDetails = async () => {
+      try {
+        const data = await fetchCustomerDetails(customerId);
+        if (data.isSuccess) {
+          setCustomer(data.data.customer);
+          setAddress(data.data.address);
+        } else {
+          setError(data.msg || "Failed to fetch customer details");
+        }
+      } catch (err: any) {
+        setError(err.message || "An error occurred");
+      }
+    };
+
+    getCustomerDetails();
+  }, [customerId]);
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setUploadedImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
   };
 
+  if (error) {
+    return <div className="text-red-500 text-center mt-4">{error}</div>;
+  }
+
   return (
-    <div>
+    <div className="min-h-screen flex flex-col bg-gray-50 relative">
       <NavBar />
-      <div className="relative mt-5 mb-4 mx-3 p-4">
-        <button
-          onClick={handleProfile}
-          className="absolute top-0 right-0 bg-white border-main-dark border-1 text-main-dark px-4 py-2 rounded-md hover:bg-main-dark hover:text-white z-10"
-        >
-          Edit Profile
-        </button>
-      </div>
-      <div className="grid bg-main lg:grid-cols-12 my-4 w-auto mb-0 sm:grid-cols-6 rounded mx-8 ">
-        <div className="lg:col-span-3 mt-6 mb-12 border rounded-md flex flex-col justify-center items-center h-[400px]">
-          <Image
-            src="/images/Profile_Photo.webp"
-            alt=""
-            width={200}
-            height={200}
-            className="border-1 rounded-full shadow-2xl"
-          />
-          <div className="mt-4 text-lg font-bold">{fullName}</div>
+      <div className="flex-grow p-6 relative">
+        {/* Edit Button in Top-Right Corner */}
+        <div className="absolute top-6 right-6">
+          <button
+            onClick={() => router.push("/user_profile/profile/edit_profile")} // Navigate to the edit profile page
+            className="bg-main-dark text-white px-6 py-3 rounded-lg hover:bg-main-light shadow-md"
+          >
+            Edit Profile
+          </button>
         </div>
 
-        <div className="lg:col-span-9 p-2 lg:col-start-4 mx-4 my-4 ">
-          <div className="grid lg:grid-cols-12 border rounded p-4 ">
-            <div className="lg:col-span-12">
-              <h2 className="text-2xl font-bold mb-6 mx-6">
-                Personal Information
-              </h2>
-            </div>
-            <div className="lg:col-span-5 lg:col-start-1 my-4 mx-6">
-              <TextB_Dsble
-                labelName="Full Name"
-                name="Full_name"
-                inputType="text"
-                key="F_name"
-                defaultValue={fullName}
-                disabled={true}
-              />
-            </div>
-            <div className="lg:col-span-5 lg:col-start-7 my-4 mx-6">
-              <TextB_Dsble
-                labelName="Email"
-                name="email"
-                inputType="text"
-                key="email"
-                defaultValue={email}
-                disabled={true}
-              />
-            </div>
-            <div className="lg:col-span-5 lg:col-start-1 my-4 mx-6">
-              <TextB_Dsble
-                labelName="Mobile"
-                name="mobile"
-                inputType="text"
-                key="mobile"
-                defaultValue={mobile}
-                disabled={true}
-              />
-            </div>
-            <div className="lg:col-span-5 lg:col-start-7 my-4 mx-6">
-              <TextB_Dsble
-                labelName="Gender"
-                name="gender"
-                inputType="text"
-                key="gender"
-                defaultValue={gender}
-                disabled={true}
-              />
-            </div>
-          </div>
+        <div className="bg-white shadow-md rounded-lg p-6 mb-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            Customer Profile
+          </h1>
 
-          <div className="border rounded p-4 my-6">
-            <h2 className="text-2xl font-bold mb-6 mx-6">
-              Address Information
-            </h2>
-            <div className="my-4 mx-6">
-              <TextB_Dsble
-                labelName="Shipping Address"
-                name="shippingAddress"
-                inputType="text"
-                key="shippingAddress"
-                defaultValue={shippingAddress_1}
-                disabled={true}
-              />
+          {customer && (
+            <div className="mb-6 flex">
+            {/* Profile Picture Upload and Customer Details */}
+            <div className="p-6 border w-1/2">
+              <div className="relative w-36 h-36 rounded-full overflow-hidden mb-4 p-2">
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt="Uploaded Preview"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src={
+                      customer.profile_picture_url || "/default-avatar.png"
+                    }
+                    alt="Profile Picture"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+              <div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="block text-gray-700 font-medium"
+                />
+              </div>
+              <div className="p-2">
+                <h2 className="text-lg font-semibold text-gray-700 p-2">
+                  {customer.first_name} {customer.last_name}
+                </h2>
+                <p className="text-gray-600 p-2">{customer.email}</p>
+              </div>
             </div>
-            <div className="my-4 mx-6">
-              <TextB_Dsble
-                labelName="Billing Address"
-                name="billingAddress"
-                inputType="text"
-                key="billingAddress"
-                defaultValue={shippingAddress_2}
-                disabled={true}
-              />
+            
+            {/* Tips Section */}
+            <div className="p-6 border w-1/2">
+              <div className="m-2">
+                <h2 className="text-lg font-semibold text-saddlebrown">Tips for Uploading Your Picture for the Virtual Fit-On Feature</h2>
+                <ul className="list-disc ml-6 mt-2 text-red-400">
+                  <li>Choose a plain, neutral background.</li>
+                  <li>Wear clothes that contrast with the background.</li>
+                  <li>Ensure good lighting to avoid shadows.</li>
+                  <li>Upload a front-facing photo (selfie or straight-on shot).</li>
+                  <li>Include your head, shoulders, and chest area.</li>
+                  <li>Do not use filters or overly edited images.</li>
+                </ul>
+              </div>
             </div>
           </div>
+          
+          )}
 
-          <div className="border rounded p-4 my-6">
-            <h2 className="text-2xl font-bold mb-6 mx-6">Payment Methods</h2>
-            <div className="my-4 mx-6">
-              <TextB_Dsble
-                labelName="Saved Credit Card"
-                name="creditCard"
-                inputType="text"
-                key="creditCard"
-                defaultValue={creditCard}
-                disabled={true}
-              />
+          {address && (
+            <div className="p-6 border">
+              <h1 className="text-lg font-semibold text-gray-700 p-2">
+                Address Details
+              </h1>
+              <p className="text-gray-600 mt-2 p-2">
+                <span className="font-medium">Address Line 1:</span>{" "}
+                <span className="bg-gray-100 px-2 py-1 rounded text-gray-800">
+                  {address.address_line_1}
+                </span>
+              </p>
+              <p className="text-gray-600 mt-1 p-2">
+                <span className="font-medium">Address Line 2:</span>{" "}
+                <span className="bg-gray-100 px-2 py-1 rounded text-gray-800">
+                  {address.address_line_2}
+                </span>
+              </p>
+              <p className="text-gray-600 mt-1 p-2">
+                <span className="font-medium">City:</span>{" "}
+                <span className="bg-gray-100 px-2 py-1 rounded text-gray-800">
+                  {address.city}
+                </span>
+              </p>
+              <p className="text-gray-600 mt-1 p-2">
+                <span className="font-medium">District:</span>{" "}
+                <span className="bg-gray-100 px-2 py-1 rounded text-gray-800">
+                  {address.district}
+                </span>
+              </p>
+              <p className="text-gray-600 mt-1 p-2 flex items-center">
+                <span className="font-medium text-gray-800 mr-2">
+                  Postal Code:
+                </span>
+                <span className="bg-gray-100 px-2 py-1 rounded text-gray-800">
+                  {address.postal_code}
+                </span>
+              </p>
             </div>
-          </div>
+          )}
         </div>
       </div>
       <Footer />
@@ -163,16 +186,4 @@ const UserProfilePage: React.FC<UserProfileProps> = ({
   );
 };
 
-const Profile: React.FC = () => (
-  <UserProfilePage
-    fullName={userInfo.fullName}
-    email={userInfo.email}
-    mobile={userInfo.mobile}
-    gender={userInfo.gender}
-    shippingAddress_1={userInfo.shippingAddress_1}
-    shippingAddress_2={userInfo.shippingAddress_2}
-    creditCard={userInfo.creditCard}
-  />
-);
-
-export default Profile;
+export default CustomerProfile;

@@ -78,7 +78,7 @@ export default function Home() {
     const fetchOrders = async () => {
       try {
         const response = await fetch("http://localhost:8080/order/getOrdersByStatus?status=Completed");
-        const data = await response.json();
+        const data = await response.json(); 
 
         if (data.isSuccess) {
           setOrdersData(data.data);

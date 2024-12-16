@@ -1,4 +1,4 @@
-"use client"; // Add this line at the top of your file
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
@@ -13,15 +13,28 @@ import {
   Legend,
 } from "chart.js";
 
+type reportDataArrayType = {
+  suppliers: number[];
+  revenues: number[];
+};
+type reportmonthDataArrayType = {
+  suppliers: number[];
+  revenues: number[];
+};
 // Register chart elements
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 interface SalesChartProps {
   selectType: string;
-  selectedDates: string[];
+  selectedDates: { startDate: string; endDate: string };
   selectedMonth: string;
   selectedYear: string;
-  selectReportType: string; // Make sure to include this in the props
+  selectReportType: string;
+  reportData: reportDataArrayType;
+  reportMonthData: reportmonthDataArrayType
+  reportYearData: reportDataArrayType;
+  reportType : string;
+  
 }
 
 const ReportSalesChart: React.FC<SalesChartProps> = ({
@@ -29,59 +42,71 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
   selectedDates,
   selectedMonth,
   selectedYear,
-  selectReportType, // Destructure the prop here
+  selectReportType,
+  reportData,
+  reportMonthData,
+  reportYearData,
+  reportType,
+  
 }) => {
   const [chartData, setChartData] = useState<any>(null);
+  
 
   useEffect(() => {
-    // Generate mock data based on selection type (for demonstration purposes)
     const fetchSalesData = () => {
+      // console.log(revenue);
       let labels: string[] = [];
       let dataset1: number[] = [];
       let dataset2: number[] = [];
 
-      if (selectedDates.length > 0 && selectType === "date") {
-        // If multiple dates are selected
-        labels = selectedDates;
-        dataset1 = selectedDates.map(() => Math.floor(Math.random() * 100)); // Random sales data for dataset 1
-        dataset2 = selectedDates.map(() => Math.floor(Math.random() * 100)); // Random sales data for dataset 2
-      } else if (selectType === "month") {
-        // If a month is selected
-        const year = parseInt(selectedYear); // Use the selected year
-        const month = parseInt(selectedMonth) - 1; // Month is 0-indexed (0 = January)
+      console.log("Report helooo:", reportYearData);
+
+      if (selectedDates.startDate && selectedDates.endDate && selectType === "date") {
+        if (reportData && reportData.suppliers)
+          labels = reportData.suppliers.map((supplier) => supplier.toString()); // Suppliers from reportData
+        if (reportData && reportData.revenues)
+          dataset1 = reportData.revenues; // Revenue from reportData
+        // dataset1 = reportData.suppliers!=undefined ?  reportData.revenue : []; // Revenue from reportData
+        // labels = reportData.map(data => data.suppliers.map(supplier => supplier.toString())).flat(); // Suppliers from reportData
+        // dataset1 = reportData.map(data => data.revenue).flat(); // Revenue from reportData
+        // dataset2 = [Math.random() * 100, Math.random() * 100]; // Random data
+
+      console.log("Labels:", labels);
+      console.log("Dataset1:", dataset1);
+
+      } else if (selectType === "month" ) {
+        const year = parseInt(selectedYear);
+        const month = parseInt(selectedMonth) - 1;
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        // Generate the dates for the entire month
-        labels = Array.from({ length: daysInMonth }, (_, i) => `${i + 1}-${selectedMonth}-${year}`);
-        dataset1 = Array.from({ length: daysInMonth }, () => Math.floor(Math.random() * 1000)); // Random data for dataset 1
-        dataset2 = Array.from({ length: daysInMonth }, () => Math.floor(Math.random() * 500)); // Random data for dataset 2
+        labels = reportMonthData.suppliers.map((supplier) => supplier.toString());
+        dataset1 = reportMonthData.revenues
+        // dataset2 = Array.from({ length: daysInMonth }, () => Math.random() * 500);
       } else if (selectType === "year") {
-        // If a year is selected
         const months = [
           "January", "February", "March", "April", "May", "June",
           "July", "August", "September", "October", "November", "December",
         ];
-        labels = months;
-        dataset1 = months.map(() => Math.floor(Math.random() * 1000)); // Random sales for dataset 1
-        dataset2 = months.map(() => Math.floor(Math.random() * 500)); // Random sales for dataset 2
+        labels = reportYearData.suppliers.map((supplier) => supplier.toString());
+        dataset1 = reportYearData.revenues
+        // dataset2 = months.map(() => Math.random() * 500);
       }
 
-      // Update chart data with multiple datasets
       setChartData({
         labels,
         datasets: [
           {
-            label: "Sales ",
+            label: "Sales",
             data: dataset1,
             fill: false,
-            borderColor: "rgb(75, 192, 192)", // Cyan color
+            borderColor: "rgb(75, 192, 192)",
             tension: 0.1,
           },
           {
             label: "Revenue",
             data: dataset2,
             fill: false,
-            borderColor: "rgb(255, 99, 132)", // Pink color
+            borderColor: "rgb(255, 99, 132)",
             tension: 0.1,
           },
         ],
@@ -89,7 +114,7 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
     };
 
     fetchSalesData();
-  }, [selectedDates, selectedMonth, selectedYear, selectType]);
+  }, [selectedDates, selectedMonth, selectedYear, selectType, reportData,reportMonthData,reportYearData,reportType]);
 
   if (!chartData) {
     return <div>Loading...</div>;
@@ -97,9 +122,8 @@ const ReportSalesChart: React.FC<SalesChartProps> = ({
 
   return (
     <div className="rounded-lg border border-stroke bg-white p-6 shadow-md dark:border-strokedark dark:bg-boxdark">
-      {/* Display the report type */}
       <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">
-        {selectReportType}
+        {reportType}
       </h3>
       <Line data={chartData} />
     </div>

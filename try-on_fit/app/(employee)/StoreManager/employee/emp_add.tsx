@@ -144,7 +144,7 @@ const EmpAddForm = ({
                 <div  style={{ display: "flex", flexWrap: "nowrap", alignItems: "center" }}>
                   <RadioButton label="Male" value="male" name={fields.gender.name} />
                   <RadioButton label="Female" value="female" name={fields.gender.name} />
-                  <RadioButton label="Other" value="other" name={fields.gender.name} />
+                  {/* <RadioButton label="Other" value="other" name={fields.gender.name} /> */}
                 </div>
               </fieldset>
               {/* <div className="text-xs text-red-400">{fields.username.errors}</div> */}

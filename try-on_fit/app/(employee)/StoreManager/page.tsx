@@ -25,7 +25,7 @@ export default function Home() {
             <FiUser size={25} style={{ stroke: "var(--main-dark)" }} />
           </div>
         </CardDataStats>
-        <CardDataStats title="Total Suppliers" total="40">
+        <CardDataStats title="Total Suppliers" total="11">
           <div
             className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
             style={{
@@ -37,7 +37,7 @@ export default function Home() {
             <FiTruck size={25} style={{ stroke: "var(--main-dark)" }} />
           </div>
         </CardDataStats>
-        <CardDataStats title="Total Products" total="100">
+        <CardDataStats title="Total Products" total="15">
           <div
             className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
             style={{
@@ -49,7 +49,7 @@ export default function Home() {
             <FiShoppingBag size={25} style={{ stroke: "var(--main-dark)" }} />
           </div>
         </CardDataStats>
-        <CardDataStats title="Total Profit" total="Rs.100k">
+        <CardDataStats title="Total Profit" total="3667k">
           <div
             className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
             style={{
