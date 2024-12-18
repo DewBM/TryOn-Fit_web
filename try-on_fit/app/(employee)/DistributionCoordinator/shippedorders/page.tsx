@@ -37,6 +37,7 @@ const statusOptions = [
   { uid: "Confirmed", name: "Confirmed" },
   { uid: "Delivered", name: "Delivered" },
 ];
+
 const INITIAL_VISIBLE_COLUMNS = [
   "order_id",
   "order_date",
@@ -60,29 +61,24 @@ export default function Home() {
   const router = useRouter();
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
-  const [visibleColumns, setVisibleColumns] = useState(
-    new Set(INITIAL_VISIBLE_COLUMNS)
-  );
+  const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "order_date", direction: "ascending" });
   const [page, setPage] = useState(1);
   const [ordersData, setOrdersData] = useState<Order[]>([]);
-  const [statusUpdated, setStatusUpdated] = useState(false);
+  const [statusUpdated, setStatusUpdated] = useState(false);  // Track if status is updated
 
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: "order_id", // Default column to sort by
-    direction: "ascending", // Default sorting direction
-  });
 
   const trackOrder = (orderId: number) => {
-    router.push(`/DistributionCoordinator/shippedorders/view_orders?order_id=${orderId}`);
-  };
+    router.push(`/DistributionCoordinator/shippedorders/view_orders?order_id=${orderId}`);  };
+  
 
   // Fetch data from the API when the component mounts
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:8080/order/getOrdersByStatus?status=Shipped"        );
+        const response = await fetch("http://localhost:8080/order/getOrdersByStatus?status=Shipped"
+        );
         const data = await response.json();
 
         if (data.isSuccess) {
@@ -110,7 +106,15 @@ export default function Home() {
     );
   }, [visibleColumns]);
 
+  // const handleStatusChange = (orderId: number, newStatus: string) => {
+  //   const updatedOrders = ordersData.map((order) =>
+  //     order.order_id === orderId ? { ...order, order_status: newStatus } : order
+  //   );
+  //   setOrdersData(updatedOrders);
+  // };
+
   const handleStatusChange = async (orderId: number, newStatus: string) => {
+    // Optimistically update the local state
     setOrdersData((prevOrders) =>
       prevOrders.map((order) =>
         order.order_id === orderId
@@ -118,7 +122,7 @@ export default function Home() {
           : order
       )
     );
-
+  
     try {
       const response = await fetch("http://localhost:8080/order/updateStatus", {
         method: "PUT",
@@ -130,25 +134,30 @@ export default function Home() {
           status: newStatus,
         }),
       });
-
+  
       const result = await response.json();
-
+  
       if (!result.isSuccess) {
         console.error(result.msg);
+        // Revert the state if the server update fails
         setOrdersData((prevOrders) =>
           prevOrders.map((order) =>
             order.order_id === orderId
-              ? { ...order, order_status: "Update!" }
+              ? { ...order, order_status: "Update!" } // Use default or placeholder status
               : order
           )
         );
-      } else {
-        setStatusUpdated(true);
+      }else {
+        // Trigger re-fetching of orders after successful update
+        setStatusUpdated(true);  // Mark that the status has been updated
       }
     } catch (error) {
       console.error("Error updating status:", error);
+      // Optional: Revert state in case of a server error
     }
   };
+  
+  
 
   const filteredItems = React.useMemo(() => {
     let filteredOrders = [...ordersData];
@@ -171,8 +180,6 @@ export default function Home() {
 
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a: Order, b: Order) => {
-      if (!sortDescriptor.column) return 0;
-
       const first = a[sortDescriptor.column as keyof Order] as string;
       const second = b[sortDescriptor.column as keyof Order] as string;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
@@ -233,13 +240,15 @@ export default function Home() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem
-                    className="customHoverColor customActiveColor capitalize"
-                    onClick={() => trackOrder(order.order_id)}
-                  >
+                    <DropdownItem
+                                        className="customHoverColor customActiveColor capitalize"
+                                        onClick={() => trackOrder(order.order_id)}
+                                    >
                     View
                   </DropdownItem>
-                  <DropdownItem className="customHoverColor customActiveColor capitalize">
+                  <DropdownItem
+                    className="customHoverColor customActiveColor capitalize"
+                  >
                     Save
                   </DropdownItem>
                 </DropdownMenu>

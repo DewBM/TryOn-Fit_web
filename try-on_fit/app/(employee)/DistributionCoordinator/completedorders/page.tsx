@@ -77,13 +77,10 @@ export default function Home() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-<<<<<<< Updated upstream
+
         const response = await fetch("http://localhost:8080/order/getOrdersByStatus?status=Completed");
         const data = await response.json();
-=======
-        const response = await fetch("http://localhost:8080/order/getOrdersByStatus?status=Shipped");
-        const data = await response.json(); 
->>>>>>> Stashed changes
+
 
         if (data.isSuccess) {
           setOrdersData(data.data);

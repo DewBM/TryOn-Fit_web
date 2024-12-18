@@ -15,6 +15,7 @@ const EditSup = ({
 }) => {
   console.log("CreateForm");
   return (
+    <div className="">
     <SupAddForm
       isOpen={isEditSupOpen}
       onClose={onCloseEditSup} 
@@ -22,6 +23,7 @@ const EditSup = ({
       buttonLabel="Save"
       
     />
+    </div>
     
   );
 };
