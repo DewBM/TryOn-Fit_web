@@ -62,12 +62,16 @@ export default function Home() {
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "order_date", direction: "ascending" });
   const [page, setPage] = useState(1);
   const [ordersData, setOrdersData] = useState<Order[]>([]);
   const [statusUpdated, setStatusUpdated] = useState(false);  // Track if status is updated
 
 
+  const trackOrder = (orderId: number) => {
+    router.push(`/DistributionCoordinator/neworders/view_orders?order_id=${orderId}`);
+  }; 
+
+  
   // Fetch data from the API when the component mounts
   useEffect(() => {
     const fetchOrders = async () => {
@@ -235,11 +239,9 @@ export default function Home() {
                 </DropdownTrigger>
                 <DropdownMenu>
                   <DropdownItem
-                    className="customHoverColor customActiveColor capitalize"
-                    onClick={() =>
-                      router.push(`/DistributionCoordinator/orders/view_neworders?id=${order.order_id}`)
-                    }
-                  >
+                                       className="customHoverColor customActiveColor capitalize"
+                                       onClick={() => trackOrder(order.order_id)}
+                                   >
                     View
                   </DropdownItem>
                   <DropdownItem

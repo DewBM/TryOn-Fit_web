@@ -66,48 +66,16 @@ export default function Home() {
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: "order_date",
-    direction: "ascending",
-  });
+
   const [page, setPage] = useState(1);
   const [ordersData, setOrdersData] = useState<Order[]>([]);
-  const [statusUpdated, setStatusUpdated] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [statusUpdated, setStatusUpdated] = useState(false);  // Track if status is updated
+  const trackOrder = (orderId: number) => {
+    router.push(`/DistributionCoordinator/processingorders/view_orders?order_id=${orderId}`);
+  }; 
+  // Fetch data from the API when the component mounts
 
-  
-  // const handleViewDetails = (order: Order) => {
-  //   setSelectedOrder(order); // Set the basic order info first
-  //   setIsDialogOpen(true);   // Open the dialog
-  // };
-  
-  // useEffect(() => {
-  //   const fetchOrderDetails = async () => {
-  //     if (!selectedOrder || !selectedOrder.order_id) return;
-  
-  //     try {
-  //       const response = await fetch(
-  //         `http://localhost:8080/order/getOrderDetails?id=${selectedOrder.order_id}`
-  //       );
-  //       const data = await response.json();
-  
-  //       if (data.isSuccess) {
-  //         setSelectedOrder((prevOrder) => ({ ...prevOrder, ...data.data }));
-  //       } else {
-  //         console.error(data.msg);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching order details:", error);
-  //     }
-  //   };
-  
-  //   if (isDialogOpen) {
-  //     fetchOrderDetails(); // Fetch details only when dialog opens
-  //   }
-  // }, [selectedOrder, isDialogOpen]);
-  
-
+ 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -192,15 +160,22 @@ export default function Home() {
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
-  const sortedItems = useMemo(() => {
-    return [...items].sort((a: Order, b: Order) => {
-      const first = a[sortDescriptor.column as keyof Order] as string;
-      const second = b[sortDescriptor.column as keyof Order] as string;
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
 
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
+
+  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
+      column: "order_id",  // Sort by 'order_id'
+      direction: "ascending",  // In ascending order
     });
-  }, [sortDescriptor, items]);
+ const sortedItems = React.useMemo(() => {
+     return [...items].sort((a: Order, b: Order) => {
+       const first = a[sortDescriptor.column as keyof Order] as string | number;
+       const second = b[sortDescriptor.column as keyof Order] as string | number;
+   
+       if (first < second) return sortDescriptor.direction === "ascending" ? -1 : 1;
+       if (first > second) return sortDescriptor.direction === "ascending" ? 1 : -1;
+       return 0; // If values are equal
+     });
+   }, [sortDescriptor, items]);
 
   const renderCell = useCallback(
     (order: Order, columnKey: React.Key) => {
@@ -254,10 +229,12 @@ export default function Home() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem
-                    className="customHoverColor customActiveColor capitalize"
-                    onClick={() => handleViewDetails(order)}
-                  >
+
+                     <DropdownItem
+                                                         className="customHoverColor customActiveColor capitalize"
+                                                         onClick={() => trackOrder(order.order_id)}
+                                                     >
+
                     View
                   </DropdownItem>
                   <DropdownItem className="customHoverColor customActiveColor capitalize">
