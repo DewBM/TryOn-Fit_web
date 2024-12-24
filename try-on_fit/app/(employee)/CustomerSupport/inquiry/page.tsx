@@ -41,6 +41,7 @@ const columns = [
   { uid: "description", name: "Description", sortable: false },
   { uid: "issue_type", name: "Issue Type", sortable: false },
   { uid: "status", name: "Status", sortable: false },
+  { uid: "solution", name: "Solution", sortable: false },
 
 ];
 
@@ -66,6 +67,7 @@ export type inquiryType = {
   issue_type:string;
   issue_description:string;
   additional_comments:string;
+  solution: string;
 
 };
 
@@ -130,13 +132,6 @@ export default function App() {
         {
         method: "GET",
       });
-        // inquiries = inquiries.map((e) => {
-          
-        //   e.key = e.inquiry_id;
-        //   return e;
-        // });
-        // // console.log(suppliers)
-        // setInquiries(inquiries);
 
         const inquiriesWithKeys = inquiries.map((item) => ({
           ...item,
@@ -281,33 +276,7 @@ export default function App() {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            {/* <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  className="bg-main-lighter border-[0.5px] border-stroke"
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  size="sm"
-                  variant="flat"
-                >
-                  Status
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                className="customSelectedColor"
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown> */}
+        
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -423,12 +392,12 @@ export default function App() {
     issue_type: "",
     issue_description: "",
     additional_comments: "",
+    solution: "",
   });
   // const [popupClose, setPopupClose] = useState(false);
 
   function handleRowClick( inquiry:inquiryType){
 
-    console.log("dfghfgfd");
     setPopupOpen(true);
     setSelectInq(inquiry);
 
@@ -439,48 +408,6 @@ export default function App() {
 
 
   return (
-    // <Table
-    //   isCompact
-    //   removeWrapper
-    //   aria-label="Customer Inquiry Table"
-    //   bottomContent={bottomContent}
-    //   bottomContentPlacement="outside"
-    //   checkboxesProps={{
-    //     classNames: {
-    //       wrapper: "after:bg-main-dark after:text-background text-background",
-    //     },
-    //   }}
-    //   classNames={classNames}
-    //   selectedKeys={selectedKeys}
-    //   selectionMode="multiple"
-    //   sortDescriptor={sortDescriptor}
-    //   topContent={topContent}
-    //   topContentPlacement="outside"
-    //   onSelectionChange={setSelectedKeys}
-    //   onSortChange={setSortDescriptor}
-    // >
-    //   <TableHeader columns={headerColumns}>
-    //     {(column) => (
-    //       <TableColumn
-    //         key={column.uid}
-    //         align={column.uid === "actions  " ? "center" : "start"}
-    //         allowsSorting={column.sortable}
-    //       >
-    //         {column.name}
-    //       </TableColumn>
-    //     )}
-    //   </TableHeader>
-    //   <TableBody emptyContent={"No inquiries found"} items={sortedItems}>
-    //     {(item) => (
-    //       <TableRow>
-    //         {(columnKey) => (
-    //           <TableCell>{renderCell(item, columnKey)}</TableCell>
-    //         )}
-    //       </TableRow>
-    //     )}
-    //   </TableBody>
-    // </Table>
-  //  <p></p>
   <>
   <div className="p-4">
   <div className="overflow-x-auto">
