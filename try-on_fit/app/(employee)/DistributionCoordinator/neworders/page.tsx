@@ -70,7 +70,7 @@ export default function Home() {
 
   const handleOrderView = (order: Order) => {
     const orderId = order.order_id;
-    router.push(`/DistributionCoordinator/processingorders/PDF?orderId=${orderId}`);
+    router.push(`/DistributionCoordinator/neworders/PDF?orderId=${orderId}`);
   };
 
   useEffect(() => {
