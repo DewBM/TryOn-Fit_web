@@ -63,66 +63,30 @@ type Order = {
 };
 
 export default function Home() {
+  const router = useRouter();
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
-  const [visibleColumns, setVisibleColumns] = useState(
-    new Set(INITIAL_VISIBLE_COLUMNS)
-  );
+  const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: "order_date",
-    direction: "ascending",
-  });
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "order_date", direction: "ascending" });
   const [page, setPage] = useState(1);
   const [ordersData, setOrdersData] = useState<Order[]>([]);
-  const router = useRouter();
+  const [statusUpdated, setStatusUpdated] = useState(false);
 
-  const handleStatusChange = async (orderId: number, newStatus: string) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/order/updateStatus/${orderId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ status: newStatus }),
-        }
-      );
-      const data = await response.json();
-
-      if (data.isSuccess) {
-        const updatedOrders = ordersData.map((order) =>
-          order.order_id === orderId
-            ? { ...order, order_status: newStatus }
-            : order
-        );
-        setOrdersData(updatedOrders);
-      } else {
-        console.error(data.msg);
-      }
-    } catch (error) {
-      console.error("Error updating status: ", error);
-    }
-  };
-
-  const handleorderview = (order: Order) => {
+  const handleOrderView = (order: Order) => {
     const orderId = order.order_id;
-    // Pass the orderId as a query parameter to the next page
     router.push(`/DistributionCoordinator/processingorders/PDF?orderId=${orderId}`);
   };
-  
 
-  useEffect(() => {
+useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:8080/order/getOrdersByStatus?status=Processing"
-        );
+        const response = await fetch("http://localhost:8080/order/getOrdersByStatus?status=Processing");
         const data = await response.json();
 
         if (data.isSuccess) {
           setOrdersData(data.data);
+          setStatusUpdated(false);
         } else {
           console.error(data.msg);
         }
@@ -132,33 +96,98 @@ export default function Home() {
     };
 
     fetchOrders();
-  }, []);
+  }, [statusUpdated]);
 
-  const pages = Math.ceil(ordersData.length / rowsPerPage);
+ const pages = Math.ceil(ordersData.length / rowsPerPage);
   const hasSearchFilter = Boolean(filterValue);
 
-  const headerColumns = useMemo(() => {
+  const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
+
     return columns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid)
     );
   }, [visibleColumns]);
 
-  const items = useMemo(() => {
+  const handleStatusChange = async (orderId: number, newStatus: string) => {
+    setOrdersData((prevOrders) =>
+      prevOrders.map((order) =>
+        order.order_id === orderId
+          ? { ...order, order_status: newStatus }
+          : order
+      )
+    );
+
+    try {
+      const response = await fetch("http://localhost:8080/order/updateStatus", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          order_id: orderId,
+          status: newStatus,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!result.isSuccess) {
+        console.error(result.msg);
+        setOrdersData((prevOrders) =>
+          prevOrders.map((order) =>
+            order.order_id === orderId
+              ? { ...order, order_status: "Update!" }
+              : order
+          )
+        );
+      } else {
+        setStatusUpdated(true);
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
+  const filteredItems = React.useMemo(() => {
+      let filteredOrders = [...ordersData];
+  
+      if (hasSearchFilter) {
+        filteredOrders = filteredOrders.filter((order) =>
+          order.order_id.toString().includes(filterValue.toString())
+        );
+      }
+  
+      return filteredOrders;
+    }, [ordersData, filterValue]);
+
+ const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-    return ordersData.slice(start, end);
-  }, [page, ordersData, rowsPerPage]);
 
-  const renderCell = useCallback((order: Order, columnKey: React.Key) => {
-    const cellValue = order[columnKey as keyof Order];
+    return filteredItems.slice(start, end);
+  }, [page, filteredItems, rowsPerPage]);
 
-    switch (columnKey) {
-      case "order_status":
-        return (
-          <Dropdown>
-            <DropdownTrigger>
-            <Button
+const sortedItems = React.useMemo(() => {
+    return [...items].sort((a: Order, b: Order) => {
+      const first = a[sortDescriptor.column as keyof Order] as string;
+      const second = b[sortDescriptor.column as keyof Order] as string;
+      const cmp = first < second ? -1 : first > second ? 1 : 0;
+
+      return sortDescriptor.direction === "descending" ? -cmp : cmp;
+    });
+  }, [sortDescriptor, items]);
+
+const renderCell = React.useCallback(
+    (order: Order, columnKey: React.Key) => {
+      const cellValue = order[columnKey as keyof Order];
+
+      switch (columnKey) {
+        case "order_status":
+          return (
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
                   variant="light"
                   size="md"
                   style={{
@@ -166,51 +195,63 @@ export default function Home() {
                     color: "#fff",
                   }}
                 >
-              {order.order_status || "Select Status"}
-                <ChevronDownIcon className="ml-2" />
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu>
-              {statusOptions.map((status) => (
-                <DropdownItem
-                  key={status.uid}
-                  className="capitalize"
-                  onClick={() => handleStatusChange(order.order_id, status.uid)}
-                >
-                  {status.name}
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
-        );
-
-      case "actions":
-        return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly radius="full" size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-400" />
+                  {order.order_status || "Select Status"} <ChevronDownIcon />
                 </Button>
               </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem
-                  className="customHoverColor customActiveColor capitalize"
-                  onClick={() => handleorderview(order)}
-                >
-                  View
-                </DropdownItem>
+              <DropdownMenu
+                selectionMode="single"
+                selectedKeys={new Set([order.order_status])}
+                onSelectionChange={(keys) => {
+                  const selectedStatus = Array.from(keys).join("");
+                  handleStatusChange(order.order_id, selectedStatus);
+                }}
+              >
+                {statusOptions
+                  .filter((status) => status.name !== order.order_status)
+                  .map((status) => (
+                    <DropdownItem
+                      key={status.uid}
+                      style={{ backgroundColor: "#f9f0ea", color: "#4d2d18" }}
+                    >
+                      {status.name}
+                    </DropdownItem>
+                  ))}
               </DropdownMenu>
             </Dropdown>
-          </div>
-        );
+          );
 
-      default:
-        return cellValue;
-    }
-  }, [ordersData]);
+        case "actions":
+          return (
+            <div className="relative flex justify-end items-center gap-2">
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button isIconOnly radius="full" size="sm" variant="light">
+                    <VerticalDotsIcon className="text-default-400" />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  <DropdownItem
+                    className="customHoverColor customActiveColor capitalize"
+                    onClick={() => handleOrderView(order)}
+                  >
+                    View
+                  </DropdownItem>
+                  <DropdownItem className="customHoverColor customActiveColor capitalize">
+                    Save
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+          );
 
-  const topContent = (
+        default:
+          return cellValue;
+      }
+    },
+    [router, ordersData]
+  );
+
+const topContent = (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between gap-3 items-end">
         <Input
@@ -225,39 +266,40 @@ export default function Home() {
     </div>
   );
 
-  return (
+return (
     <>
-      <div>
-        <Table
-          aria-label="Order Details Table"
-          topContent={topContent}
-          selectionMode="multiple"
-          sortDescriptor={sortDescriptor}
-          onSortChange={setSortDescriptor}
-          selectedKeys={selectedKeys}
-          onSelectionChange={setSelectedKeys}
-        >
-          <TableHeader columns={headerColumns}>
-            {(column) => (
-              <TableColumn key={column.uid}>{column.name}</TableColumn>
-            )}
-          </TableHeader>
-          <TableBody items={items}>
-            {(item) => (
-              <TableRow key={item.order_id}>
-                {(columnKey) => (
-                  <TableCell>{renderCell(item, columnKey)}</TableCell>
-                )}
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-        <Pagination
-          total={pages}
-          page={page}
-          onChange={(page) => setPage(page)}
-        />
-      </div>
+      <Table
+        aria-label="Order Details Table"
+        topContent={topContent}
+        selectionMode="multiple"
+        sortDescriptor={sortDescriptor}
+        onSortChange={setSortDescriptor}
+        selectedKeys={selectedKeys}
+        onSelectionChange={setSelectedKeys}
+      >
+        <TableHeader columns={headerColumns}>
+          {(column) => <TableColumn key={column.uid}>{column.name}</TableColumn>}
+        </TableHeader>
+        <TableBody items={sortedItems}>
+          {(item) => (
+            <TableRow key={item.order_id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <Pagination
+        classNames={{ cursor: "bg-main-dark text-background" }}
+        style={{ marginTop: "16px" }}
+        total={pages}
+        page={page}
+        onChange={(page) => setPage(page)}
+      />
     </>
   );
+
+
 }
+

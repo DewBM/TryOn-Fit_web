@@ -1,72 +1,97 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
-import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
-interface Props {
-  orderId: string;
-  telephonenumber: string;
-  status: string;
-  deliveryaddress: string;
+export interface OrderItem {
+  orderId: number;
+  itemId: number;
+  quantity: number;
+  price: number;
+  discount: number;
+  variantId: string; // Ensure this matches the variant_id in the backend
+  variantName: string; // Matches the name in the variant object
+  variantColor: string; // Matches the color in the variant object
+  design: string; // Matches design in the variant object
 }
 
-type OrderSummary = {
-  subtotal: number;
+export interface OrderSummary {
+  sub_total: number;
   delivery: number;
-  discount: number;
   total: number;
-};
+}
 
-type Checkout = {
-  id: number;
-  images: string[];
-  title: string;
-  color: string;
-  price: number;
-  quantity: number;
-  size: string;
-  variantId: string;
-};
+function PDFPage() {
+  const searchParams = useSearchParams();
+  const orderId = searchParams.get("orderId"); // Get orderId from query string
 
-function PDFPage({ orderId, status, deliveryaddress, telephonenumber }: Props) {
-  const router = useRouter();
-  const [cartItems, setCartItems] = useState<Checkout[]>([]);
+  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
   const [orderSummary, setOrderSummary] = useState<OrderSummary | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchOrderDetails = async (orderId: string) => {
     try {
-      setIsLoading(true);
+      const response = await fetch(`http://localhost:8080/order/fetchOrderDetails/${orderId}`);
 
-      // Replace this URL with your actual API endpoint to fetch order details.
-      const response = await fetch(`/api/orders/${orderId}`);
       if (!response.ok) {
-        throw new Error("Failed to fetch order details.");
+        throw new Error("Failed to fetch order details");
       }
 
       const data = await response.json();
+      console.log("Fetched Data: ", data); // Check the structure of data
 
-      // Assume the API returns `items` and `summary` for the order.
-      setCartItems(data.items || []);
-      setOrderSummary(data.summary || null);
+      return data;
     } catch (error) {
       console.error("Error fetching order details:", error);
-      // You can also handle errors by redirecting or displaying a message.
-    } finally {
-      setIsLoading(false);
+      return {
+        isSuccess: false,
+        msg: "An error occurred while fetching order details.",
+        data: null,
+        error: error.message || "Unknown error",
+      };
     }
   };
 
   useEffect(() => {
-    if (orderId) {
-      fetchOrderDetails(orderId);
+    if (orderId && !isNaN(Number(orderId))) {
+      setIsLoading(true);
+      fetchOrderDetails(orderId)
+        .then((response) => {
+          if (response.isSuccess) {
+            // Mapping the items to match the expected OrderItem structure
+            const mappedItems = response.data.items.map((item: any) => ({
+              orderId: item.order_id,
+              itemId: item.item_id,
+              quantity: item.quantity,
+              price: parseFloat(item.price), // Ensure it's a number
+              discount: item.discount ? parseFloat(item.discount) : 0, // Handle null or undefined discount
+              variantId: item.variant.variant_id,
+              variantName: item.variant.name,
+              variantColor: item.variant.color,
+              design: item.variant.design,
+            }));
+            setOrderItems(mappedItems);
+            setOrderSummary(response.data.summary);
+          } else {
+            console.error(response.error);
+          }
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          setIsLoading(false);
+        });
+    } else {
+      setIsLoading(false);
+      console.error("Invalid order ID");
     }
   }, [orderId]);
 
+  if (!orderId) {
+    return <div>Error: Order ID not found in the URL.</div>;
+  }
+
   if (isLoading) {
-    return <div>Loading...</div>; // Show a loading indicator while fetching data.
+    return <div>Loading...</div>;
   }
 
   return (
@@ -83,28 +108,13 @@ function PDFPage({ orderId, status, deliveryaddress, telephonenumber }: Props) {
       <div className="border rounded-lg shadow-lg bg-white">
         <div className="p-8" id="invoice">
           <h1 className="text-3xl font-bold text-center text-gray-700 mb-8">
-            Status of the Order Items
+            Order Details
           </h1>
           <div className="flex mb-8">
             <div className="text-left">
               <div className="flex flex-row">
                 <h2 className="font-semibold text-lg">Order Id:</h2>
                 <h2 className="font-semibold text-lg">{orderId}</h2>
-              </div>
-
-              <div className="flex flex-row">
-                <h2 className="font-semibold text-lg">Customer Name:</h2>
-                <h2 className="font-semibold text-lg">{status}</h2>
-              </div>
-
-              <div className="flex flex-row">
-                <h2 className="font-semibold text-lg">Delivery Address:</h2>
-                <h2 className="font-semibold text-lg">{deliveryaddress}</h2>
-              </div>
-
-              <div className="flex flex-row">
-                <h2 className="font-semibold text-lg">Contact Number:</h2>
-                <h2 className="font-semibold text-lg">{telephonenumber}</h2>
               </div>
             </div>
           </div>
@@ -128,39 +138,33 @@ function PDFPage({ orderId, status, deliveryaddress, telephonenumber }: Props) {
                   QUANTITY
                 </th>
                 <th className="border border-gray-300 px-4 py-2 text-right">
-                  VARIANT ID
-                </th>
-                <th className="border border-gray-300 px-4 py-2 text-right">
                   TOTAL PRICE
                 </th>
               </tr>
             </thead>
             <tbody>
-              {cartItems.map((item, index) => (
-                <tr key={item.id}>
+              {orderItems.map((item, index) => (
+                <tr key={item.itemId}>
                   <td className="border border-gray-300 px-4 py-2 text-center">
                     {index + 1}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    {item.id}
+                    {item.variantId}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    {item.title}
+                    {item.variantName} ({item.variantColor})
                   </td>
                   <td className="border border-gray-300 px-4 py-2 text-right">
-                    {item.size || "N/A"}
+                    {item.design || "N/A"}
                   </td>
                   <td className="border border-gray-300 px-4 py-2 text-right">
-                    Rs. {item.price.toFixed(2)}
+                    Rs. {item.price}
                   </td>
                   <td className="border border-gray-300 px-4 py-2 text-right">
                     {item.quantity}
                   </td>
                   <td className="border border-gray-300 px-4 py-2 text-right">
-                    {item.variantId || "N/A"}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2 text-right">
-                    Rs. {(item.price * item.quantity).toFixed(2)}
+                    Rs. {(item.price * item.quantity)}
                   </td>
                 </tr>
               ))}
@@ -169,27 +173,39 @@ function PDFPage({ orderId, status, deliveryaddress, telephonenumber }: Props) {
               {orderSummary && (
                 <>
                   <tr>
-                    <td colSpan={7} className="subtotal-cell">
+                    <td
+                      colSpan={6}
+                      className="subtotal-cell text-right font-bold"
+                    >
                       SUB TOTAL
                     </td>
                     <td className="border border-gray-300 px-4 py-2 text-right">
-                      Rs. {orderSummary.subtotal.toFixed(2)}
+                      Rs. {orderSummary.sub_total}
                     </td>
                   </tr>
                   <tr>
-                    <td colSpan={7} className="subtotal-cell">
+                    <td
+                      colSpan={6}
+                      className="subtotal-cell text-right font-bold"
+                    >
                       DELIVERY
                     </td>
                     <td className="border border-gray-300 px-4 py-2 text-right">
-                      Rs. {orderSummary.delivery.toFixed(2)}
+                      Rs. {orderSummary.delivery || 0}
                     </td>
                   </tr>
                   <tr>
-                    <td colSpan={7} className="subtotal-cell">
-                      GRAND TOTAL
+                    <td
+                      colSpan={6}
+                      className="subtotal-cell text-right font-bold"
+                    >
+                       TOTAL
                     </td>
                     <td className="border border-gray-300 px-4 py-2 text-right">
-                      Rs. {orderSummary.total.toFixed(2)}
+                      Rs.{" "}
+                      {isNaN(orderSummary.sub_total)
+                        ? "N/A"
+                        : orderSummary.sub_total}
                     </td>
                   </tr>
                 </>
