@@ -4,85 +4,92 @@ import { useSearchParams } from "next/navigation";
 
 export interface OrderItem {
   orderId: number;
-  itemId: number;
+  itemId: string;
   quantity: number;
   price: number;
-  discount: number;
-  variantId: string; // Ensure this matches the variant_id in the backend
-  variantName: string; // Matches the name in the variant object
-  variantColor: string; // Matches the color in the variant object
-  design: string; // Matches design in the variant object
+  discount: number | null;
+  variantId: string;
+  variantName: string;
+  variantColor: string;
+  size: string;
 }
 
 export interface OrderSummary {
-  sub_total: number;
-  delivery: number;
-  total: number;
+  sub_total: number | null;
+}
+
+export interface OrderDetails {
+  name: string;
+  address: string;
+  contactNumber: string;
+  items: OrderItem[];
+  summary: OrderSummary;
 }
 
 function PDFPage() {
   const searchParams = useSearchParams();
-  const orderId = searchParams.get("orderId"); // Get orderId from query string
+  const orderId = searchParams.get("orderId");
 
-  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
-  const [orderSummary, setOrderSummary] = useState<OrderSummary | null>(null);
+  const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchOrderDetails = async (orderId: string) => {
     try {
-      const response = await fetch(`http://localhost:8080/order/fetchOrderDetails/${orderId}`);
+      const response = await fetch(
+        `http://localhost:8080/order/fetchOrderDetails/${orderId}`
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch order details");
       }
 
       const data = await response.json();
-      console.log("Fetched Data: ", data); // Check the structure of data
+      if (data.isSuccess) {
+        const orderData = data.data;
+        const order = orderData.order;
 
-      return data;
-    } catch (error) {
-      console.error("Error fetching order details:", error);
-      return {
-        isSuccess: false,
-        msg: "An error occurred while fetching order details.",
-        data: null,
-        error: error.message || "Unknown error",
-      };
+        
+        const items = orderData.items.map((item: any) => ({
+          orderId: Number(item.order_id),
+          itemId: item.item_id,
+          quantity: Number(item.quantity),
+          price: Number(item.variant.price),
+          discount: item.disount ? Number(item.disount) : null,
+          variantId: item.variant.variant_id,
+          variantName: item.variant.name,
+          variantColor: item.variant.color,
+          size: item.variant.size, 
+        }));
+
+        
+        setOrderDetails({
+          name: order.customer_name,
+          address: order.delivery_address,
+          contactNumber: "", 
+          items,
+          summary: {
+            sub_total: orderData.summary.sub_total ? Number(orderData.summary.sub_total) : 0,
+          },
+        });
+      } else {
+        throw new Error(data.msg || "Unknown error from the server.");
+      }
+    } catch (error: any) {
+      setError("Unable to fetch order details.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    if (orderId && !isNaN(Number(orderId))) {
+    if (orderId) {
       setIsLoading(true);
-      fetchOrderDetails(orderId)
-        .then((response) => {
-          if (response.isSuccess) {
-            // Mapping the items to match the expected OrderItem structure
-            const mappedItems = response.data.items.map((item: any) => ({
-              orderId: item.order_id,
-              itemId: item.item_id,
-              quantity: item.quantity,
-              price: parseFloat(item.price), // Ensure it's a number
-              discount: item.discount ? parseFloat(item.discount) : 0, // Handle null or undefined discount
-              variantId: item.variant.variant_id,
-              variantName: item.variant.name,
-              variantColor: item.variant.color,
-              design: item.variant.design,
-            }));
-            setOrderItems(mappedItems);
-            setOrderSummary(response.data.summary);
-          } else {
-            console.error(response.error);
-          }
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          setIsLoading(false);
-        });
+      setError(null);
+      fetchOrderDetails(orderId);
     } else {
       setIsLoading(false);
-      console.error("Invalid order ID");
+      setError("Invalid order ID");
     }
   }, [orderId]);
 
@@ -94,8 +101,18 @@ function PDFPage() {
     return <div>Loading...</div>;
   }
 
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!orderDetails) {
+    return <div>Error: Unable to fetch order details.</div>;
+  }
+
+  const { name, address, contactNumber, items, summary } = orderDetails;
+
   return (
-    <div className="pt-5 pb-24">
+    <div className="pt-1 pb-24">
       <div className="flex justify-end mb-4">
         <button
           type="button"
@@ -113,8 +130,20 @@ function PDFPage() {
           <div className="flex mb-8">
             <div className="text-left">
               <div className="flex flex-row">
-                <h2 className="font-semibold text-lg">Order Id:</h2>
+                <h2 className="font-semibold text-lg">Order ID:</h2>
                 <h2 className="font-semibold text-lg">{orderId}</h2>
+              </div>
+              <div className="flex flex-row">
+                <h2 className="font-semibold text-lg">Name:</h2>
+                <h2 className="font-semibold text-lg">{name}</h2>
+              </div>
+              <div className="flex flex-row">
+                <h2 className="font-semibold text-lg">Address:</h2>
+                <h2 className="font-semibold text-lg">{address}</h2>
+              </div>
+              <div className="flex flex-row">
+                <h2 className="font-semibold text-lg">Contact Number:</h2>
+                <h2 className="font-semibold text-lg">{contactNumber}</h2>
               </div>
             </div>
           </div>
@@ -143,7 +172,7 @@ function PDFPage() {
               </tr>
             </thead>
             <tbody>
-              {orderItems.map((item, index) => (
+              {items.map((item, index) => (
                 <tr key={item.itemId}>
                   <td className="border border-gray-300 px-4 py-2 text-center">
                     {index + 1}
@@ -155,7 +184,7 @@ function PDFPage() {
                     {item.variantName} ({item.variantColor})
                   </td>
                   <td className="border border-gray-300 px-4 py-2 text-right">
-                    {item.design || "N/A"}
+                    {item.size || "N/A"}
                   </td>
                   <td className="border border-gray-300 px-4 py-2 text-right">
                     Rs. {item.price}
@@ -164,52 +193,45 @@ function PDFPage() {
                     {item.quantity}
                   </td>
                   <td className="border border-gray-300 px-4 py-2 text-right">
-                    Rs. {(item.price * item.quantity)}
+                    Rs. {item.price * item.quantity}
                   </td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
-              {orderSummary && (
-                <>
-                  <tr>
-                    <td
-                      colSpan={6}
-                      className="subtotal-cell text-right font-bold"
-                    >
-                      SUB TOTAL
-                    </td>
-                    <td className="border border-gray-300 px-4 py-2 text-right">
-                      Rs. {orderSummary.sub_total}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      colSpan={6}
-                      className="subtotal-cell text-right font-bold"
-                    >
-                      DELIVERY
-                    </td>
-                    <td className="border border-gray-300 px-4 py-2 text-right">
-                      Rs. {orderSummary.delivery || 0}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      colSpan={6}
-                      className="subtotal-cell text-right font-bold"
-                    >
-                       TOTAL
-                    </td>
-                    <td className="border border-gray-300 px-4 py-2 text-right">
-                      Rs.{" "}
-                      {isNaN(orderSummary.sub_total)
-                        ? "N/A"
-                        : orderSummary.sub_total}
-                    </td>
-                  </tr>
-                </>
-              )}
+              <tr>
+                <td
+                  colSpan={6}
+                  className="subtotal-cell text-right font-bold"
+                >
+                  SUB TOTAL
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-right">
+                  Rs. {summary.sub_total || 0}
+                </td>
+              </tr>
+              <tr>
+                <td
+                  colSpan={6}
+                  className="subtotal-cell text-right font-bold"
+                >
+                  DELIVERY
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-right">
+                  Rs. {summary.sub_total ? 0 : 0}
+                </td>
+              </tr>
+              <tr>
+                <td
+                  colSpan={6}
+                  className="subtotal-cell text-right font-bold"
+                >
+                  TOTAL
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-right">
+                  Rs. {summary.sub_total || 0}
+                </td>
+              </tr>
             </tfoot>
           </table>
           <div className="mt-8 text-center">

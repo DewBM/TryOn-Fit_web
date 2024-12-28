@@ -160,3 +160,11 @@ option:hover {
 div[data-nextui-modal] {
   z-index: 1050; /* Higher than other components */
 }
+
+
+@media print {
+  #invoice {
+    transform: scale(0.9); /* Adjust scale */
+    transform-origin: top left;
+  }
+}
