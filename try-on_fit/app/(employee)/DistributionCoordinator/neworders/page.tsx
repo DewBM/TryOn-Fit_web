@@ -1,4 +1,4 @@
-"use client";
+"use client"; 
 import React, { useState, useEffect } from "react";
 import {
   Table,
@@ -37,6 +37,7 @@ const statusOptions = [
   { uid: "Confirmed", name: "Confirmed" },
   { uid: "Delivered", name: "Delivered" },
 ];
+
 const INITIAL_VISIBLE_COLUMNS = [
   "order_id",
   "order_date",
@@ -65,10 +66,13 @@ export default function Home() {
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "order_date", direction: "ascending" });
   const [page, setPage] = useState(1);
   const [ordersData, setOrdersData] = useState<Order[]>([]);
-  const [statusUpdated, setStatusUpdated] = useState(false);  // Track if status is updated
+  const [statusUpdated, setStatusUpdated] = useState(false);
 
+  const handleOrderView = (order: Order) => {
+    const orderId = order.order_id;
+    router.push(`/DistributionCoordinator/processingorders/PDF?orderId=${orderId}`);
+  };
 
-  // Fetch data from the API when the component mounts
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -100,15 +104,7 @@ export default function Home() {
     );
   }, [visibleColumns]);
 
-  // const handleStatusChange = (orderId: number, newStatus: string) => {
-  //   const updatedOrders = ordersData.map((order) =>
-  //     order.order_id === orderId ? { ...order, order_status: newStatus } : order
-  //   );
-  //   setOrdersData(updatedOrders);
-  // };
-
   const handleStatusChange = async (orderId: number, newStatus: string) => {
-    // Optimistically update the local state
     setOrdersData((prevOrders) =>
       prevOrders.map((order) =>
         order.order_id === orderId
@@ -116,7 +112,7 @@ export default function Home() {
           : order
       )
     );
-  
+
     try {
       const response = await fetch("http://localhost:8080/order/updateStatus", {
         method: "PUT",
@@ -128,30 +124,25 @@ export default function Home() {
           status: newStatus,
         }),
       });
-  
+
       const result = await response.json();
-  
+
       if (!result.isSuccess) {
         console.error(result.msg);
-        // Revert the state if the server update fails
         setOrdersData((prevOrders) =>
           prevOrders.map((order) =>
             order.order_id === orderId
-              ? { ...order, order_status: "Update!" } // Use default or placeholder status
+              ? { ...order, order_status: "Update!" }
               : order
           )
         );
-      }else {
-        // Trigger re-fetching of orders after successful update
-        setStatusUpdated(true);  // Mark that the status has been updated
+      } else {
+        setStatusUpdated(true);
       }
     } catch (error) {
       console.error("Error updating status:", error);
-      // Optional: Revert state in case of a server error
     }
   };
-  
-  
 
   const filteredItems = React.useMemo(() => {
     let filteredOrders = [...ordersData];
@@ -236,21 +227,18 @@ export default function Home() {
                 <DropdownMenu>
                   <DropdownItem
                     className="customHoverColor customActiveColor capitalize"
-                    onClick={() =>
-                      router.push(`/DistributionCoordinator/orders/view_neworders?id=${order.order_id}`)
-                    }
+                    onClick={() => handleOrderView(order)}
                   >
                     View
                   </DropdownItem>
-                  <DropdownItem
-                    className="customHoverColor customActiveColor capitalize"
-                  >
+                  <DropdownItem className="customHoverColor customActiveColor capitalize">
                     Save
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </div>
           );
+
         default:
           return cellValue;
       }
