@@ -80,27 +80,31 @@ export default function Home() {
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set(INITIAL_VISIBLE_COLUMNS));
   const [statusFilter, setStatusFilter] = React.useState<string>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: "order_id",  // Sort by 'order_id'
-    direction: "ascending",  // In ascending order
-  });
+    const [ordersData, setOrdersData] = useState<Order[]>([]);
+  
+  
   const [page, setPage] = React.useState(1);
-  const [orders, setOrders] = useState<Order[]>([]); // State to hold fetched orders
-
+  const navigateToViewOrders = () => {
+    // Navigate to the desired path
+    router.push(`/DistributionCoordinator/orders/view_orders11`);
+  };
   // Fetch orders from the API on component mount
+  const [orders, setOrders] = useState<Order[]>([]); // State to hold fetched orders
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await fetch("http://localhost:8080/order/getAllOrders");
         const data = await response.json();
+        console.log(response);
         if (data.isSuccess && data.data.isSuccess) {
-          setOrders(data.data.data); // Set fetched orders
+          const sortedData = data.data.data.sort((a: Order, b: Order) => a.order_id - b.order_id); // Sort ascending
+          setOrders(sortedData); // Set the sorted orders
         }
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
     };
-
+  
     fetchOrders();
   }, []);
 
@@ -131,15 +135,28 @@ export default function Home() {
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
+
+  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
+    column: "order_id",  // Sort by 'order_id'
+    direction: "ascending",  // In ascending order
+  });
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a: Order, b: Order) => {
-      const first = a[sortDescriptor.column as keyof Order] as number;
-      const second = b[sortDescriptor.column as keyof Order] as number;
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
-
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
+      const first = a[sortDescriptor.column as keyof Order] as string | number;
+      const second = b[sortDescriptor.column as keyof Order] as string | number;
+  
+      if (first < second) return sortDescriptor.direction === "ascending" ? -1 : 1;
+      if (first > second) return sortDescriptor.direction === "ascending" ? 1 : -1;
+      return 0; // If values are equal
     });
   }, [sortDescriptor, items]);
+  
+
+  const trackOrder = (orderId: number) => {
+    router.push(`/DistributionCoordinator/orders/view_orders?order_id=${orderId}`);
+  };
+
+  
 
   const renderCell = React.useCallback(
     (order: Order, columnKey: React.Key) => {
@@ -166,12 +183,13 @@ export default function Home() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem
-                    className="customHoverColor customActiveColor capitalize"
-                    onClick={() => router.push(`/view_orders?id=${order.order_id}`)}
-                  >
-                    View
-                  </DropdownItem>
+                <DropdownItem
+    className="customHoverColor customActiveColor capitalize"
+    onClick={() => trackOrder(order.order_id)}
+>
+    View
+</DropdownItem>
+
                 </DropdownMenu>
               </Dropdown>
             </div>
@@ -251,17 +269,17 @@ export default function Home() {
         topContent={topContent}
         selectionMode="multiple"
         sortDescriptor={sortDescriptor}
-        onSortChange={setSortDescriptor}
+        onSortChange={setSortDescriptor} // Update sort state on user interaction
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys}
       >
         <TableHeader columns={headerColumns}>
-  {(column) => (
-    <TableColumn key={column.uid}>
-      {column.name}
-    </TableColumn>
-  )}
-</TableHeader>
+          {(column) => (
+            <TableColumn key={column.uid}>
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
         <TableBody items={sortedItems}>
           {(item: Order) => (
             <TableRow key={item.order_id}>
@@ -275,10 +293,9 @@ export default function Home() {
         total={pages}
         color="primary"
         page={page}
-        onPageChange={setPage}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={setRowsPerPage}
+        onChange={(newPage) => setPage(newPage)}
       />
+
     </>
   );
 }

@@ -89,7 +89,7 @@ export default function OrderDetails() {
   };
 
   const handleSubmit = () => {
-    router.push('/DistributionCoordinator/orders');  // Redirect to orders page
+    router.push('/DistributionCoordinator/completedorders');  // Redirect to orders page
   };
 
   if (isLoading) return <div>Loading...</div>;

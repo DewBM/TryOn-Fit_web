@@ -42,6 +42,8 @@ export default function Inquiry() {
     shouldRevalidate: "onInput",
   });
 
+  const currentDate = new Date().toISOString().split('T')[0];
+
   return (
     <Layout>
       <div className="grid  lg:grid-cols-12 lg:grid-rows-12">
@@ -161,6 +163,21 @@ export default function Inquiry() {
                 placeholder=""
                 disabled={false}
               ></TextBox>
+
+
+            {/* Date Picker */}
+            {/* <div className="sm:col-span-1 lg:grid-cols-4 text-lg font-semibold mb-3">
+              <label className="block text-sm font-medium leading-6 text-gray-900">Current Date</label>
+              <input
+                type="date"
+                name={fields.date.name}
+                defaultValue={currentDate}
+                key={fields.date.key as React.Key}
+                className="block w-full p-2 border rounded-lg"
+                disabled
+                title="Current Date"
+              />
+            </div> */}
               
             </div>
             {/* <div className="sm:col-span-1 lg:grid-cols-5 text-lg font-semibold mb-8 mt-8">

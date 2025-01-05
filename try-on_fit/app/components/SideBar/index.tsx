@@ -41,8 +41,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     CustomerSupport: [
       { label: "DashBoard", route: "/CustomerSupport", icon: <FiHome /> },
       { label: "Inquiry", route: "/CustomerSupport/inquiry", icon: <FiMessageSquare /> },
-      { label: "Customer Feedback",route: "/customer-feedback",icon: <FiStar />,
-      },
+      // { label: "Customer Feedback",route: "/customer-feedback",icon: <FiStar />,
+      // },
     ],
     DistributionCoordinator: [
       { label: "DashBoard", route: "/DistributionCoordinator", icon: <FiHome /> },
