@@ -11,10 +11,11 @@ interface Props {
   color: string[];
   onDelete: () => void;
   onQuantityChange: (newQuantity: number) => void;
+  onSelectchange:(isSelected:boolean)=> void;
 }
 
-function Cartcard({ images, price, quantity, title, color, onDelete, onQuantityChange }: Props) {
-  // Safely parse the quantity, defaulting to 1 if undefined or empty
+function Cartcard({ images, price, quantity, title, color, onDelete, onQuantityChange ,onSelectchange}: Props) {
+
   const initialQuantity = quantity && quantity.length > 0 ? parseInt(quantity[0], 10) : 1;
   const [currentQuantity, setCurrentQuantity] = useState(initialQuantity);
   const [isSelected, setIsSelected] = useState(false);
@@ -33,8 +34,11 @@ function Cartcard({ images, price, quantity, title, color, onDelete, onQuantityC
   };
  
   const handleCheckboxChange = () => {
-    setIsSelected(prev => !prev); // Toggle selection state
+    const newSelection = !isSelected;
+    setIsSelected(newSelection);
+    onSelectchange(newSelection); 
   };
+  
   return (
     <div className="h-[150px] w-[90%] rounded-2xl border border-gray-300">
       <div className="flex flex-row py-2 ">

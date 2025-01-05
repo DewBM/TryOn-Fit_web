@@ -13,7 +13,7 @@ function OrdersummaryCart({total,discount,order,delivary}:Props) {
     const router = useRouter();
 
     function handlecheckout(){
-        router.push("Cartcheckout")
+        router.push("/Cartcheckout")
     }
   return (
    <div className="flex justify-center  rounded-2xl border border-gray-300 w-[80%] strock-2 flex-col">

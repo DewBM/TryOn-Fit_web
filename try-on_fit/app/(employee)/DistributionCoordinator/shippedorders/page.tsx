@@ -31,9 +31,9 @@ const columns = [
 ];
 
 const statusOptions = [
-  { uid: "processing", name: "Processing" },
-  { uid: "shipped", name: "Shipped" },
-  { uid: "completed", name: "Completed" },
+  { uid: "Processing", name: "Processing" },
+  { uid: "Shipped", name: "Shipped" },
+  { uid: "Completed", name: "Completed" },
   { uid: "Confirmed", name: "Confirmed" },
   { uid: "Delivered", name: "Delivered" },
 ];
@@ -69,11 +69,16 @@ export default function Home() {
   const [statusUpdated, setStatusUpdated] = useState(false);  // Track if status is updated
 
 
+  const trackOrder = (orderId: number) => {
+    router.push(`/DistributionCoordinator/shippedorders/view_orders?order_id=${orderId}`);  };
+  
+
   // Fetch data from the API when the component mounts
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:8080/order/getOrdersByStatus?status=Shipped");
+        const response = await fetch("http://localhost:8080/order/getOrdersByStatus?status=Shipped"
+        );
         const data = await response.json();
 
         if (data.isSuccess) {
@@ -235,12 +240,10 @@ export default function Home() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem
-                    className="customHoverColor customActiveColor capitalize"
-                    onClick={() =>
-                      router.push(`/DistributionCoordinator/orders/view_neworders?id=${order.order_id}`)
-                    }
-                  >
+                    <DropdownItem
+                                        className="customHoverColor customActiveColor capitalize"
+                                        onClick={() => trackOrder(order.order_id)}
+                                    >
                     View
                   </DropdownItem>
                   <DropdownItem

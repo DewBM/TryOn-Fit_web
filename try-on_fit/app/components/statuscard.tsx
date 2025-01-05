@@ -1,14 +1,18 @@
 import React from 'react'
 import Image from 'next/image'
 interface Props{
+  
+  
   images:string[];
   price:string[];
   quality:string[];
   title:string[];
   color:string[];
+  status:string;
 
 }
-function Statuscard({images,price,quality,title,color}:Props) {
+
+function Statuscard({images,price,quality,title,color,status}:Props) {
   return (
     
     <div className=" h-[150px] w-[90%] rounded-2xl border border-gray-300"> 
