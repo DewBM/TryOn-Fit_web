@@ -179,6 +179,8 @@
 // };
 
 // export default Page;
+
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -219,7 +221,6 @@ const Page = () => {
     total: 0,
   });
 
-  // Calculate order summary for selected items
   const calculateSelectedOrderSummary = () => {
     const selectedCartItems = cartItems.filter((item) =>
       selectedItems.has(item.id)
@@ -228,8 +229,8 @@ const Page = () => {
       (acc, item) => acc + item.price * item.quantity,
       0
     );
-    const delivery = 400; // Fixed delivery charge
-    const discount = 200; // Fixed discount
+    const delivery = 400; 
+    const discount = 200; 
     const total = subtotal + delivery - discount;
 
     setOrderSummary({ subtotal, delivery, discount, total });
@@ -243,7 +244,7 @@ const Page = () => {
     calculateSelectedOrderSummary(); // Recalculate order summary
   }, [selectedItems, cartItems]);
 
-  // Fetch cart items on component mount
+
   useEffect(() => {
     const fetchCartItems = async () => {
       setLoading(true);
@@ -355,7 +356,7 @@ const Page = () => {
             total={[orderSummary.total]}
           />
           <Needhelp />
-          <Payment type={['Master']} acnumber={[123456789099]} />
+          {/* <Payment type={['Master']} acnumber={[123456789099]} /> */}
           <Delivaryaddress
             fline={['No:77/A, Old Kesbewa Rd']}
             sline={['Nugegoda']}
