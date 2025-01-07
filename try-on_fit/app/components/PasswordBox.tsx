@@ -26,7 +26,7 @@ export default function PasswordBox({
     <div>
       <label
         htmlFor={labelName.toLowerCase()}
-        className="block text-sm font-medium leading-6 text-gray-900"
+        className="block text-sm font-medium leading-6 text-gray-600"
       >
         {labelName}
       </label>
@@ -36,7 +36,7 @@ export default function PasswordBox({
           name={name}
           key={key}
           defaultValue={defaultValue}
-          className="block w-full rounded-md border-0 focus:outline-none mt py-1.5 pl-4 text-gray-900 ring-1 ring-inset ring-main-light focus:ring-2 focus:ring-inset focus:ring-main-dark sm:text-sm sm:leading-6"
+          className="block w-full rounded-md border-0 focus:outline-none mt py-1.5 pl-4 text-gray-800 ring-1  bg-main-lighter ring-inset ring-main-light focus:ring-2 focus:ring-inset focus:ring-main-dark sm:text-sm sm:leading-6"
           placeholder={placeholder ? "" : undefined}
         />
         {showEyeIcon && ( // conditionally render the icon
