@@ -69,16 +69,19 @@ export default function Home() {
   const [statusUpdated, setStatusUpdated] = useState(false);  // Track if status is updated
 
 
-  const trackOrder = (orderId: number) => {
-    router.push(`/DistributionCoordinator/completedorders/view_orders?order_id=${orderId}`);
+  const handleOrderView = (order: Order) => {
+    const orderId = order.order_id;
+    router.push(`/DistributionCoordinator/completedorders/PDF?orderId=${orderId}`);
   };
 
   // Fetch data from the API when the component mounts
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+
         const response = await fetch("http://localhost:8080/order/getOrdersByStatus?status=Completed");
-        const data = await response.json(); 
+        const data = await response.json();
+
 
         if (data.isSuccess) {
           setOrdersData(data.data);
@@ -239,16 +242,11 @@ export default function Home() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                    <DropdownItem
-                                        className="customHoverColor customActiveColor capitalize"
-                                        onClick={() => trackOrder(order.order_id)}
-                                    >
-                    View
-                  </DropdownItem>
-                  <DropdownItem
+                <DropdownItem
                     className="customHoverColor customActiveColor capitalize"
+                    onClick={() => handleOrderView(order)}
                   >
-                    Save
+                    View
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
