@@ -10,6 +10,7 @@ import {
   CalendarDateRangeIcon,
   MapPinIcon,
   TruckIcon,
+  CheckIcon,
   ChevronDoubleRightIcon,
   ChatBubbleOvalLeftEllipsisIcon
 } from '@heroicons/react/24/outline'
@@ -36,7 +37,7 @@ const App = () => {
 
   // Fetch order details once on component mount
   useEffect(() => {
-    fetch('http://localhost:8080/order/getOrderDetailsByOrderId/12') // Update the order ID if necessary
+    fetch('http://localhost:8080/order/getOrderDetailsByOrderId/17') // Update the order ID if necessary
       .then(response => response.json())
       .then(data => {
         if (data.isSuccess) {
@@ -81,9 +82,9 @@ const App = () => {
     const statusIndex = statusOrder.indexOf(status);
     // Return the appropriate class for the status
     if (statusIndex > currentStatusIndex) {
-      return "bg-blue-500 border-blue-500"; // Past status
+      return "bg-amber-950 border-amber-950 border-200"; // Past status
     } else if (statusIndex === currentStatusIndex) {
-      return "bg-white border-2 border-blue-500";  // Current status
+      return "bg-white border-double border-4  border-amber-950";  // Current status
     } else {
       return "bg-white border-2 border-gray-300"; // Future status
     }
@@ -96,24 +97,37 @@ const App = () => {
           <h1 className="text-3xl font-bold mb-4">Track Your Order</h1>
           <p className="text-lg mb-6">Order ID: <span className="font-bold">#000{orderDetails.order_id}</span></p>
           <div className="relative">
-            <div className="absolute h-full border-l-2 border-blue-500 left-4 top-0 z-0"></div> {/* Line with z-index 0 */}
+            <div className="absolute h-full border-l-2 border-amber-950 left-4 top-0 z-0"></div> {/* Line with z-index 0 */}
             <div className="space-y-6">
-              {statusOrder.map((status, index) => (
-                <div className="flex items-start" key={index}>
-                  <div className={`w-8 h-8 bg-white border-2 rounded-full flex items-center justify-center ${getStatusClass(status)} z-10`}>
-                    {getStatusClass(status).includes("bg-blue-500") && <div className="w-4 h-4 bg-blue-500 rounded-full"></div>}
-                  </div>
-                  <div className="ml-4">
-                    <h2 className={`font-bold ${status === orderDetails.order_status ? "text-blue-500" : ""}`}>{status}</h2>
-                    <p>{status === "Delivered" && "Your order has been Delivered."}
-                       {status === "Shipped" && "Your order is on its way to you."}
-                       {status === "Completed" && "Your order is packed and ready to ship."}
-                       {status === "Processing" && "Your order is being reviewed and prepared."}
-                       {status === "Confirmed" && "Your order has been placed successfully."}
-                    </p>
-                  </div>
-                </div>
-              ))}
+            {statusOrder.map((status, index) => (
+  <div className="flex items-start" key={index}>
+    <div
+      className={`w-8 h-8 rounded-full flex items-center justify-center ${getStatusClass(
+        status
+      )} z-10`}
+      style={{ backgroundColor: getStatusClass(status).includes("bg-amber-950") ? "#421F06" : "#FFF" }}
+    >
+      <CheckIcon
+        className={`w-4 h-4 ${
+          getStatusClass(status).includes("bg-amber-950") ? "text-white" : "text-gray-50" /* Default text color */}
+        `}
+      />
+    </div>
+    <div className="ml-4">
+      <h2 className={`font-bold ${status === orderDetails.order_status ? "text-amber-950" : "text-gray-900"}`}>
+        {status}
+      </h2>
+      <p className="text-gray-800">
+        {status === "Delivered" && "Your order has been Delivered."}
+        {status === "Shipped" && "Your order is on its way to you."}
+        {status === "Completed" && "Your order is packed and ready to ship."}
+        {status === "Processing" && "Your order is being reviewed and prepared."}
+        {status === "Confirmed" && "Your order has been placed successfully."}
+      </p>
+    </div>
+  </div>
+))}
+
             </div>
           </div>
         </div>
@@ -135,7 +149,7 @@ const App = () => {
                 </div>
               </div>
             ))}
-            <a href="https://www.example.com" className="flex items-center text-blue-500 hover:text-blue-700">
+            <a href="https://www.example.com" className="flex items-center text-amber-950 hover:text-blue-700">
               <span className="ml-20 mt-10">Order Details</span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 mt-10 ml-4">
                 <path fillRule="evenodd" d="M12.78 7.595a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06l2.72-2.72-2.72-2.72a.75.75 0 0 1 1.06-1.06l3.25 3.25Zm-8.25-3.25 3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06l2.72-2.72-2.72-2.72a.75.75 0 0 1 1.06-1.06Z" clipRule="evenodd" />
