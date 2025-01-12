@@ -1,3 +1,4 @@
+
 'use client'
 import { useEffect, useState } from 'react';
 import NavBar from '@/app/components/NavBar';
@@ -43,13 +44,12 @@ const FitOn = () => {
 
         loadImages();
     }, []);
-
     return (
         <div>
             <NavBar />
             <section className='py-36 flex flex-col justify-center items-center'>
-                <div className="items-center align-middle w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center pb-10 shadow-2xl">
-                    <p className="text-2xl font-bold font-sans pt-2">Fit On Room</p>
+                <div className="items-center align-middle ring-1  bg-main-lighter ring-inset ring-main-light focus:ring-4 focus:ring-inset focus:ring-main-dark w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center pb-10 shadow-2xl">
+                    <p className="text-2xl font-bold font-sans pt-2 ">Fit On Room</p>
                 </div>
                 <div className='px-48 py-10 flex flex-row gap-2'>
                     {/* <div className='flex flex-col gap-7 justify-between h-full'>
@@ -69,9 +69,9 @@ const FitOn = () => {
                             alt=""
                             className='h-[70%] aspect-square object-cover rounded-xl'
                         />
-                        <div className="flex flex-row justify-between mt-10 w-[60%]">
-                            <button className='bg-main-dark text-white font-normal py-3 px-8 rounded-xl'>Dicard</button>
-                            <button className='bg-main-dark text-white font-normal py-3 px-8 rounded-xl'>Add to Cart</button>
+                        <div className="flex flex-row justify-between mt-10 ">
+                            <button className='bg-main-dark text-white font-normal  mr-8 rounded-xl btn-stl'>Dicard</button>
+                            <button className='bg-main-dark text-white font-normal rounded-xl  btn-stl'>Add to Cart</button>
                         </div>
                     </div>
                     <div className='flex flex-col gap-7 justify-between h-full'>

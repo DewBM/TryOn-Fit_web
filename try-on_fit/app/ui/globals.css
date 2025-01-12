@@ -148,3 +148,11 @@ option:hover {
 .modal-backdrop {
   z-index: 9999; 
 }
+
+
+/* //fitton ntn  */
+
+.btn-stl{
+  height: 44px;
+  width: 120px;
+}
