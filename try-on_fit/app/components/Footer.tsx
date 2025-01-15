@@ -10,7 +10,7 @@ function Footer() {
 		router.push("returns")
 	}
 	const handleorederstatus = () =>{
-		router.push("status")
+		router.push("OrderTracking")
 	}
 	const handleFaq =() =>{
 		router.push("faq")
