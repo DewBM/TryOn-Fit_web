@@ -40,7 +40,8 @@
     "sweetalert2": "^11.15.0",
     "try-on_fit": "file:",
     "uuid": "^11.0.3",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "@mui/material": "^6.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",
