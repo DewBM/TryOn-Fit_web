@@ -51,12 +51,23 @@ function Cartcard({ images, price, quantity, title, color, onDelete, onQuantityC
           />
            </div>
           <div className="">
-          {images.map((imgSrc, index) => (
+          {/* {images.map((imgSrc, index) => (
             <Image
               key={index}
               alt={`Card background ${index}`}
               className="object-contain rounded-2xl"
               src={imgSrc}
+              width={100}
+              height={100}
+            />
+          ))} */}
+
+{images.map((images, index) => (
+            <Image
+              key={index}
+              alt={`Card background ${index}`}
+              className="object-contain rounded-2xl"
+              src={images}
               width={100}
               height={100}
             />

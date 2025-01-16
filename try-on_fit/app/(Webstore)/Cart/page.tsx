@@ -245,40 +245,89 @@ const Page = () => {
   }, [selectedItems, cartItems]);
 
 
+
+  
+  // Save order summary to local storage
+
+  // useEffect(() => {
+  //   const fetchCartItems = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const items = await Cartfetch(); // Fetch cart items
+  //       console.log("Fetched cart items:", items);
+  
+  //       // Ensure the response structure matches the expectation
+  //       if (items?.isSuccess && Array.isArray(items.cartItems)) {
+  //         setCartItems(
+  //           items.cartItems.map((item: any) => ({
+  //             id: item.cartItemId,
+  //             images: [], // Mock empty images
+  //             title: item.name || "Unnamed Item",
+  //             color: item.color || "N/A",
+  //             price: item.price || 0,
+  //             quantity: item.quantity || 1,
+  //           }))
+  //         );
+  //       } else {
+  //         console.warn("Invalid cart data format:", items);
+  //         setCartItems([]); // Clear cart items if format is invalid
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching cart items:", error);
+  //       setCartItems([]); // Clear cart items on error
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  
+  //   fetchCartItems();
+  // }, []);
   useEffect(() => {
     const fetchCartItems = async () => {
       setLoading(true);
       try {
-        const items = await Cartfetch();
-        console.log('Fetched cart items:', items);
-
-        if (Array.isArray(items?.data)) {
+        const items = await Cartfetch(); // Fetch cart items
+        console.log("Fetched cart items:", items);
+  
+        if (items?.isSuccess && Array.isArray(items.cartItems)) {
+          // Set cart items state
           setCartItems(
-            items.data.map((item: any) => ({
+            items.cartItems.map((item: any) => ({
               id: item.cartItemId,
-              images: [], // Mock empty images
-              title: item.name || 'Unnamed Item',
-              color: item.color || 'N/A',
+              // images: [], // Mock empty images
+              images: item.img_front ? [item.img_front] : [], 
+              title: item.name || "Unnamed Item",
+              color: item.color || "N/A",
               price: item.price || 0,
               quantity: item.quantity || 1,
             }))
           );
+  
+          // Save customer details to local storage
+          const details = [
+            {
+              customerId: items.customerId || null,
+              address: items.address || null,
+            },
+          ];
+          localStorage.setItem("details", JSON.stringify(details));
+          console.log("Customer details saved to local storage:", details);
         } else {
-          console.warn('Cartfetch returned non-array data:', items);
-          setCartItems([]); // Handle non-array data gracefully
+          console.warn("Invalid cart data format:", items);
+          setCartItems([]); // Clear cart items if format is invalid
         }
       } catch (error) {
-        console.error('Error fetching cart items:', error);
+        console.error("Error fetching cart items:", error);
         setCartItems([]); // Clear cart items on error
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchCartItems();
   }, []);
-
-  // Save order summary to local storage
+  
+  
   useEffect(() => {
     localStorage.setItem('orderSummary', JSON.stringify(orderSummary));
   }, [orderSummary]);

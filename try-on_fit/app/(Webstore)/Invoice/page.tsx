@@ -38,6 +38,7 @@ function InvoicePage() {
   useEffect(() => {
     // Retrieve checkout items from localStorage
     const checkoutFromLocalStorage = localStorage.getItem('checkout');
+    console.log(checkoutFromLocalStorage);
     const parsedCheckout = JSON.parse(checkoutFromLocalStorage || '[]');
     setCartItems(parsedCheckout);
 
@@ -49,6 +50,7 @@ function InvoicePage() {
       delivery: parsedOrderSummary.delivery || 0,
       discount: parsedOrderSummary.discount || 0,
       total: parsedOrderSummary.total || 0,
+      
     });
   }, []);
 
@@ -93,11 +95,11 @@ function InvoicePage() {
                   <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
                   <td className="border border-gray-300 px-4 py-2">{item.title}</td>
                   <td className="border border-gray-300 px-4 py-2 text-right">
-                    Rs. {item.price.toFixed(2)}
+                    Rs. {item.price}
                   </td>
                   <td className="border border-gray-300 px-4 py-2 text-right">{item.quantity}</td>
                   <td className="border border-gray-300 px-4 py-2 text-right">
-                    Rs. {(item.price * item.quantity).toFixed(2)}
+                    Rs. {(item.price * item.quantity)}
                   </td>
                 </tr>
               ))}
@@ -107,21 +109,21 @@ function InvoicePage() {
                 <td colSpan={3}></td>
                 <td className="border border-gray-300 px-4 py-2 text-right font-bold">SUBTOTAL</td>
                 <td className="border border-gray-300 px-4 py-2 text-right">
-                  Rs. {orderSummary.subtotal.toFixed(2)}
+                  Rs. {orderSummary.subtotal}
                 </td>
               </tr>
               <tr>
                 <td colSpan={3}></td>
                 <td className="border border-gray-300 px-4 py-2 text-right font-bold">DELIVERY</td>
                 <td className="border border-gray-300 px-4 py-2 text-right">
-                  Rs. {orderSummary.delivery.toFixed(2)}
+                  Rs. {orderSummary.delivery}
                 </td>
               </tr>
               <tr>
                 <td colSpan={3}></td>
                 <td className="border border-gray-300 px-4 py-2 text-right font-bold">GRAND TOTAL</td>
                 <td className="border border-gray-300 px-4 py-2 text-right">
-                  Rs. {orderSummary.total.toFixed(2)}
+                  Rs. {orderSummary.total}
                 </td>
               </tr>
             </tfoot>

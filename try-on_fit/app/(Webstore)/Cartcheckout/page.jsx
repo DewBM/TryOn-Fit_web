@@ -24,24 +24,48 @@ function Page() {
     discount: 0,
     total: 0,
   });
-
+  // name: "Sapna Nethmini",
+    // contactNumber: "+94 761516307",
+    // number: "No.174/1",
+    // village: "Middeniya",
+    // town: "Hambantota",
+    // country: "Sri Lanka",
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [currentAddress, setCurrentAddress] = useState({
-    name: "Sapna Nethmini",
-    contactNumber: "+94 761516307",
-    number: "No.174/1",
-    village: "Middeniya",
-    town: "Hambantota",
-    country: "Sri Lanka",
-  });
+  
 
   // Fetch data from localStorage
+  // useEffect(() => {
+  //   const checkoutFromLocalStorage = localStorage.getItem('checkout');
+  //   const parsedCheckout = JSON.parse(checkoutFromLocalStorage || '[]');
+  //   setCartItems(parsedCheckout);
+  //         console.log("parse",parsedCheckout);
+  //   const orderSummaryFromLocalStorage = localStorage.getItem('orderSummary');
+  //   const parsedOrderSummary = JSON.parse(orderSummaryFromLocalStorage || '{}');
+  //   setOrderSummary({
+  //     subtotal: parsedOrderSummary.subtotal || 0,
+  //     delivery: parsedOrderSummary.delivery || 0,
+  //     discount: parsedOrderSummary.discount || 0,
+  //     total: parsedOrderSummary.total || 0,
+  //   });
+  // }, []);
+
+  const [currentAddress, setCurrentAddress] = useState({
+    address_line_1: " ",
+    address_line_2: " ",
+    city: " ",
+    district: " ",
+    postal_code: " ",
+  });
+  
   useEffect(() => {
+    // Retrieve checkout data from local storage
     const checkoutFromLocalStorage = localStorage.getItem('checkout');
     const parsedCheckout = JSON.parse(checkoutFromLocalStorage || '[]');
     setCartItems(parsedCheckout);
-
+    console.log('Parsed checkout:', parsedCheckout);
+  
+    // Retrieve order summary from local storage
     const orderSummaryFromLocalStorage = localStorage.getItem('orderSummary');
     const parsedOrderSummary = JSON.parse(orderSummaryFromLocalStorage || '{}');
     setOrderSummary({
@@ -50,8 +74,34 @@ function Page() {
       discount: parsedOrderSummary.discount || 0,
       total: parsedOrderSummary.total || 0,
     });
+  
+    
   }, []);
+  useEffect(() => {
+    // Retrieve details from local storage
+    const detailsFromLocalStorage = localStorage.getItem('details');
+    const parsedDetails = JSON.parse(detailsFromLocalStorage || '{}'); // Use {} as a fallback instead of an array
 
+    console.log('Parsed details:', parsedDetails);
+
+    // Check if the parsedDetails contains the address data properly
+    if (parsedDetails && parsedDetails.address) {
+        setCurrentAddress({
+            address_line_1: parsedDetails.address.address_line_1 || "",
+            address_line_2: parsedDetails.address.address_line_2 || "",
+            city: parsedDetails.address.city || "",
+            district: parsedDetails.address.district || "",
+            postal_code: parsedDetails.address.postal_code || "",
+        });
+    } else {
+        console.log("No valid address data found in localStorage.");
+    }
+}, []);
+
+  
+  
+   
+  
   // Handle delete item from cart
   const handleDelete = (id) => {
     setCartItems(cartItems.filter((item) => item.id !== id));
@@ -75,29 +125,77 @@ function Page() {
 
     script.onload = () => {
      
-      payhere.onCompleted = function (orderId) {
-        // alert("Payment completed. OrderID: " + orderId);
-        try {
-          const orderData = {
-            customer_id: 1, // Replace with the actual customer ID
-            order_items: cartItems.map((item) => ({
-              product_id: item.id,
-              quantity: item.quantity,
-            })),
-          };
+      // payhere.onCompleted = function (orderId) {
+      //   // alert("Payment completed. OrderID: " + orderId);
+      //   try {
+      //     const orderData = {
+      //       customer_id: 1, // Replace with the actual customer ID
+      //       order_items: cartItems.map((item) => ({
+      //         product_id: item.id,
+      //         quantity: item.quantity,
+      //       })),
+      //     };
 
-          const result = handleOrder(orderData);
-          console.log('Order created successfully:', result);
+      //     const result = handleOrder(orderData);
+      //     console.log('Order created successfully:', result);
 
-        window.location.href = `/Invoice?orderId=${orderId}`
-        window.location.href = `/Invoice?orderId=${result.order_id}`;
-      } catch (error) {
-        console.error('Error processing order:', error);
-        alert('Failed to create order. Please contact support.');
-      }
+      //   window.location.href = `/Invoice?orderId=${orderId}`
+      //   window.location.href = `/Invoice?orderId=${result.order_id}`;
+      // } catch (error) {
+      //   console.error('Error processing order:', error);
+      //   alert('Failed to create order. Please contact support.');
+      // }
     
-      };
+      // };
+      
+      
+      
+      payhere.onCompleted = function (orderId) {
+        try {
+          // Prepare the data you want to send to your backend (order details)
+          // const orderData = {
+          //   customer_id: 1,  // This should be the actual customer ID
+          //   order_items: cartItems.map((item) => ({
+          //     product_id: item.id,
+          //     quantity: item.quantity,
+          //   })),
+          // };
 
+          const orderData = {
+            "customer_id": 7,
+            "order_status": "Processing",
+            "order_date": "2025-01-10T10:00:00Z",  // ISO format
+            "delivery_date": "2025-01-15T10:00:00Z",  // ISO format
+            "delivery_address": "123 Main Street, Colombo2",
+            "sub_total": 3000,  // Number
+            "discount": 400.00,  // Number
+            "order_items": [
+              {
+                "order_Id": 1,  // Assuming it's a unique identifier for the order item
+                "item_Id": "501",  // Item ID as a string
+                "price": 3000,  // Number
+                "quantity": 1,  // Number
+                "discount": 400.00  // Number
+              }
+            ]
+          };
+          
+          // Call your handleOrder function with the modified orderData
+          handleOrder(orderData);
+          
+      
+      
+      
+          // After the order is created, redirect to the invoice page (for example)
+          // window.location.href = `/Invoice?orderId=${orderId}`;
+        } catch (error) {
+          console.error('Error processing order:', error);
+          alert('Failed to create order. Please contact support.');
+        }
+      };
+      
+      
+      
       payhere.onDismissed = function () {
         alert("Payment dismissed by the user.");
       };
@@ -147,7 +245,7 @@ function Page() {
     payhere.startPayment(payment);
   };
  
-
+console.log("address",currentAddress);
   return (
     <div>
       <NavBar />
@@ -167,14 +265,16 @@ function Page() {
                 Add new
               </button>
             </div>
-            <Address
-              name="Sapna Nethmini"
-              number="No.174/1"
-              village="Middeniya"
-              town="Hambantota"
-              country="Sri Lanka"
-              tele="+94 761516307"
-            />
+            {currentAddress && (
+  <Address
+    address_line_1={currentAddress.address_line_1}
+    address_line_2={currentAddress.address_line_2}
+    city={currentAddress.city}
+    district={currentAddress.district}
+    postal_code={currentAddress.postal_code}
+  />
+)}
+
           </div>
 
           
@@ -226,13 +326,7 @@ function Page() {
           </div>
 
           <Needhelp />
-          <Payment type={["Master"]} acnumber={[123456789099]} />
-          <Delivaryaddress
-            fline={["No:77/A, Old Kesbewa Rd"]}
-            sline={["Nugegoda"]}
-            city={["Colombo"]}
-            phone={[94765739623]}
-          />
+          
         </div>
       </div>
 
