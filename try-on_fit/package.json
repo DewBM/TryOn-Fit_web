@@ -17,6 +17,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@headlessui/react": "^2.1.2",
+    "@tanstack/react-table": "^8.20.5",
     "@heroicons/react": "^2.2.0",
     "@hyvor/design": "^1.0.5",
     "@nextui-org/react": "^2.6.8",

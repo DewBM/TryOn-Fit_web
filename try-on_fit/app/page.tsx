@@ -290,28 +290,68 @@ function Home() {
 
 
   const [items, setItems] = useState<ProductType[]>([]);
+  // const[search,setsearch] = useState<ProductType[]>([]);
 
-  useEffect(() => {
-    const searchProducts = async () => {
-      try {
-        const result: any = await fetchProducts("solid");
+  // useEffect(() => {
+  //   const searchProducts = async () => {
+  //     try {
+  //       const result: any = await fetchProducts("setsearch");
 
-        if (result.isSuccess) {
-          setItems(result.data);
-          console.log("Products: ", result.data);
+  //       if (result.isSuccess) {
+  //         setItems(result.data);
+  //         console.log("Products: ", result.data);
+  //       }
+  //       else {
+  //         alert(result.msg);
+  //         console.error("Search Error: ", result.error);
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to fetch cart items:", error);
+  //       setItems([]); // Handle error gracefully
+  //     }
+  //   };
+
+  //   searchProducts();
+  // }, [setsearch]);
+
+
+  const Component = ({ searchPrompt }: { searchPrompt: string }) => {
+    const [items, setItems] = useState([]);
+  
+    useEffect(() => {
+      const searchProducts = async () => {
+        try {
+          const result: any = await fetchProducts(searchPrompt);
+  
+          if (result.isSuccess) {
+            setItems(result.data);
+            console.log("Products: ", result.data);
+          } else {
+            alert(result.msg || "Error fetching products");
+            console.error("Search Error: ", result.error || result.msg);
+          }
+        } catch (error) {
+          console.error("Failed to fetch products:", error);
+          setItems([]); // Clear items on error
         }
-        else {
-          alert(result.msg);
-          console.error("Search Error: ", result.error);
-        }
-      } catch (error) {
-        console.error("Failed to fetch cart items:", error);
-        setItems([]); // Handle error gracefully
+      };
+  
+      if (searchPrompt) {
+        searchProducts();
       }
-    };
-
-    searchProducts();
-  }, []);
+    }, [searchPrompt]); 
+  
+  
+    return (
+      <div>
+        {items.length > 0 ? (
+          items.map((item: any) => <div key={item.id}>{item.name}</div>)
+        ) : (
+          <p>No products found</p>
+        )}
+      </div>
+    );
+  }; 
 
   return (
     <div>
@@ -325,7 +365,7 @@ function Home() {
       <section ref={newArrivalsRef} className="new-arrivals">
       <div className="flex flex-col pt-20 px-20">
           <div className="flex items-center justify-center">
-            <div className="items-center align-middle w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center pb-10 shadow-2xl">
+            <div className="items-center align-middle w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center pb-10 shadow-2xl" id="#Homes">
               <p className="text-2xl font-bold font-sans pt-2">New Arrivals</p>
             </div>
           </div>
@@ -351,7 +391,7 @@ function Home() {
       <section ref={aboutUs}>
       <div className="flex flex-col pt-20 px-20 flex-wrap">
           <div className="flex flex-col items-center justify-center gap-20">
-            <div className="items-center align-middle w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center pb-10 shadow-2xl">
+            <div className="items-center align-middle w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center pb-10 shadow-2xl" id="#Services">
               <p className="text-2xl font-bold font-sans pt-2">About us</p>
             </div>
 
@@ -381,7 +421,7 @@ function Home() {
       <section ref={shopNew} className="shopNew">
         <div className="flex flex-col pt-20 px-20">
           <div className="flex items-center justify-center">
-            <div className="items-center align-middle w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center shadow-2xl">
+            <div className="items-center align-middle w-[500px] h-[50px] bg-main-lighter justify-center rounded-xl text-center shadow-2xl" id="#AboutMe">
               <p className="text-2xl font-bold font-sans pt-2">Shop Now!</p>
             </div>
           </div>

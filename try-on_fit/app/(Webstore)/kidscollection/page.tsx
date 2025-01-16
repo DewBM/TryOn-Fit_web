@@ -3,7 +3,7 @@ import Image from 'next/image'
 import kidscolleimg from "@/public/images/banner3.png"
 import NavBar from '@/app/components/NavBar'
 import Filter from '@/app/components/Filter'
-import Product from '@/app/components/Product'
+import ProductA from '@/app/components/productA'
 
 function Page() { // Capitalize component name
   const items = [
@@ -132,7 +132,7 @@ function Page() { // Capitalize component name
       </div>
       <div className="flex w-[80%]  flex-wrap gap-[6rem]  pb-[1rem] justify-center -z-1">
         {items.map((item, index) => (
-          <Product
+          <ProductA
             key={index}
             images={item.images}
             name={item.name}
