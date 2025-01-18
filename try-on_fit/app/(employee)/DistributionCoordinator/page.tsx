@@ -8,6 +8,9 @@ import { FiPackage, FiPlusCircle, FiClock, FiCheckCircle } from "react-icons/fi"
 
 export default function Home() {
   const [totalOrdersToday, setTotalOrdersToday] = useState(null);
+  const [totalConfirmedOrders, setTotalConfirmedOrders] = useState(null);
+  const [totalProcessingOrders, setTotalProcessingOrders] = useState(null);
+  const [totalShippedOrders, setTotalShippedOrders] = useState(null);
 
   // Fetch Total Orders Today
   useEffect(() => {
@@ -28,8 +31,62 @@ export default function Home() {
         setTotalOrdersToday("Error fetching data");
       }
     };
+
+    const fetchTotalConfirmedOrders = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/order/getTotalConfirmedOrders");
+        const result = await response.json();
+
+        // Check if the API response is successful and has the correct data
+        if (result.success && result.data) {
+          setTotalConfirmedOrders(Number(result.data)); // Assuming result.data is a number
+        } else {
+          setTotalConfirmedOrders("Error fetching data");
+        }
+      } catch (error) {
+        console.error("Error fetching total confirmed orders:", error);
+        setTotalConfirmedOrders("Error fetching data");
+      }
+    };
+
+    const fetchTotalProcessingOrders = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/order/getTotalProcessingOrders");
+        const result = await response.json();
+
+        // Check if the API response is successful and has the correct data
+        if (result.success && result.data) {
+          setTotalProcessingOrders(Number(result.data)); // Assuming result.data is a number
+        } else {
+          setTotalProcessingOrders("Error fetching data");
+        }
+      } catch (error) {
+        console.error("Error fetching total confirmed orders:", error);
+        setTotalProcessingOrders("Error fetching data");
+      }
+    };
+
+    const fetchTotalShiipedOrders = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/order/getTotalShippedOrders");
+        const result = await response.json();
+
+        // Check if the API response is successful and has the correct data
+        if (result.success && result.data) {
+          setTotalShippedOrders(Number(result.data)); // Assuming result.data is a number
+        } else {
+          setTotalShippedOrders("Error fetching data");
+        }
+      } catch (error) {
+        console.error("Error fetching total confirmed orders:", error);
+        setTotalShippedOrders("Error fetching data");
+      }
+    };
   
     fetchTotalOrdersToday();
+    fetchTotalConfirmedOrders();
+    fetchTotalProcessingOrders();
+    fetchTotalShiipedOrders();
   }, []);
   
 
@@ -70,7 +127,7 @@ export default function Home() {
             <FiPackage size={25} style={{ stroke: "var(--main-dark)" }} />
           </div>
         </CardDataStats>
-        <CardDataStats title="New Orders" total="50">
+        <CardDataStats title="New Orders" total={totalConfirmedOrders !== null ? totalConfirmedOrders : "Loading..."}>
           <div
             className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
             style={{
@@ -82,7 +139,7 @@ export default function Home() {
             <FiPlusCircle size={25} style={{ stroke: "var(--main-dark)" }} />
           </div>
         </CardDataStats>
-        <CardDataStats title="Processing Orders" total="50">
+        <CardDataStats title="Processing Orders" total={totalProcessingOrders !== null ? totalProcessingOrders : "Loading..."}>
           <div
             className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
             style={{
@@ -94,7 +151,7 @@ export default function Home() {
             <FiClock size={25} style={{ stroke: "var(--main-dark)" }} />
           </div>
         </CardDataStats>
-        <CardDataStats title="Shipped" total="50">
+        <CardDataStats title="Shipped" total={totalShippedOrders !== null ? totalShippedOrders : "Loading..."}>
           <div
             className="rounded-full p-2 inline-block border-[0.5px] border-stroke"
             style={{
