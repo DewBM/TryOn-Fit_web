@@ -3,6 +3,8 @@ import { customFetch } from "../utils/auth"
 export const fetchProducts = async (search_prompt: string) => {
     const resp = await customFetch(`/search?prompt=${search_prompt}`, {});
 
+    console.log("Products: ", resp);
+
     if (resp) 
         return resp;
     else {

@@ -31,9 +31,6 @@ function Home() {
    const handlecart = ()=>{
     router.push('cart');
    }
- 
-  // Define the items array
-
   // const items = [
   //   {
   //     images: ['/images/women/1.webp'],
@@ -290,68 +287,68 @@ function Home() {
 
 
   const [items, setItems] = useState<ProductType[]>([]);
-  // const[search,setsearch] = useState<ProductType[]>([]);
+  const[search,setsearch] = useState<ProductType[]>([]);
 
-  // useEffect(() => {
-  //   const searchProducts = async () => {
-  //     try {
-  //       const result: any = await fetchProducts("setsearch");
+  useEffect(() => {
+    const searchProducts = async () => {
+      try {
+        const result: any = await fetchProducts("");
 
-  //       if (result.isSuccess) {
-  //         setItems(result.data);
-  //         console.log("Products: ", result.data);
-  //       }
-  //       else {
-  //         alert(result.msg);
-  //         console.error("Search Error: ", result.error);
-  //       }
-  //     } catch (error) {
-  //       console.error("Failed to fetch cart items:", error);
-  //       setItems([]); // Handle error gracefully
-  //     }
-  //   };
-
-  //   searchProducts();
-  // }, [setsearch]);
-
-
-  const Component = ({ searchPrompt }: { searchPrompt: string }) => {
-    const [items, setItems] = useState([]);
-  
-    useEffect(() => {
-      const searchProducts = async () => {
-        try {
-          const result: any = await fetchProducts(searchPrompt);
-  
-          if (result.isSuccess) {
-            setItems(result.data);
-            console.log("Products: ", result.data);
-          } else {
-            alert(result.msg || "Error fetching products");
-            console.error("Search Error: ", result.error || result.msg);
-          }
-        } catch (error) {
-          console.error("Failed to fetch products:", error);
-          setItems([]); // Clear items on error
+        if (result.isSuccess) {
+          setItems(result.data.filter((product: ProductType) => product.img_front!=null));
+          console.log("Products: ", result.data);
         }
-      };
-  
-      if (searchPrompt) {
-        searchProducts();
+        else {
+          alert(result.msg);
+          console.error("Search Error: ", result.error);
+        }
+      } catch (error) {
+        console.error("Failed to fetch cart items:", error);
+        setItems([]); // Handle error gracefully
       }
-    }, [searchPrompt]); 
+    };
+
+    searchProducts();
+  }, []);
+
+
+  // const Component = ({ searchPrompt }: { searchPrompt: string }) => {
+  //   const [items, setItems] = useState([]);
+  
+  //   useEffect(() => {
+  //     const searchProducts = async () => {
+  //       try {
+  //         const result: any = await fetchProducts(searchPrompt);
+  
+  //         if (result.isSuccess) {
+  //           setItems(result.data);
+  //           console.log("Products: ", result.data);
+  //         } else {
+  //           alert(result.msg || "Error fetching products");
+  //           console.error("Search Error: ", result.error || result.msg);
+  //         }
+  //       } catch (error) {
+  //         console.error("Failed to fetch products:", error);
+  //         setItems([]); // Clear items on error
+  //       }
+  //     };
+  
+  //     if (searchPrompt) {
+  //       searchProducts();
+  //     }
+  //   }, [searchPrompt]); 
   
   
-    return (
-      <div>
-        {items.length > 0 ? (
-          items.map((item: any) => <div key={item.id}>{item.name}</div>)
-        ) : (
-          <p>No products found</p>
-        )}
-      </div>
-    );
-  }; 
+  //   return (
+  //     <div>
+  //       {items.length > 0 ? (
+  //         items.map((item: any) => <div key={item.id}>{item.name}</div>)
+  //       ) : (
+  //         <p>No products found</p>
+  //       )}
+  //     </div>
+  //   );
+  // };
 
   return (
     <div>
