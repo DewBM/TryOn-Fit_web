@@ -13,9 +13,6 @@ import { Chart, Filler } from "chart.js";
 Chart.register(Filler);
 
 
-
-
-
 export default function Home() {
 
   const [pendingStats, setPendingStats] = useState(0);
@@ -32,16 +29,7 @@ export default function Home() {
           },
         });
         console.log("respon hello",response.data.totalPending);
-  
-        // if (!response.ok) {
-        //   console.error("Failed to fetch stats:", response.status, response.statusText);
-        //   return;
-        // }
-  
-        // const data = await response.json(); // Parse JSON response
-        console.log("Fetched data 12112326789:", response.data.totalPending);
-  
-        // Assuming the response contains the keys `totalPending`, `totalSolved`, and `totalToday`
+
         setPendingStats(response.data.totalPending || 0);
         setSolvedStats(response.data.totalSolved || 0);
         setTodayStats(response.data.totalToday || 0);
@@ -56,38 +44,6 @@ export default function Home() {
     setSolvedStats,
     setTodayStats,
   ]);
-
-  
-  // useEffect(() => {
-  //   const fetchStats = async () => {
-  //     try {
-  //       const response = await customFetch("/inquiryCards", {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-  //  console.log("response111222",response);
-  //       if (!response.ok) {
-  //         console.error("Failed to fetch stats:", response.status, response.statusText);
-  //         return;
-  //       }
-  
-  //       // const data = await response.json(); // Parse JSON response
-  //       // console.log("data",data)
-  //       // if (response.isSuccess) {
-  //       //   setStats(response.data.totalPending); // Update stats with fetched data
-  //       // } else {
-  //       //   console.error("Backend returned error:", data.msg);
-  //       // }
-  //     } catch (error) {
-  //       console.error("Error fetching stats:", error);
-  //     }
-  //   };
-  
-  //   fetchStats();
-  // }, []);
-  
 
 
   return (
@@ -152,10 +108,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* <div className="col-span-12  md:col-span-4 pl-2">
-          <FeedbackCard /> 
-          </div> */}
-        {/* </div> */}
       </div>
     </>
   );

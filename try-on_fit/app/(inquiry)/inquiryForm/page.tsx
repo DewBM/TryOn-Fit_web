@@ -48,8 +48,8 @@ export default function Inquiry() {
   const currentDate = new Date().toISOString().split('T')[0];
 
   return (
-    <Layout>
-      <Header sideBarOpen={false} setSideBarOpen={() => {}} />
+    <Layout><Header sideBarOpen={false} setSideBarOpen={() => {}} />
+      
       <div className="grid  lg:grid-cols-12 ">
         <div className="lg:col-span-6 lg:col-start-4 rounded mx-8 bg-main shadow-2xl rounded-r-lg px-8 pt-6 pb-8 mt-10 mb-10 ">
           <form
