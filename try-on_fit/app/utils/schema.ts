@@ -31,14 +31,9 @@ export const SignUpSchema = z
       .regex(/^[a-zA-Z0-9_]+$/, { message: "Username can only contain letters, numbers, and underscores" }),
     firstName: z.string(),
     lastName: z.string(),
-    gender: z.string(),
+    gender: z.string().optional(),  // Optional field
+  phoneNumber: z.string().optional(),  // Optional field
     email: z.string().email(),
-    phoneNumber: z
-      .string()
-      .min(1, { message: "Phone number cannot be empty" })
-      .refine(validatePhoneNumber, {
-        message: "Phone number must be a 10-digit number",
-      }),
     // address: z.string(),
     password: z
       .string()
