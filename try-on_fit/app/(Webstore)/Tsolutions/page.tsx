@@ -31,8 +31,7 @@ import { statusOptions } from "@/app/components/data";
 import ViewSol from "@/app/(employee)/CustomerSupport/solvedtickets/page";
 import { BsWindowSidebar } from "react-icons/bs";
 import Header from "@/app/components/Header/index";
-import Footer from "@/app/components/Footer";
-import Sidebar from "@/app/components/SideBar";
+import NeedhelpFAQ from "@/app/components/NeedHelpFaq";
 
 
 const columns = [
@@ -414,9 +413,9 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
   <>
 
   <Header sideBarOpen={sidebarOpen} setSideBarOpen={setSidebarOpen} />
+  <div className= "w-full flex flex-row pl-[5rem] justify-between pb-10">
+  <div className="p-4 flex flex-col w-[80%] space-y-10 ">
   <div className = "para" font-color="red"><b> You can search your ticket by Customer ID, Inquiry ID or using Order ID</b></div>
-  {/* <p><b>You can search your ticket by Customer ID, Inquiry ID or using Order ID</b></p> */}
-  <div className="p-4 ">
   <div className="overflow-x-auto">
     <table className="min-w-full bg-white border border-gray-300 rounded-md">
       <thead className="bg-gray-100">
@@ -462,6 +461,11 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
         ))}
       </tbody>
     </table>
+  </div>
+  </div>   
+
+  <div className= "flex flex-col w-[30%] space-y-5 ">
+    <NeedhelpFAQ/>
   </div>
   </div>
   <ViewSol isOpen={popupOpen} onClose = {()=>{ window.location.reload()}} inquiryData={selectInq} />
