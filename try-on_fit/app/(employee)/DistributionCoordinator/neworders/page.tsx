@@ -73,8 +73,9 @@ export default function Home() {
     direction: "ascending", // Default sorting direction
   });
 
-  const trackOrder = (orderId: number) => {
-    router.push(`/DistributionCoordinator/neworders/view_orders?order_id=${orderId}`);
+  const handleOrderView = (order: Order) => {
+    const orderId = order.order_id;
+    router.push(`/DistributionCoordinator/neworders/PDF?orderId=${orderId}`);
   };
 
   // Fetch data from the API when the component mounts
@@ -234,14 +235,11 @@ export default function Home() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem
+                <DropdownItem
                     className="customHoverColor customActiveColor capitalize"
-                    onClick={() => trackOrder(order.order_id)}
+                    onClick={() => handleOrderView(order)}
                   >
                     View
-                  </DropdownItem>
-                  <DropdownItem className="customHoverColor customActiveColor capitalize">
-                    Save
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>

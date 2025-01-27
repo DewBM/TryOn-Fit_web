@@ -1,71 +1,13 @@
 import InquiryDetailSection from "@/app/components/InquiryDetailSection";
 import ProductdataSection from "@/app/components/ProductdataSection";
 import ContactdataSection from "@/app/components/ContactdataSection";
+import SolDataSection from "@/app/components/SolDataSection";
 import { useEffect, useRef, useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { inquiryType } from "../inquiry/page";
-import { Chip, ChipProps } from "@nextui-org/react";
-import { inquiryrespond } from "./actions";
-import Swal from "sweetalert2";
 
 
-const handleSetSolve = async (solution: string, setSolution: React.Dispatch<React.SetStateAction<string>>, onClose: () => void, inquiryData?: inquiryType) => {
-  // Check if solution is provided
-  if (!solution.trim()) {
-    Swal.fire({
-      title: 'Warning!',
-      text: 'Please enter a solution before submitting.',
-      icon: 'warning',
-      confirmButtonText: 'OK',
-    });
-    return;
-  }
-
-  // Ensure inquiryData exists and has inquiry_id
-  if (!inquiryData || !inquiryData.inquiry_id) {
-    Swal.fire({
-      title: 'Error!',
-      text: 'Invalid inquiry data.',
-      icon: 'error',
-      confirmButtonText: 'OK',
-    });
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("solution", solution);
-
-  try {
-    // Call the API to submit the solution
-    await inquiryrespond(null, formData, Number(inquiryData.inquiry_id));
-
-    // Clear the solution field after success
-    setSolution(""); 
-    // Close the modal
-    onClose(); 
-
-    // Show success message
-    Swal.fire({
-      title: 'Success!',
-      text: 'Solution has been submitted successfully.',
-      icon: 'success',
-      confirmButtonText: 'OK',
-    });
-
-  } catch (error) {
-    // Handle error
-    console.error("Failed to set solution:", error);
-    Swal.fire({
-      title: 'Error!',
-      text: 'Something went wrong while submitting the solution.',
-      icon: 'error',
-      confirmButtonText: 'OK',
-    });
-  }
-};
-
-
-const ViewInq = ({
+const ViewSol = ({
   isOpen,
   onClose,
   inquiryData,
@@ -75,7 +17,7 @@ const ViewInq = ({
   inquiryData?: inquiryType;
 }) => {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
-  const [solution, setSolution] = useState("");
+//   const [solution, setSolution] = useState("");
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -115,19 +57,11 @@ const ViewInq = ({
       { label: "Customer Name", value: inquiryData?.name || "N/A" },
       { label: "Customer Contact", value: inquiryData?.contact_num || "N/A" },
     ],
+    solData:  [
+     { label: "Solution", value: inquiryData?.solution || "N/A" },
+    ]
+    
   };
-
-  const statusColorMap: Record<string, ChipProps["color"]> = {
-    available: "success",
-    unavailable: "danger",
-  };
-
-  const statusColor = statusColorMap[inquiryData?.status || ""] || "default";
-
-  const handleSolutionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSolution(event.target.value);
-  };
-
 
   return (
     <Dialog
@@ -148,12 +82,12 @@ const ViewInq = ({
             <span style={{ marginLeft: "10px", fontSize: "70%" }}>
               {inquiryData?.status}
             </span>
-            <Chip
+            {/* <Chip
               className="capitalize border-none gap-1 text-default-600"
               color={statusColor}
               size="md"
               variant="dot"
-            />
+            /> */}
           </h1>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -176,38 +110,18 @@ const ViewInq = ({
                   details={inquiryInfo.contactData}
                 />
               </div>
+              <div className="bg-white p-4 rounded shadow border">
+                <SolDataSection
+                  title="Solution"
+                  details={inquiryInfo.solData}
+                />
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Conditionally show the Solution Textbox, Button, or Solution Text */}
-        {inquiryData?.status !== "solved" ? (
-          <div className="bg-gray-100 p-4 border-t border-gray-300">
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <input
-                type="text"
-                placeholder="Solution"
-                value={solution}
-                onChange={handleSolutionChange}
-                className="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-              />
-              <button
-                onClick={() => handleSetSolve(solution, setSolution, onClose, inquiryData)}
-                className="bg-main-dark text-white px-4 py-2 rounded-md hover:bg-main-dark"
-              >
-                Set Solve
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="bg-gray-100 p-4 border-t border-gray-300">
-            <h2 className="text-lg font-semibold">Solved</h2>
-            <p>{inquiryData?.solution || ""}</p>
-          </div>
-        )}
       </DialogPanel>
     </Dialog>
   );
 };
 
-export default ViewInq;
+export default ViewSol;

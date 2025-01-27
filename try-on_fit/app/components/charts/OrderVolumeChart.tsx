@@ -1,3 +1,5 @@
+
+
 "use client";
 import React from "react";
 import { Line } from "react-chartjs-2";
@@ -56,7 +58,7 @@ const OrderVolumeChart: React.FC<OrderVolumeChartProps> = ({
         text: "Order Volume Over Time",
         font: {
           size: 16,
-          color: "black", 
+          color: "black",
         },
       },
     },
@@ -66,8 +68,8 @@ const OrderVolumeChart: React.FC<OrderVolumeChartProps> = ({
           display: true,
           text: "Date",
           font: {
-            size: 13, 
-            color: "black", 
+            size: 13,
+            color: "black",
           },
         },
       },
@@ -76,13 +78,21 @@ const OrderVolumeChart: React.FC<OrderVolumeChartProps> = ({
           display: true,
           text: "Number of Orders",
           font: {
-            size: 13, 
-            color: "black", 
+            size: 13,
+            color: "black",
+          },
+        },
+        ticks: {
+          beginAtZero: true,  
+          stepSize: 1,        
+          callback: function (value: number) {
+            return value % 1 === 0 ? value : "";  
           },
         },
       },
     },
   };
+  
 
   return (
     <div

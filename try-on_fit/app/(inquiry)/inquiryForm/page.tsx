@@ -10,6 +10,9 @@ import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { InquiryFormSchema } from "@/app/(employee)/CustomerSupport/schema";
 import { useFormState } from "react-dom";
+import Header from "@/app/components/Header/index";
+import Footer from "@/app/components/Footer";
+
 
 
 
@@ -45,8 +48,9 @@ export default function Inquiry() {
   const currentDate = new Date().toISOString().split('T')[0];
 
   return (
-    <Layout>
-      <div className="grid  lg:grid-cols-12 lg:grid-rows-12">
+    <Layout><Header sideBarOpen={false} setSideBarOpen={() => {}} />
+      
+      <div className="grid  lg:grid-cols-12 ">
         <div className="lg:col-span-6 lg:col-start-4 rounded mx-8 bg-main shadow-2xl rounded-r-lg px-8 pt-6 pb-8 mt-10 mb-10 ">
           <form
             // action={}
@@ -247,6 +251,7 @@ export default function Inquiry() {
           </form>
         </div>
       </div>
+      <Footer />
     </Layout>
   );
 }

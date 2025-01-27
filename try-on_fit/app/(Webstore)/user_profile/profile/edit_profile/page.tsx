@@ -1,183 +1,171 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import NavBar from "@/app/components/NavBar";
-import Footer from "@/app/components/Footer";
-import { fetchCustomerDetails } from "../action";
-import Image from "next/image";
 
-interface Customer {
-  customer_id: string;
-  user_id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  profile_picture_url: string;
-}
+import React, { useState } from "react";
 
-interface Address {
-  address_id: number;
-  customer_id: number;
-  supplier_id: null | number;
-  emp_id: null | number;
-  address_line_1: string;
-  address_line_2: string;
-  city: string;
-  district: string;
-  postal_code: string;
-}
+const EditProfile = () => {
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [profileData, setProfileData] = useState({
+    firstName: "John",
+    lastName: "Doe",
+    email: "john.doe@example.com",
+    address1: "123 Main Street",
+    address2: "Apt 4B",
+    city: "New York",
+    district: "Manhattan",
+    postalCode: "10001",
+  });
 
-const CustomerProfile: React.FC = () => {
-  const [customer, setCustomer] = useState<Customer | null>(null);
-  const [address, setAddress] = useState<Address | null>(null);
-  const [error, setError] = useState<string>("");
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
 
-  const customerId = 3;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setProfileData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-  useEffect(() => {
-    const getCustomerDetails = async () => {
-      try {
-        const data = await fetchCustomerDetails(customerId);
-        if (data.isSuccess) {
-          setCustomer(data.data.customer);
-          setAddress(data.data.address);
-        } else {
-          setError(data.msg || "Failed to fetch customer details");
-        }
-      } catch (err: any) {
-        setError(err.message || "An error occurred");
-      }
-    };
-
-    getCustomerDetails();
-  }, [customerId]);
-
-  if (error) {
-    return <div className="text-red-500 text-center mt-4">{error}</div>;
-  }
+  const handleSave = () => {
+    console.log("Saved Profile Data:", profileData);
+    alert("Profile data saved successfully!");
+  };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <NavBar />
-      <div className="flex-grow p-8">
-        <div className="max-w-7xl mx-auto bg-white shadow rounded-lg p-6">
-          {/* Header Section */}
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold text-gray-800">Edit Profile</h1>
-            <button className="bg-main-dark text-white px-6 py-2 rounded-lg hover:bg-brown-500">
-              Save Changes
+    <div className="min-h-screen bg-gray-50 p-6 flex justify-center items-center">
+      <div className="max-w-4xl w-full grid grid-cols-2 gap-6 bg-white rounded-lg shadow-md p-6">
+        {/* Row 1, Column 1: Image and Name */}
+        <div className="flex flex-col items-center">
+          <div className="w-40 h-40 rounded-full overflow-hidden bg-gray-200 mb-4">
+            <img
+              src={imagePreview || "/default-avatar.png"}
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 
+                      file:rounded-full file:border-0 file:font-semibold 
+                      file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+          />
+        </div>
+
+        {/* Row 1, Column 2: Rules and Conditions */}
+        <div className="text-red-600 text-sm">
+        <button
+              onClick={handleSave}
+              className="mt-4 ml-72 w-50% bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600"
+            >
+              Save Data
             </button>
-          </div>
+            <h3 className="text-lg font-semibold mb-4 mt-6">Rules and Conditions</h3>
+          <ul className="list-disc pl-5 space-y-2">
+            <li>Ensure your profile information is accurate and up-to-date.</li>
+            <li>Profile pictures should be clear and professional.</li>
+            <li>Respect the privacy of others when interacting on the platform.</li>
+            <li>Follow all community rules and adhere to the terms of service.</li>
+            <li>Report any suspicious activity or inappropriate content immediately.</li>
+          </ul>
+        </div>
 
-          {/* Profile Image and Personal Information */}
-          <div className="flex gap-8 items-start mb-8">
-            {/* Profile Image */}
-            <div className="w-1/4">
-              <div className="relative w-40 h-40 rounded-full overflow-hidden mx-auto">
-                <Image
-                  src={customer?.profile_picture_url || "/default-avatar.png"}
-                  alt="Profile Image"
-                  layout="fill"
-                  objectFit="cover"
-                />
-              </div>
-              <button className="mt-4 text-sm text-brown-600 flex items-center justify-center">
-                <span className="material-icons">edit</span>
-              </button>
-            </div>
-
-            {/* Personal Information Form */}
-            <div className="flex-1">
-              <h2 className="text-lg font-semibold text-gray-700 mb-4">
-                Personal Information
-              </h2>
-              <form className="grid grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-gray-600 font-medium mb-1">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    defaultValue={`${customer?.first_name} ${customer?.last_name}`}
-                    className="w-full border-gray-300 rounded-lg px-4 py-2"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-600 font-medium mb-1">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    defaultValue={customer?.email}
-                    className="w-full border-gray-300 rounded-lg px-4 py-2"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-600 font-medium mb-1">
-                    Mobile
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="07012356341"
-                    className="w-full placeholder-black border-gray-300 rounded-lg px-4 py-2"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-600 font-medium mb-1">
-                    Gender
-                  </label>
-                  <select className="w-full border-gray-300 rounded-lg px-4 py-2">
-                    <option>Male</option>
-                    <option>Female</option>
-                    <option>Other</option>
-                  </select>
-                </div>
-              </form>
-            </div>
-          </div>
-
-          {/* Address Information */}
-          <div className="mb-8">
-            <h2 className="text-lg font-semibold text-gray-700 mb-4">
-              Address Information
-            </h2>
-            <form className="grid grid-cols-2 gap-6">
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">
-                  Shipping Address
-                </label>
+        {/* Row 2, Column 1: Address Information */}
+        <div>
+          <div className="space-y-4">
+            {[
+              "address1",
+              "address2",
+              "city",
+            ].map((field) => (
+              <div key={field}>
+                <p className="text-sm font-medium text-gray-500 capitalize">
+                  {field.replace(/([A-Z])/g, " $1")}
+                </p>
                 <input
                   type="text"
-                  defaultValue={address?.address_line_1}
-                  className="w-full border-gray-300 rounded-lg px-4 py-2"
+                  name={field}
+                  value={profileData[field as keyof typeof profileData]}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring focus:ring-blue-200"
                 />
               </div>
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">
-                  Billing Address
-                </label>
+            ))}
+            <div className="flex gap-4">
+              <div className="flex-1">
+                <p className="text-sm font-medium text-gray-500 capitalize">District</p>
                 <input
                   type="text"
-                  defaultValue={address?.address_line_2}
-                  className="w-full border-gray-300 rounded-lg px-4 py-2"
+                  name="district"
+                  value={profileData.district}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring focus:ring-blue-200"
                 />
               </div>
-            </form>
-          </div>
-
-          {/* Payment Methods */}
-          <div>
-            <h2 className="text-lg font-semibold text-gray-700 mb-4">
-              Payment Methods
-            </h2>
-            <div className="p-4 border rounded-lg">
-              <p className="text-gray-600">Saved Credit Card</p>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-gray-500 capitalize">Postal Code</p>
+                <input
+                  type="text"
+                  name="postalCode"
+                  value={profileData.postalCode}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring focus:ring-blue-200"
+                />
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Row 2, Column 2: Personal Information and Save Button */}
+        <div>
+          <div className="space-y-4">
+            {[
+              "firstName",
+              "lastName",
+              "email",
+            ].map((field) => (
+              <div key={field}>
+                <p className="text-sm font-medium text-gray-500 capitalize">
+                  {field.replace(/([A-Z])/g, " $1")}
+                </p>
+                <input
+                  type="text"
+                  name={field}
+                  value={profileData[field as keyof typeof profileData]}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring focus:ring-blue-200"
+                />
+              </div>
+            ))}
+            <div className="flex items-center space-x-2 mt-18">
+              <a
+                href="#"
+                className="text-blue-500 hover:underline text-sm font-medium"
+              >
+               
+              </a>
+              <span className="text-sm text-gray-700"></span>
+            </div>
+            <div className="flex items-center space-x-2 mt-8">
+              <a
+                href="#"
+                className="text-blue-500 hover:underline text-sm font-medium"
+              >
+                Click Here
+              </a>
+              <span className="text-sm text-gray-700">Add Your Payment Method</span>
+            </div>
+            
+          </div>
+        </div>
       </div>
-      <Footer />
     </div>
   );
 };
 
-export default CustomerProfile;
+export default EditProfile;

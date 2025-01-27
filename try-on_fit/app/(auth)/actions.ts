@@ -76,7 +76,7 @@ export async function signup(prevState: unknown, formData: FormData) {
     gender: formData.get("Gender"),
     email: formData.get("Email"),
     phoneNumber: formData.get("Phone Number"),
-    address: formData.get("Address"),
+    address: formData.get("Address"),git
     password: formData.get("password"),
     passwordConfirm: formData.get("passwordConfirm"),
   };

@@ -69,8 +69,9 @@ export default function Home() {
   const [statusUpdated, setStatusUpdated] = useState(false);  // Track if status is updated
 
 
-  const trackOrder = (orderId: number) => {
-    router.push(`/DistributionCoordinator/shippedorders/view_orders?order_id=${orderId}`);
+  const handleOrderView = (order: Order) => {
+    const orderId = order.order_id;
+    router.push(`/DistributionCoordinator/completedorders/PDF?orderId=${orderId}`);
   };
 
   // Fetch data from the API when the component mounts
@@ -241,16 +242,11 @@ export default function Home() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                    <DropdownItem
-                                        className="customHoverColor customActiveColor capitalize"
-                                        onClick={() => trackOrder(order.order_id)}
-                                    >
-                    View
-                  </DropdownItem>
-                  <DropdownItem
+                <DropdownItem
                     className="customHoverColor customActiveColor capitalize"
+                    onClick={() => handleOrderView(order)}
                   >
-                    Save
+                    View
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
