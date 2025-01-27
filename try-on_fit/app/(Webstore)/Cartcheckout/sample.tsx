@@ -50,7 +50,6 @@ function Page() {
   //   });
   // }, []);
 
-  
   const [currentAddress, setCurrentAddress] = useState({
     address_line_1: " ",
     address_line_2: " ",
@@ -74,98 +73,34 @@ function Page() {
       delivery: parsedOrderSummary.delivery || 0,
       discount: parsedOrderSummary.discount || 0,
       total: parsedOrderSummary.total || 0,
-    })
+    });
+  
+    
+  }, []);
+  useEffect(() => {
     // Retrieve details from local storage
-    // const detailsFromLocalStorage = localStorage.getItem('details');
-    // const parsedDetails = JSON.parse(detailsFromLocalStorage || '{}'); // Use {} as a fallback instead of an array
+    const detailsFromLocalStorage = localStorage.getItem('details');
+    const parsedDetails = JSON.parse(detailsFromLocalStorage || '{}'); // Use {} as a fallback instead of an array
 
-    // console.log('Parsed details:', parsedDetails);
+    console.log('Parsed details:', parsedDetails);
 
     // Check if the parsedDetails contains the address data properly
-    // const checkoutFromLocalStorage = localStorage.getItem('checkout');
-    const detailsFromLocalStorage = localStorage.getItem('details');
-
-    if (!checkoutFromLocalStorage || !detailsFromLocalStorage) {
-      throw new Error('Missing checkout or details data in local storage');
+    if (parsedDetails && parsedDetails.address) {
+        setCurrentAddress({
+            address_line_1: parsedDetails.address.address_line_1 || "",
+            address_line_2: parsedDetails.address.address_line_2 || "",
+            city: parsedDetails.address.city || "",
+            district: parsedDetails.address.district || "",
+            postal_code: parsedDetails.address.postal_code || "",
+        });
+    } else {
+        console.log("No valid address data found in localStorage.");
     }
+}, []);
 
- 
-    const parsedDetailsArray = JSON.parse(detailsFromLocalStorage);
-
-    // Ensure parsedDetailsArray is valid and contains data
-    if (!Array.isArray(parsedDetailsArray) || parsedDetailsArray.length === 0) {
-      throw new Error('Invalid details data format');
-    }
-
-    // Accessing the first object from the array
-    const parsedDetails = parsedDetailsArray[0];
-
-    console.log("Parsed Details:", parsedDetails);
-
-    // Extracting customer ID properly
-    const customerId = parsedDetails?.customer_id || parsedDetails?.customerId || 0;
-
-    console.log("Customer ID:", customerId);
-
-    // Build delivery address string from parsed details
-// Access the address object correctly from parsedDetails
-const address = parsedDetails?.address?.data; // Accessing the `data` property
-console.log("Address Object:", address);
-console.log("Address Line 1:", address?.address_line_1);
-console.log("Address Line 2:", address?.address_line_2);
-console.log("City:", address?.city);
-console.log("District:", address?.district);
-console.log("Postal Code:", address?.postal_code);
-
-// Build delivery address string
-const deliveryAddress = address
-? `${address.address_line_1 || 'N/A'}, ${address.address_line_2 || 'N/A'}, 
- ${address.city || 'N/A'}, ${address.district || 'N/A'}, 
- ${address.postal_code || 'N/A'}`
-: 'Address not available';
-
-// Log the final delivery address
-console.log("Delivery Address:", deliveryAddress);
-console.log("parsed",parsedCheckout);
-
-
-
+  
+  
    
-
-
-}, []);
-
-useEffect(() => {
-  const detailsFromLocalStorage = localStorage.getItem('details');
-  if (!detailsFromLocalStorage) {
-    console.error('Missing details data in local storage');
-    return;
-  }
-
-  try {
-    const parsedDetailsArray = JSON.parse(detailsFromLocalStorage);
-
-    if (!Array.isArray(parsedDetailsArray) || parsedDetailsArray.length === 0) {
-      console.error('Invalid details data format');
-      return;
-    }
-
-    const parsedDetails = parsedDetailsArray[0];
-
-    const addressData = parsedDetails?.address?.data || {};
-
-    setCurrentAddress({
-      address_line_1: addressData.address_line_1 || 'N/A',
-      address_line_2: addressData.address_line_2 || 'N/A',
-      city: addressData.city || 'N/A',
-      district: addressData.district || 'N/A',
-      postal_code: addressData.postal_code || 'N/A',
-    });
-  } catch (error) {
-    console.error('Error parsing details:', error);
-  }
-}, []);
-
   
   // Handle delete item from cart
   const handleDelete = (id) => {
@@ -180,8 +115,8 @@ useEffect(() => {
       )
     );
   };
-  
-useEffect(() => {
+
+  useEffect(() => {
     // Dynamically load PayHere script
     const script = document.createElement("script");
     script.src = "https://www.payhere.lk/lib/payhere.js";
@@ -212,7 +147,16 @@ useEffect(() => {
       }
     
       };
-
+      
+      
+      
+          
+          
+         
+      
+      
+      
+      
       payhere.onDismissed = function () {
         alert("Payment dismissed by the user.");
       };
@@ -263,7 +207,6 @@ useEffect(() => {
   };
  
 console.log("address",currentAddress);
-
   return (
     <div>
       <NavBar />
@@ -275,7 +218,6 @@ console.log("address",currentAddress);
               <p className="text-lg mb-5 md:mb-0">
                 <FontAwesomeIcon icon={faCirclePlus} className="text-main-dark text-xl cursor-pointer px-10" onClick={() => setIsEditModalOpen(true)} />
                 <b>Change The Address</b>
-                
               </p>
               <button
                 className="bg-white text-saddlebrown border-1 border-saddlebrown m-7 p-2 px-2 rounded-xl hover:bg-main-lighter"
@@ -284,29 +226,32 @@ console.log("address",currentAddress);
                 Add new
               </button>
             </div>
-            <Address
-  address_line_1={currentAddress.address_line_1}
-  address_line_2={currentAddress.address_line_2}
-  city={currentAddress.city}
-  district={currentAddress.district}
-  postal_code={currentAddress.postal_code}
-/>
-
+            {currentAddress && (
+  <Address
+    address_line_1={currentAddress.address_line_1}
+    address_line_2={currentAddress.address_line_2}
+    city={currentAddress.city}
+    district={currentAddress.district}
+    postal_code={currentAddress.postal_code}
+  />
+)}
 
           </div>
 
+          
           {cartItems.map((item) => (
-  <Cartcardcheckout
-    key={item.id}
-    images={item.images}           // Array of image URLs
-    title={item.title}             // Single title string
-    color={item.color}             // Single color string
-    price={item.price}             // Single price string
-    quantity={item.quantity}       // Single quantity number
-    onDelete={() => handleDelete(item.id)}  // Handler for delete
-    onQuantityChange={(newQuantity) => handleQuantityChange(item.id, newQuantity)}  // Handler for quantity change
-  />
-))}``
+            <Cartcardcheckout
+              key={item.id}
+              images={item.images}
+              title={[item.title]}
+              color={[item.color]}
+              price={[item.price]}
+              quantity={[item.quantity.toString()]}
+              onDelete={() => handleDelete(item.id)}
+              onQuantityChange={(newQuantity) => handleQuantityChange(item.id, newQuantity)}
+              
+            />
+          ))}
         </div>
 
 

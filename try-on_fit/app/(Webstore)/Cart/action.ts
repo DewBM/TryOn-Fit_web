@@ -23,9 +23,9 @@ export const Cartfetch = async () => {
   }
 }
 
-  export const addToCart = async (user_id: number, variant_id: number, quantity: number) => {
+ export const addToCart = async (user_id: number, variant_id: number, quantity: number) => {
     try {
-      const resp = await customFetch('/cart', {
+      const resp = await fetch('/cart', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,14 +36,14 @@ export const Cartfetch = async () => {
   
       console.log("Add to Cart response:", resp);
   
-      if (resp?.isSuccess) {
-        return { isSuccess: true, msg: "Item added to cart successfully!" };
+      if (resp?.ok) {
+        return resp;
       } else {
-        return { isSuccess: false, msg: resp?.msg || "Failed to add item to cart" };
+        return resp;
       }
     } catch (error) {
-      console.error("Error adding to cart:", error);
-      return { isSuccess: false, msg: "Network or server error" };
+      console.error("Error fetching cart:", error);
+      return { msg: "Network or server error" };
     }
   
 

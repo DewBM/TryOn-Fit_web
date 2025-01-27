@@ -54,6 +54,7 @@ export async function signin(prevState: unknown, formData: FormData) {
       else {
          // return {msg: resp.msg}
       }
+      const userId = localStorage.getItem('user_id');
    }
    // else
       // return {msg: "Server Error"};
@@ -75,7 +76,7 @@ export async function signup(prevState: unknown, formData: FormData) {
     gender: formData.get("Gender"),
     email: formData.get("Email"),
     phoneNumber: formData.get("Phone Number"),
-    address: formData.get("Address"),
+    address: formData.get("Address"),git
     password: formData.get("password"),
     passwordConfirm: formData.get("passwordConfirm"),
   };
