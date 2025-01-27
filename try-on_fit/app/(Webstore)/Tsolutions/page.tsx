@@ -418,7 +418,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false);
   <div className = "para" font-color="red"><b> You can search your ticket by Customer ID, Inquiry ID or using Order ID</b></div>
   <div className="overflow-x-auto">
     <table className="min-w-full bg-white border border-gray-300 rounded-md">
-      <thead className="bg-gray-100">
+      <thead className="bg-main-lighter">
         <tr>
           <th className="px-4 py-2 text-left border-b">Inquiry ID</th>
           <th className="px-4 py-2 text-left border-b">Order ID</th>

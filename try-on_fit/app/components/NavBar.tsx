@@ -42,7 +42,8 @@ export default function NavBar({ newArrivalsRef,shopNew,aboutUs }: Props) {
     router.push("user_profile/profile");
   };
 
-  const handleFaq = () => {
+  const handleFaq = (e: React.MouseEvent) => {
+    e.preventDefault();
     router.push("faq");
   };
 

@@ -412,7 +412,7 @@ export default function App() {
   <div className="p-4">
   <div className="overflow-x-auto">
     <table className="min-w-full bg-white border border-gray-300 rounded-md">
-      <thead className="bg-gray-100">
+      <thead className="bg-main-lighter">
         <tr>
           <th className="px-4 py-2 text-left border-b">Inquiry ID</th>
           <th className="px-4 py-2 text-left border-b">Order ID</th>
