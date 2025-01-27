@@ -17,17 +17,16 @@ export default function AddAddressModal({ isOpen, onClose }: AddAddressModalProp
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-saddlebrown bg-opacity-50 backdrop-blur">
       
-    <div className="bg-white rounded-lg p-6 w-200">
+    <div className="bg-white rounded-lg p-6 w-[50%]">
 
       <h2 className="text-xl font-bold mb-4">Add new Shipping Address</h2>
 
 
       <form>
-         
-        <div className = "text-start text-lg font-bold mb-4 text-black">Contact Information</div>
-        <div className="mb-4 flex space-x-4">
+        
+        {/* <div className="mb-4 flex space-x-4"> */}
 
-          <div className="w-1/2">
+          {/* <div className="w-1/2">
             <label className="block text-saddlebrown">Name</label>
             <input type="text" className="w-full p-2 border rounded" />
           </div>
@@ -37,24 +36,28 @@ export default function AddAddressModal({ isOpen, onClose }: AddAddressModalProp
             <input type="text" className="w-full p-2 border rounded" />
           </div>
 
-        </div>
+        </div> */}
         
 
 
-        <div className = "text-start text-lg font-bold mb-4 text-black">Address</div>
+        <div className = "text-start text-lg font-bold mb-4 text-black">Address Line_1</div>
         <div className="mb-4 flex space-x-4">
 
           <div className="w-1/2">
-          <label className="block text-saddlebrown">No:</label>
+          <label className="block text-saddlebrown"></label>
           <input type="text" className="w-full p-2 border rounded" />
 
-          <label className="block text-saddlebrown">Village</label>
+          <label className="block text-saddlebrown">Address Line_2</label>
           <input type="text" className="w-full p-2 border rounded" />
 
-          <label className="block text-saddlebrown">Town</label>
+          <label className="block text-saddlebrown">City</label>
           <input type="text" className="w-full p-2 border rounded" />
 
-          <label className="block text-saddlebrown">Country</label>
+          <label className="block text-saddlebrown">District </label>
+          <input type="text" className="w-full p-2 border rounded" />
+
+
+          <label className="block text-saddlebrown">Postal Code </label>
           <input type="text" className="w-full p-2 border rounded" />
 
           </div>

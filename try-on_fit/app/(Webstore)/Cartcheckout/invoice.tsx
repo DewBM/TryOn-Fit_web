@@ -37,7 +37,7 @@ const invoice: React.FC<InvoiceProps> = ({
     (total, product) => total + product.price * product.quantity,
     0
   );
-  const deliveryFee = subTotal * 0.15;
+  const deliveryFee = subTotal * 0.15;   
   const grandTotal = subTotal + deliveryFee;
 
   return (

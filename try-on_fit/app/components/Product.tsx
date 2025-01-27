@@ -134,7 +134,7 @@ const Product: React.FC<ProductType> = ({
                   ))}
                 </div>
               </div>
-              <button className="bg-main-dark text-white py-2 px-4 rounded mb-4" onClick={() => window.location.href = '/cart/cartcheckout'}>
+              <button className="bg-main-dark text-white py-2 px-4 rounded mb-4" onClick={() => window.location.href = ''}>
                 Add to Cart
               </button>
               <button className="bg-main-dark text-white py-2 px-4 rounded mb-4" onClick={() => handleFiton(variant_id)}>

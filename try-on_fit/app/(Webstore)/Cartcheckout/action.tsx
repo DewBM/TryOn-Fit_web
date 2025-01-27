@@ -138,65 +138,132 @@ export const handlePayment = async () => {
 // };
 
 
+
+
+// currently used
+// export const handleOrder = async (orderData: {
+//   customer_id: number;
+//   order_status: string;
+//   order_date: string;  // Use string format for date
+//   delivery_date: string;  // Use string format for date
+//   delivery_address: string;
+//   sub_total: number;
+//   discount: number;
+//   order_items: { 
+//     item_Id: string;
+//     quantity: number;
+//     price: number;
+
+//     // order_Id: number;
+   
+//     discount: number;
+//   }[];
+// }) => {
+//   try {
+//     // Validate required fields
+//     if (
+//       !orderData.customer_id || 
+//       !orderData.sub_total || 
+//       !orderData.order_items || 
+//       orderData.order_items.length === 0
+//     ) {
+//       throw new Error("Invalid order data. Please check all required fields.");
+//     }
+//     console.log(orderData);
+
+//     // 
+   
+
+//     console.log("Formatted Order Data:", orderData); // Debugging
+
+//     const response = await customFetch('/order', {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(orderData),
+//     });
+
+//     if (!response?.ok) {  // Use optional chaining to avoid undefined errors
+//       const errorData = await response.text();
+//       console.error("Server error:", errorData);
+//       throw new Error(`Failed to create order: ${response.status} ${response.statusText}`);
+//     }
+
+//     const result = await response.json();
+//     return result;
+    
+//   } catch (error) {
+//     console.error("Error creating order:", error);
+//     throw new Error("An error occurred while processing the order.");
+//   }
+// };
+
+
 export const handleOrder = async (orderData: {
   customer_id: number;
   order_status: string;
-  order_date: string;  // Ensure this is in string format (ISO format)
-  delivery_date: string;  // Ensure this is in string format (ISO format)
+  order_date: string;
+  delivery_date: string;
   delivery_address: string;
-  sub_total: number; // Convert to number type
-  discount: number; // Convert to number type
+  sub_total: number;
+  discount: number;
   order_items: { 
-    price: number; // Convert to number type
-    quantity: number; // Convert to number type
-    order_Id: number;
-    item_Id: string;
-    discount: number; // Convert to number type
+    item_id: string;
+    quantity: number;
+    price: number;
+    discount: number;
   }[];
 }) => {
   try {
-    // Validate data (add custom validations if necessary)
-    if (!orderData.customer_id || !orderData.sub_total || !orderData.order_items.length) {
-      throw new Error('Invalid order data');
+    // Validate required fields
+    if (
+      !orderData.customer_id || 
+      !orderData.sub_total || 
+      !orderData.order_items || 
+      orderData.order_items.length === 0
+    ) {
+      throw new Error("Invalid order data. Please check all required fields.");
     }
+    console.log("Formatted Order Data:", orderData); // Debugging
+      
 
-    // Convert Date objects to ISO string format (if they are not already in string format)
-    orderData.order_date = "2025-01-10T10:00:00Z";
-    orderData.delivery_date ="2025-01-20T10:00:00Z";
-
-    // Ensure correct types for sub_total, discount, and items
-    const formattedOrderData = {
-      ...orderData,
-      sub_total: Number(orderData.sub_total),
-      discount: Number(orderData.discount),
-      order_items: orderData.order_items.map(item => ({
-        ...item,
-        price: Number(item.price),
-        quantity: Number(item.quantity),
-        discount: Number(item.discount),
-      })),
-    };
-    console.log("order res",formattedOrderData);
-    // Send POST request to the backend
-    const response =  await customFetch('/order', {  // Adjust the API URL accordingly
-      method: 'POST',
+    const response = await fetch("http://localhost:8080/order", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(formattedOrderData),
+      body: JSON.stringify(orderData),
+      credentials: "include", // Ensure cookies are sent with the request
     });
 
-    if (!response) {
-      const errorData = await response.json();
-      throw new Error(errorData.msg || 'Failed to create order');
-      window.alert("faild");
+
+    // const response = await customFetch('/order', {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(orderData),
+    // });
+ console.log(JSON.stringify(orderData));
+    // Check if response is valid
+    if (!response?.ok) {  // Use optional chaining to avoid undefined errors
+      let errorMessage = "Failed to create order";
+      try {
+        const errorData = await response.text();
+        errorMessage = `Failed to create order: ${errorData}`;
+      } catch (err) {
+        console.error("Error reading the response body:", err);
+      }
+      console.error("Server error:", errorMessage);
+      throw new Error(errorMessage);
     }
 
-    const result = await response.json();
+    const result = await response.json();  // Parse the response body
     return result;
-    window.alert("sucessfully add to order");
+    console.log("result",result)
   } catch (error) {
-    console.error('Error creating order:', error);
-    throw error;
+    console.error("Error creating order:", error);
+    throw new Error("An error occurred while processing the order.");
   }
 };

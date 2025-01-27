@@ -54,6 +54,7 @@ export async function signin(prevState: unknown, formData: FormData) {
       else {
          // return {msg: resp.msg}
       }
+      const userId = localStorage.getItem('user_id');
    }
    // else
       // return {msg: "Server Error"};

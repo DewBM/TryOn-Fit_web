@@ -1,10 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import  { useRouter } from 'next/navigation';
-import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
-import Image from 'next/image';
-
+import { useRouter } from 'next/navigation';
+import { handleOrder } from '../Cartcheckout/action';
 
 type OrderSummary = {
   subtotal: number;
@@ -14,11 +12,12 @@ type OrderSummary = {
 };
 
 type Checkout = {
-  id: number;
+  id:number;
+  variantId: number;
   images: string[];
   title: string;
   color: string;
-  price: number;
+  price: number | string;
   quantity: number;
 };
 
@@ -32,46 +31,123 @@ function InvoicePage() {
     total: 0,
   });
 
-  const handlecustomer=()=>{
-    router.push('/faq')
-  }
   useEffect(() => {
-    // Retrieve checkout items from localStorage
+    const placeOrder = async () => {
+      try {
+        const checkoutFromLocalStorage = localStorage.getItem('checkout');
+        const detailsFromLocalStorage = localStorage.getItem('details');
+  
+        if (!checkoutFromLocalStorage || !detailsFromLocalStorage) {
+          throw new Error('Missing checkout or details data in local storage');
+        }
+  
+        const parsedCheckout: Checkout[] = JSON.parse(checkoutFromLocalStorage);
+        const parsedDetailsArray = JSON.parse(detailsFromLocalStorage);
+  
+        // Ensure parsedDetailsArray is valid and contains data
+        if (!Array.isArray(parsedDetailsArray) || parsedDetailsArray.length === 0) {
+          throw new Error('Invalid details data format');
+        }
+  
+        // Accessing the first object from the array
+        const parsedDetails = parsedDetailsArray[0];
+  
+        console.log("Parsed Details:", parsedDetails);
+  
+        // Extracting customer ID properly
+        const customerId = parsedDetails?.customer_id || parsedDetails?.customerId || 0;
+  
+        console.log("Customer ID:", customerId);
+  
+        // Build delivery address string from parsed details
+// Access the address object correctly from parsedDetails
+const address = parsedDetails?.address?.data; // Accessing the `data` property
+console.log("Address Object:", address);
+console.log("Address Line 1:", address?.address_line_1);
+console.log("Address Line 2:", address?.address_line_2);
+console.log("City:", address?.city);
+console.log("District:", address?.district);
+console.log("Postal Code:", address?.postal_code);
+
+// Build delivery address string
+const deliveryAddress = address
+  ? `${address.address_line_1 || 'N/A'}, ${address.address_line_2 || 'N/A'}, 
+     ${address.city || 'N/A'}, ${address.district || 'N/A'}, 
+     ${address.postal_code || 'N/A'}`
+  : 'Address not available';
+
+// Log the final delivery address
+console.log("Delivery Address:", deliveryAddress);
+console.log("parsed",parsedCheckout);
+
+        // Prepare order data
+        const currentDate = new Date();
+        const deliveryDate = new Date();
+        deliveryDate.setDate(currentDate.getDate() + 4);
+  
+        const orderData = {
+          customer_id: Number(customerId),  // Convert to number
+          order_status: 'Processing',
+          order_date: currentDate.toISOString(),
+          delivery_date: deliveryDate.toISOString(),
+          delivery_address: deliveryAddress.trim(),
+          sub_total: parsedCheckout
+            .reduce((sum, item) => sum + (parseFloat(item.price as string) || 0) * (item.quantity || 0), 0),
+          discount: 400.00,  // Convert to number
+          order_items: parsedCheckout.map((item) => ({
+            item_id: item.variantId.toString(),
+            price: parseFloat(item.price as string) || 0,  // Ensure it's a number for the API
+            quantity: Number(item.quantity),  // Convert to number
+           
+            discount:400.00,  // Convert to number
+          })),
+        };
+      
+        
+  
+        // Call the API to place order
+        const result = await handleOrder(orderData);
+        console.log('Order placed successfully:', result);
+      } catch (error) {
+        console.error('Error placing order:', error);
+      }
+    };
+  
+    placeOrder();
+  }, []);
+  
+
+  const handleCustomerSupport = () => {
+    router.push('/faq');
+  };
+
+  useEffect(() => {
     const checkoutFromLocalStorage = localStorage.getItem('checkout');
-    console.log(checkoutFromLocalStorage);
-    const parsedCheckout = JSON.parse(checkoutFromLocalStorage || '[]');
+    const parsedCheckout = checkoutFromLocalStorage ? JSON.parse(checkoutFromLocalStorage) : [];
     setCartItems(parsedCheckout);
 
-    // Retrieve order summary from localStorage
     const orderSummaryFromLocalStorage = localStorage.getItem('orderSummary');
-    const parsedOrderSummary = JSON.parse(orderSummaryFromLocalStorage || '{}');
+    const parsedOrderSummary = orderSummaryFromLocalStorage ? JSON.parse(orderSummaryFromLocalStorage) : {};
     setOrderSummary({
-      subtotal: parsedOrderSummary.subtotal || 0,
-      delivery: parsedOrderSummary.delivery || 0,
-      discount: parsedOrderSummary.discount || 0,
-      total: parsedOrderSummary.total || 0,
-      
+      subtotal: parsedOrderSummary?.subtotal || 0,
+      delivery: parsedOrderSummary?.delivery || 0,
+      discount: parsedOrderSummary?.discount || 0,
+      total: parsedOrderSummary?.total || 0,
     });
   }, []);
 
   return (
     <div className="pt-16 pb-24">
       <div className="flex justify-end mb-4">
-        <button
-          type="button"
-          className="bg-main-dark text-white py-2 px-4 rounded"
-          onClick={() => window.print()}
-        >
+        <button type="button" className="bg-main-dark text-white py-2 px-4 rounded" onClick={() => window.print()}>
           <i className="fa fa-print mr-2"></i> Print
         </button>
       </div>
       <div className="border rounded-lg shadow-lg bg-white">
         <div className="p-8" id="invoice">
           <h1 className="text-3xl font-bold text-center text-gray-700 mb-8">Invoice</h1>
-          <div className="flex justify-center mb-8 ">
-        
+          <div className="flex justify-center mb-8">
             <div className="text-center">
-          
               <h2 className="font-bold text-lg">TryOnFit</h2>
               <p>No.66/A, Kaduwela Road, Battaramulla</p>
               <p>Western, Sri Lanka</p>
@@ -94,12 +170,10 @@ function InvoicePage() {
                 <tr key={item.id}>
                   <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
                   <td className="border border-gray-300 px-4 py-2">{item.title}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-right">
-                    Rs. {item.price}
-                  </td>
+                  <td className="border border-gray-300 px-4 py-2 text-right">Rs. {Number(item.price).toFixed(2)}</td>
                   <td className="border border-gray-300 px-4 py-2 text-right">{item.quantity}</td>
                   <td className="border border-gray-300 px-4 py-2 text-right">
-                    Rs. {(item.price * item.quantity)}
+                    Rs. {(Number(item.price) * item.quantity).toFixed(2)}
                   </td>
                 </tr>
               ))}
@@ -108,33 +182,26 @@ function InvoicePage() {
               <tr>
                 <td colSpan={3}></td>
                 <td className="border border-gray-300 px-4 py-2 text-right font-bold">SUBTOTAL</td>
-                <td className="border border-gray-300 px-4 py-2 text-right">
-                  Rs. {orderSummary.subtotal}
-                </td>
+                <td className="border border-gray-300 px-4 py-2 text-right">Rs. {orderSummary.subtotal.toFixed(2)}</td>
               </tr>
               <tr>
                 <td colSpan={3}></td>
                 <td className="border border-gray-300 px-4 py-2 text-right font-bold">DELIVERY</td>
-                <td className="border border-gray-300 px-4 py-2 text-right">
-                  Rs. {orderSummary.delivery}
-                </td>
+                <td className="border border-gray-300 px-4 py-2 text-right">Rs. {orderSummary.delivery.toFixed(2)}</td>
               </tr>
               <tr>
                 <td colSpan={3}></td>
                 <td className="border border-gray-300 px-4 py-2 text-right font-bold">GRAND TOTAL</td>
-                <td className="border border-gray-300 px-4 py-2 text-right">
-                  Rs. {orderSummary.total}
-                </td>
+                <td className="border border-gray-300 px-4 py-2 text-right">Rs. {orderSummary.total.toFixed(2)}</td>
               </tr>
             </tfoot>
           </table>
           <div className="mt-8 text-center">
             <p className="font-bold">Thank you!</p>
-            <p className="text-sm text-gray-500">
-              Further Informations Contact Our Help Center.</p>
-
-              <button className='align-middle border bg-main-dark font-bold text-white  px-8 py-4 rounded-lg ' onClick={handlecustomer}><span className='p-4'><SupportAgentRoundedIcon/></span>Help Center</button>
-        
+            <p className="text-sm text-gray-500">Further information? Contact our Help Center.</p>
+            <button className="align-middle border bg-main-dark font-bold text-white px-8 py-4 rounded-lg" onClick={handleCustomerSupport}>
+              Help Center
+            </button>
           </div>
         </div>
       </div>
