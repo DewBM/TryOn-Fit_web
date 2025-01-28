@@ -39,6 +39,16 @@ function Cartcard({ images, price, quantity, title, color, onDelete, onQuantityC
     onSelectchange(newSelection); 
   };
   
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [popupImageUrl, setPopupImageUrl] = useState('');
+    const [selectedSize, setSelectedSize] = useState('');
+    
+  
+    const handleImageClick = (imgSrc: string) => {
+      setPopupImageUrl(imgSrc); // Set the popup image URL dynamically
+      setIsPopupOpen(true);
+    };
+  
   return (
     <div className="h-[150px] w-[90%] rounded-2xl border border-gray-300">
       <div className="flex flex-row py-2 ">
@@ -62,7 +72,7 @@ function Cartcard({ images, price, quantity, title, color, onDelete, onQuantityC
             />
           ))} */}
 
-{images.map((images, index) => (
+{/* {images.map((images, index) => (
             <Image
               key={index}
               alt={`Card background ${index}`}
@@ -71,7 +81,16 @@ function Cartcard({ images, price, quantity, title, color, onDelete, onQuantityC
               width={100}
               height={100}
             />
-          ))}
+          ))} */}
+
+           <Image
+                          src={popupImageUrl}
+                          alt="Popup Image"
+                          className="max-w-full max-h-full"
+                          style={{ objectFit: 'contain' }}
+                          width={100}
+                          height={100}
+                        />
          
         </div>
         <div className="flex flex-row pl-[10rem] gap-20">

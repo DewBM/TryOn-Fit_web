@@ -23,15 +23,15 @@ export const Cartfetch = async () => {
   }
 }
 
- export const addToCart = async (user_id: number, variant_id: number, quantity: number) => {
+ export const addToCart = async (cartData:{user_id: number, variant_id: string, quantity: number}) => {
     try {
-      const resp = await fetch('/cart', {
+      const resp = await fetch('http://localhost:8080/cart', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ user_id, variant_id, quantity }),
+        body: JSON.stringify(cartData),
       });
   
       console.log("Add to Cart response:", resp);

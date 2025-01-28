@@ -34,6 +34,15 @@ export async function signin(prevState: unknown, formData: FormData) {
    
    if (resp) {
       if (resp.isSuccess) {
+
+        if (resp.user_id) {
+          localStorage.setItem("user_id", resp.user_id.toString());
+          console.log("User ID saved to localStorage:", resp.user_id);
+       } else{
+        console.log("not saved userid")
+       }
+
+
          switch (resp.role) {
             case "ADMIN":
                redirect('/StoreManager');
@@ -76,7 +85,7 @@ export async function signup(prevState: unknown, formData: FormData) {
     gender: formData.get("Gender"),
     email: formData.get("Email"),
     phoneNumber: formData.get("Phone Number"),
-    address: formData.get("Address"),git
+    address: formData.get("Address"),
     password: formData.get("password"),
     passwordConfirm: formData.get("passwordConfirm"),
   };
