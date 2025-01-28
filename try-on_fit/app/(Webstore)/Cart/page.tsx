@@ -64,7 +64,15 @@ const Page = () => {
     calculateSelectedOrderSummary(); // Recalculate order summary
   }, [selectedItems, cartItems]);
 
+const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popupImageUrl, setPopupImageUrl] = useState('');
+  const [selectedSize, setSelectedSize] = useState('');
+  
 
+  const handleImageClick = (imgSrc: string) => {
+    setPopupImageUrl(imgSrc); // Set the popup image URL dynamically
+    setIsPopupOpen(true);
+  };
 
   
   // Save order summary to local storage
@@ -193,7 +201,7 @@ const Page = () => {
 
   return (
     <div>
-      <NavBar />
+      {/* <NavBar/> */}
       <div className="w-full flex flex-row pl-[5rem] py-[5rem] justify-between">
         <div className="flex flex-col w-[80%] space-y-10">
           {loading ? (

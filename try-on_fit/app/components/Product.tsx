@@ -7,6 +7,8 @@ import Image from 'next/image'; // Correct Image import from next/image
 import ItemCard from './Helper/ItemCard';
 import { ProductType } from '../types/custom_types';
 import { fitOn } from '../(Webstore)/action';
+import { useEffect } from 'react';
+import { addToCart } from '../(Webstore)/Cart/action';
 
 interface Props {
   images: string[]; // Changed to an array of strings
@@ -63,6 +65,44 @@ const Product: React.FC<ProductType> = ({
       console.error("Error in generating image. file is empty or response failed");
     }
   }
+ 
+  const handleAddToCart = async () => {
+    
+    const user_id = parseInt(localStorage.getItem("user_id") || "0");
+  
+    if (!user_id || user_id <= 0) {
+      alert("You need to log in to add items to the cart.");
+      return;
+    }
+  
+    // Quantity is fixed to 1 for now
+    const quantity = 1;
+  
+    // Prepare cart data with user ID and variant ID
+    const cartData = {
+      user_id,
+      variant_id, // Assume this comes from the parent scope or props
+      quantity,
+    };
+  
+    console.log("Cart Data:", cartData);
+  
+    // Make the API call to add the item to the cart
+    try {
+      const response = await addToCart(cartData);
+      console.log("cart data",response);
+  
+      if (response) {
+        alert("Item successfully added to the cart.");
+      } else {
+        alert("Failed to add item to the cart.");
+      }
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      alert("An error occurred while adding the item to the cart.");
+    }
+  };
+  
 
   return (
     <>
@@ -134,7 +174,7 @@ const Product: React.FC<ProductType> = ({
                   ))}
                 </div>
               </div>
-              <button className="bg-main-dark text-white py-2 px-4 rounded mb-4" onClick={() => window.location.href = ''}>
+              <button className="bg-main-dark text-white py-2 px-4 rounded mb-4" onClick={handleAddToCart} >
                 Add to Cart
               </button>
               <button className="bg-main-dark text-white py-2 px-4 rounded mb-4" onClick={() => handleFiton(variant_id)}>
