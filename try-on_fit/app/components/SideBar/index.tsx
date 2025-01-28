@@ -27,7 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     StockKeeper: [
       { label: "DashBoard", route: "/StockKeeper", icon: <FiHome /> },
       { label: "Products", route: "/StockKeeper/Product", icon: <FiPackage /> },
-      { label: "Restock", route: "/restock", icon: <FiArrowUp />  },
+      // { label: "Restock", route: "/restock", icon: <FiArrowUp />  },
     ],
     StoreManager: [
       { label: "DashBoard", route: "/StoreManager", icon: <FiHome /> },
@@ -52,7 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       { label: "Completed Orders", route: "/DistributionCoordinator/completedorders", icon: <FiCheckCircle /> },
       { label: "Shipped Orders", route: "/DistributionCoordinator/shippedorders", icon: <FiTruck /> }, 
       { label: "Delivered Orders", route: "/DistributionCoordinator/deliveredorders", icon: <FiArrowLeftCircle /> },
-      { label: "Returns", route: "/DistributionCoordinator/return", icon: <FiRotateCcw  /> },
+      // { label: "Returns", route: "/DistributionCoordinator/return", icon: <FiRotateCcw  /> },
     ],
   };
   

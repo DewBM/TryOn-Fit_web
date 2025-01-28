@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -12,7 +12,7 @@ import {
   Legend,
 } from "chart.js";
 
-
+// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,19 +23,14 @@ ChartJS.register(
   Legend
 );
 
-const InventoryLineChart = () => {
-  const [menColor, setMenColor] = useState<string>("");
-  const [womenColor, setWomenColor] = useState<string>("");
-  const [childrenColor, setChildrenColor] = useState<string>("");
+interface SalesLineChartProps {
+  data: { month: string; sales: number }[];
+  height?: number;
+}
+
+const SalesLineChart: React.FC<SalesLineChartProps> = ({ data = [], height = 400 }) => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-
-  useEffect(() => {
-    const rootStyle = getComputedStyle(document.documentElement);
-    setMenColor(rootStyle.getPropertyValue("--main-red").trim());
-    setWomenColor(rootStyle.getPropertyValue("--main-blue").trim());
-    setChildrenColor(rootStyle.getPropertyValue("--main-green").trim());
-  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -55,41 +50,27 @@ const InventoryLineChart = () => {
     };
   }, []);
 
-  const data = {
-    labels: [
-      "2024-01",
-      "2024-02",
-      "2024-03",
-      "2024-04",
-      "2024-05",
-      "2024-06",
-      "2024-07",
-    ],
+  // Check if data is available
+  if (!data || data.length === 0) {
+    return <div>No data available for the chart.</div>;
+  }
+
+  // Chart data based on sales
+  const chartData = {
+    labels: data.map((d) => d.month),
     datasets: [
       {
-        label: "Women",
-        data: [150, 250, 380, 470, 660, 350, 500],
-        borderColor: womenColor,
-        backgroundColor: "white",
+        label: "Number of Sales",
+        data: data.map((d) => d.sales),
+        borderColor: "#4B8B3B",
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
         fill: true,
-      },
-      {
-        label: "Men",
-        data: [280, 190, 400, 410, 505, 315, 380],
-        borderColor: menColor,
-        backgroundColor: "white",
-        fill: true,
-      },
-      {
-        label: "Children",
-        data: [240, 320, 560, 690, 540, 745, 545],
-        borderColor: childrenColor,
-        backgroundColor: "white",
-        fill: true,
+        tension: 0.1,
       },
     ],
   };
 
+  // Chart options
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -99,11 +80,11 @@ const InventoryLineChart = () => {
       },
       title: {
         display: true,
-        text: "Inventory Trends Over Time",
+        text: "Monthly Sales Trend",
         font: {
           size: 16,
         },
-        color: "black", 
+        color: "black",
       },
     },
     scales: {
@@ -116,7 +97,7 @@ const InventoryLineChart = () => {
       y: {
         title: {
           display: true,
-          text: "Stock Level",
+          text: "Number of Sales",
         },
       },
     },
@@ -126,17 +107,16 @@ const InventoryLineChart = () => {
     <div
       className="border border-gray-300 rounded-lg pt-5"
       ref={chartContainerRef}
+      style={{ width: "100%", height: "100%" }}
     >
-      <div style={{ width: "100%", height: "100%" }}>
-        <Line
-          data={data}
-          options={options}
-          width={dimensions.width}
-          height={dimensions.height}
-        />
-      </div>
+      <Line
+        data={chartData}
+        options={options}
+        width={dimensions.width}
+        height={dimensions.height || height}
+      />
     </div>
   );
 };
 
-export default InventoryLineChart;
+export default SalesLineChart;
