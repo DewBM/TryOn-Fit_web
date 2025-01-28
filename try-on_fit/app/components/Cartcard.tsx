@@ -61,7 +61,7 @@ function Cartcard({ images, price, quantity, title, color, onDelete, onQuantityC
           />
            </div>
           <div className="">
-          {/* {images.map((imgSrc, index) => (
+          {images.map((imgSrc, index) => (
             <Image
               key={index}
               alt={`Card background ${index}`}
@@ -70,7 +70,7 @@ function Cartcard({ images, price, quantity, title, color, onDelete, onQuantityC
               width={100}
               height={100}
             />
-          ))} */}
+          ))}
 
 {/* {images.map((images, index) => (
             <Image
@@ -83,14 +83,14 @@ function Cartcard({ images, price, quantity, title, color, onDelete, onQuantityC
             />
           ))} */}
 
-           <Image
+           {/* <Image
                           src={popupImageUrl}
                           alt="Popup Image"
                           className="max-w-full max-h-full"
                           style={{ objectFit: 'contain' }}
                           width={100}
                           height={100}
-                        />
+                        /> */}
          
         </div>
         <div className="flex flex-row pl-[10rem] gap-20">

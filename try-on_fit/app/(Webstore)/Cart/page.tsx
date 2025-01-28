@@ -69,10 +69,10 @@ const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedSize, setSelectedSize] = useState('');
   
 
-  const handleImageClick = (imgSrc: string) => {
-    setPopupImageUrl(imgSrc); // Set the popup image URL dynamically
-    setIsPopupOpen(true);
-  };
+  // const handleImageClick = (imgSrc: string) => {
+  //   setPopupImageUrl(imgSrc); // Set the popup image URL dynamically
+  //   setIsPopupOpen(true);
+  // };
 
   
   // Save order summary to local storage
@@ -122,7 +122,7 @@ const [isPopupOpen, setIsPopupOpen] = useState(false);
           setCartItems(
             items.cartItems.map((item:any) => ({
               id: item.cartItemId,
-              images: item.img_front ? [`/${item.img_front}`] : [], // Ensure the path starts with '/'
+              images: item.img_front ? [`https://gtuwqwohqrzqpgzencnd.supabase.co/storage/v1/object/public/product_images/${item.img_front}`] : [], // Ensure the path starts with '/'
               title: item.name || "Unnamed Item",
               color: item.color || "N/A",
               price: item.price || 0,
