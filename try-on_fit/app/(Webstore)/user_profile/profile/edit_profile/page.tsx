@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import NavBar from "@/app/components/NavBar";
+import Footer from "@/app/components/Footer";
 
 const EditProfile = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -36,6 +38,11 @@ const EditProfile = () => {
   };
 
   return (
+
+    <div className="flex flex-col min-h-screen">
+    {/* Navbar */}
+    <NavBar />
+
     <div className="min-h-screen bg-gray-50 p-6 flex justify-center items-center">
       <div className="max-w-4xl w-full grid grid-cols-2 gap-6 bg-white rounded-lg shadow-md p-6">
         {/* Row 1, Column 1: Image and Name */}
@@ -61,7 +68,7 @@ const EditProfile = () => {
         <div className="text-red-600 text-sm">
         <button
               onClick={handleSave}
-              className="mt-4 ml-72 w-50% bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600"
+              className="mt-4 ml-64 w-75% bg-main-dark text-white py-3 px-6 rounded-lg hover:bg-main-dark-600"
             >
               Save Data
             </button>
@@ -151,7 +158,7 @@ const EditProfile = () => {
               </a>
               <span className="text-sm text-gray-700"></span>
             </div>
-            <div className="flex items-center space-x-2 mt-8">
+            {/* <div className="flex items-center space-x-2 mt-8">
               <a
                 href="#"
                 className="text-blue-500 hover:underline text-sm font-medium"
@@ -159,12 +166,16 @@ const EditProfile = () => {
                 Click Here
               </a>
               <span className="text-sm text-gray-700">Add Your Payment Method</span>
-            </div>
+            </div> */}
             
           </div>
         </div>
       </div>
     </div>
+    {/* Footer */}
+    <Footer />
+  </div>
+   
   );
 };
 
