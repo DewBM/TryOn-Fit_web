@@ -18,6 +18,9 @@ export default function Home() {
   const handleinform = () => {
     router.push("inquiryForm");
   };
+  const handlesolution = () => {
+    router.push("Tsolutions");
+  };
   const orderdelay = () => {
     router.push("faq/order_delayed");
   };
@@ -285,6 +288,14 @@ export default function Home() {
               onClick={handleinform}
             >
               Request
+            </button>
+          </div>
+          <div className="justify-center items-center text-center my-15 bg-white pt-5 pb-12 mx-4 lg:mx-13">
+            <button
+              className="border-main-dark p-3 border rounded-xl my-15 hover:bg-main-lighter"
+              onClick={handlesolution}
+            >
+              Solutions
             </button>
           </div>
         </section>

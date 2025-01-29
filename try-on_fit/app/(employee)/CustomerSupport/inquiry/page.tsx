@@ -414,31 +414,31 @@ export default function App() {
     <table className="min-w-full bg-white border border-gray-300 rounded-md">
       <thead className="bg-main-lighter">
         <tr>
-          <th className="px-4 py-2 text-left border-b">Inquiry ID</th>
-          <th className="px-4 py-2 text-left border-b">Order ID</th>
-          <th className="px-4 py-2 text-left border-b">Product ID</th>
-          <th className="px-4 py-2 text-left border-b">Customer ID</th>
-          <th className="px-4 py-2 text-left border-b">Issue Type</th>
-          <th className="px-4 py-2 text-left border-b">Description</th>
-          <th className="px-4 py-2 text-left border-b">Contact</th>
-          <th className="px-4 py-2 text-left border-b">Status</th>
-          <th className="px-4 py-2 text-left border-b">Date</th>
+          <th className="px-4 py-2 text-left border border-gray-300">Inquiry ID</th>
+          <th className="px-4 py-2 text-left border border-gray-300">Order ID</th>
+          <th className="px-4 py-2 text-left border border-gray-300">Product ID</th>
+          <th className="px-4 py-2 text-left border border-gray-300">Customer ID</th>
+          <th className="px-4 py-2 text-left border border-gray-300">Issue Type</th>
+          <th className="px-4 py-2 text-left border border-gray-300">Description</th>
+          <th className="px-4 py-2 text-left border border-gray-300">Contact</th>
+          <th className="px-4 py-2 text-left border border-gray-300">Status</th>
+          <th className="px-4 py-2 text-left border border-gray-300">Date</th>
         </tr>
       </thead>
       <tbody>
         {inquiries.map((inquiry) => (
           <tr key={inquiry.inquiry_id} className="hover:bg-gray-50" onClick={() => handleRowClick(inquiry)}>
-            <td className="px-4 py-2 border-b">{inquiry.inquiry_id}</td>
-            <td className="px-4 py-2 border-b">{inquiry.order_id}</td>
-            <td className="px-4 py-2 border-b">{inquiry.product_id}</td>
-            <td className="px-4 py-2 border-b">{inquiry.customer_id}</td>
-            <td className="px-4 py-2 border-b">{inquiry.issue_type}</td>
-            <td className="px-4 py-2 border-b">
+            <td className="px-4 py-2 border border-gray-300">{inquiry.inquiry_id}</td>
+            <td className="px-4 py-2 border border-gray-300">{inquiry.order_id}</td>
+            <td className="px-4 py-2 border border-gray-300">{inquiry.product_id}</td>
+            <td className="px-4 py-2 border border-gray-300">{inquiry.customer_id}</td>
+            <td className="px-4 py-2 border border-gray-300">{inquiry.issue_type}</td>
+            <td className="px-4 py-2 border border-gray-300">
               {inquiry.issue_description}
             </td>
-            <td className="px-4 py-2 border-b">{inquiry.contact_num}</td>
+            <td className="px-4 py-2 border border-gray-300">{inquiry.contact_num}</td>
             <td
-              className={`px-4 py-2 border-b ${
+              className={`px-4 py-2 border border-gray-300 ${
                 inquiry.status === "solved"
                   ? "text-green-600"
                   : "text-yellow-600"
@@ -446,7 +446,7 @@ export default function App() {
             >
               {inquiry.status}
             </td>
-            <td className="px-4 py-2 border-b">
+            <td className="px-4 py-2 border border-gray-300">
               {new Date(inquiry.date).toLocaleDateString()}
             </td>
           </tr>
