@@ -30,6 +30,8 @@ import { customFetch } from "@/app/utils/auth";
 import EmpAddForm from "./emp_add";
 import DeleteModal from "@/app/components/DeleteModal";
 import { useRouter } from "next/navigation";
+import { m } from "framer-motion";
+import Swal from "sweetalert2";
 
 const INITIAL_VISIBLE_COLUMNS = [
   "employee_name",
@@ -58,13 +60,38 @@ export default function Home() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const openAddDialog = () => setIsAddDialogOpen(true);
   const closeAddDialog = () => setIsAddDialogOpen(false);
+  
+
+ 
+  
+  const deleteEmployee = async (emp_id: number) => {
+    const params = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({empId: emp_id }),
+    };
+    console.log('helo',JSON.stringify({ empId: emp_id }));
+    try {
+    const response = await customFetch(`/employee`, params);
+    Swal.fire({
+      title: 'Success!',
+      text: 'Your request was successful!',
+      icon: 'success',
+      confirmButtonText: 'OK',
+    });
+    } catch (error) {}
+    
+    console.log("Delete employee");
+  };
 
   const router = useRouter();
      const viewEmployee=()=>{
       router.push("/StoreManager/employee/emp_view");
      }
   useEffect(() => {
-    const getEmployees = async () => {
+    const getEmployee = async () => {
       let employees: Employee[] = await customFetch("/employee", {
         method: "GET",
       });
@@ -79,7 +106,7 @@ export default function Home() {
         setData(employees);
       }
     };
-    getEmployees();
+    getEmployee();
   }, []);
 
   const [filterValue, setFilterValue] = React.useState("");
@@ -140,7 +167,10 @@ export default function Home() {
 
   const renderCell = React.useCallback(
     (employee: Employee, columnKey: React.Key) => {
-      const cellValue = employee[columnKey as keyof Employee];
+      let cellValue = employee[columnKey as keyof Employee];
+      if (cellValue instanceof Date) {
+        cellValue = cellValue.toDateString();
+      }
 
       switch (columnKey) {
         case "employee_name":
@@ -179,12 +209,13 @@ export default function Home() {
                     onClick={viewEmployee}>
                       View
                     </DropdownItem>
-                    <DropdownItem className="customHoverColor customActiveColor">
+                    <DropdownItem className="customHoverColor customActiveColor"
+                    >
                       Edit
                     </DropdownItem>
                     <DropdownItem
                       className="customHoverColor customActiveColor"
-                      onClick={() => setIsDeleteModalOpen(true)}
+                      onClick={() => deleteEmployee(employee.emp_id)}
                     >
                       Delete
                     </DropdownItem>
@@ -383,7 +414,7 @@ export default function Home() {
         </TableHeader>
         <TableBody emptyContent={"No employees found"} items={sortedItems}>
           {(item) => (
-            <TableRow key={item.id}>
+            <TableRow key={item.key}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}
@@ -398,3 +429,7 @@ export default function Home() {
     </>
   );
 }
+function emp_id(this: any, key: string, value: any) {
+  throw new Error("Function not implemented.");
+}
+

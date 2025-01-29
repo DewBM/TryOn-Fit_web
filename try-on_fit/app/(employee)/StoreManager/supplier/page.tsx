@@ -430,6 +430,16 @@ export default function SupplierTable() {
 
   return (
     <>
+    <EditSup
+        isEditSupOpen={isEditDialodOpen}
+        onCloseEditSup={closeSupDialog}
+        supplierData= {supplierEditData}
+        ></EditSup>
+      <CreateSup
+        isOpen={isSupDialogOpen}
+        onClose={closeSupDialog}
+        >
+        </CreateSup>
       <Table
         isCompact
         removeWrapper
@@ -478,17 +488,9 @@ export default function SupplierTable() {
           isOpen={isSupDialogOpen}
           onClose={closeSupDialog}
         ></SupAddForm> */}
-        <CreateSup
-        isOpen={isSupDialogOpen}
-        onClose={closeSupDialog}
-        >
-        </CreateSup>
         
-        <EditSup
-        isEditSupOpen={isEditDialodOpen}
-        onCloseEditSup={closeSupDialog}
-        supplierData= {supplierEditData}
-        ></EditSup>
+        
+        
       {/* <ViewSup isOpen={isAddDialogOpen} onClose={closeAddDialog}  data={}/> */}
       <ViewSup isOpen={isAddDialogOpen} onClose={closeAddDialog}  supplierData={supplierViewData}/>
     </>
