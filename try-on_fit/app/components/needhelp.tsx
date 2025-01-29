@@ -8,7 +8,7 @@ function Needhelp() {
        route.push("faq")
     }
      const handleorder =()=>{
-        route.push("orderItems")
+        route.push("status")
      }
      const handlereturns =()=>{
         route.push("returns")
@@ -35,12 +35,12 @@ function Needhelp() {
         <span className="pl-5 material-symbols-outlined">north_east</span>
         </div>
 
-        <div className="flex flex-row py-2 ">
+        {/* <div className="flex flex-row py-2 ">
         
         <span className="material-symbols-outlined pr-5">swap_horizontal_circle</span>
         <p className='text-lg cursor-pointer  ' onClick={handlereturns}>Returns</p>
         <span className="pl-5 material-symbols-outlined">north_east</span>
-        </div>
+        </div> */}
 
         </div>
         <div className="pb-6"></div>
