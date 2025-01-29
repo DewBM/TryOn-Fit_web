@@ -193,9 +193,9 @@ export default function Home() {
               <OrderVolumeChart data={chartData} />
             )}
           </div>
-          <div className="col-span-1">
-            {/* <ReturnRatesChart data={returnData} /> */}
-          </div>
+          {/* <div className="col-span-1">
+           
+          </div> */}
         </div>
       </div>
     </>
