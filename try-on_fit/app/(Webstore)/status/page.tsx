@@ -7,7 +7,7 @@ import Statuscard from "@/app/components/statuscard";
 import OrderNumber from "@/app/components/OrderNumber";
 import { orderfetch } from "./action";
 
-function Page() {
+   function Page() {
   const [orders, setOrders] = useState<any[]>([]); // Store orders data as an array
   const [loading, setLoading] = useState<boolean>(true); // Loading state
   const [error, setError] = useState<string | null>(null); // Error messages
@@ -16,7 +16,7 @@ function Page() {
     const fetchOrders = async () => {
       try {
         const response = await orderfetch();
-        if (response.isSuccess) {
+        if (response.isSuccess) {                                         
           setOrders(response.data); // Set fetched orders
         } else {
           setError(response.msg || "Failed to fetch orders");
@@ -75,7 +75,7 @@ function Page() {
 
   return (
     <div>
-      <NavBar />
+      {/* <NavBar newArrivalsRef={null} shopNew={null} aboutUs={null} /> */}
       <div className="w-full flex flex-row py-[5rem] justify-between">
         <div className="flex flex-col w-full space-y-10 mx-20">
           {orders.map((order, index) => {
@@ -134,3 +134,4 @@ function Page() {
 }
 
 export default Page;
+//  images: item.img_front ? [`https://gtuwqwohqrzqpgzencnd.supabase.co/storage/v1/object/public/product_images/${item.img_front}`] : [],

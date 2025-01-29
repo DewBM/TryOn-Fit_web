@@ -40,14 +40,14 @@ function Cartcardcheckout({
   return (
     <div className="h-[150px] w-[90%] rounded-2xl border border-gray-300">
       <div className="flex flex-row py-2">
-        <div className="flex flex-row justify-center pt-[3rem] px-10">
+        <div className="flex flex-row justify-center pt-[1rem] px-10">
           {images.map((imgSrc, index) => (
             <Image
               key={index}
               alt={`Card background ${index}`}
               className="object-contain rounded-2xl"
               src={imgSrc}
-              width={200}
+              width={100}
               height={100}
               priority
             />
