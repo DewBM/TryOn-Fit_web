@@ -76,7 +76,7 @@ const ProductPage = () => {
 
   // Fetch suppliers and categories
   useEffect(() => {
-    // fetch("/api/suppliers") // Replace with your API endpoint
+    // fetch("/apiers") // Replace with your API endpoint
     //   .then((res) => res.json())
     //   .then((data) => setSuppliers(data));
 

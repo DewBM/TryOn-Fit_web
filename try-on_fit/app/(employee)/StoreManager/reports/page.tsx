@@ -17,7 +17,7 @@ export default function Home() {
   const [reportMonthData, setreportMonthDataArray] = useState<reportDataArrayType>({suppliers: [], revenues: []});
   const [reportYearData, setreportYearDataArray] = useState<reportDataArrayType>({suppliers: [], revenues: []});
   const [reportType, setReportTypeState] = useState<string>("Revenue by Supplier");
-
+  
 
   type reportDataArrayType = {
     suppliers: number[];

@@ -9,7 +9,7 @@ import { EmployeeRegistrationSchema, supplierRegistrationSchema } from "../stock
 import { parseWithZod } from "@conform-to/zod";
 import { useFormState } from "react-dom";
 import { useForm } from "@conform-to/react";
-import { creatSupplier } from "../actions";
+import { creatSupplier, updateSupplier } from "../actions";
 import { SupplierType } from "../supplier/page";
 
 // const Dialog = () => {
@@ -75,13 +75,29 @@ const SupAddForm = ({
       className="z-50 bg-white shadow-md"
     >
       <div className="lg:col-span-6 lg:col-start-4 rounded bg-slate-50 shadow-xl rounded-r-lg pt-2 pb-8 mt-0 mb-10">
-        <form
+        {/* <form
           id={form.id}
           onSubmit={form.onSubmit}
           action={action}
           noValidate
           className="lg:col-span-5 sm:col-span-4"
-        >
+        > */}
+
+<form
+  id={form.id}
+  onSubmit={async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    if (defaultValues) {
+      await updateSupplier(defaultValues, formData);
+    } else {
+      await creatSupplier(lastResult, formData);
+    }
+  }}
+  noValidate
+  className="lg:col-span-5 sm:col-span-4"
+>
+
           <div className="grid grid-cols-11">
             <div className="lg:col-span-7 lg:col-start-2 sm:col-span-4 mt-1 text-2xl font-extrabold mb-4">
               <h1>Supplier Information</h1>
@@ -165,7 +181,7 @@ const SupAddForm = ({
             </div>
             <div className="lg:col-span-9 lg:col-start-2 sm:col-span-4 mt-3">
               <TextBox
-                labelName={"Street Address"}
+                labelName={"Address"}
                 name={fields.streetAddress.name}
                 key={fields.streetAddress.key as React.Key}
                 defaultValue={fields.streetAddress.initialValue as React.HTMLInputTypeAttribute}
@@ -173,7 +189,7 @@ const SupAddForm = ({
               />
               <div className="text-xs text-red-400">{fields.streetAddress.errors}</div>
             </div>
-            <div className="lg:col-span-4 lg:col-start-2 sm:col-span-2 mt-3">
+            {/* <div className="lg:col-span-4 lg:col-start-2 sm:col-span-2 mt-3">
               <TextBox
                 labelName={"City"}
                 name={fields.city.name}
@@ -182,8 +198,8 @@ const SupAddForm = ({
                 inputType="text"
               />
               <div className="text-xs text-red-400">{fields.city.errors}</div>
-            </div>
-            <div className="lg:col-span-4 lg:col-start-7 sm:col-span-2 mt-3">
+            </div> */}
+            {/* <div className="lg:col-span-4 lg:col-start-7 sm:col-span-2 mt-3">
               <TextBox
                 labelName={"Province"}
                 name={fields.stateProvince.name}
@@ -192,7 +208,7 @@ const SupAddForm = ({
                 inputType="text"
               />
               <div className="text-xs text-red-400">{fields.stateProvince.errors}</div>
-            </div>
+            </div> */}
             <div className="lg:col-span-9 lg:col-start-2 sm:col-span-4 mt-3 flex justify-between">
               <Button
                 type="submit"

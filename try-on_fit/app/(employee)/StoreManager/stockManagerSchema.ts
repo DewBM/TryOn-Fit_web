@@ -23,8 +23,8 @@ export const EmployeeRegistrationSchema = z.object({
     message: "Gender is required",
   }),
   streetAddress: z.string().min(1, { message: "Street address is required" }),
-  city: z.string().min(1, { message: "City is required" }),
-  stateProvince: z.string().min(1, { message: "State/Province is required" }),
+  // city: z.string().min(1, { message: "City is required" }),
+  // stateProvince: z.string().min(1, { message: "State/Province is required" }),
 });
 
 export const supplierRegistrationSchema = z.object({
@@ -42,8 +42,8 @@ export const supplierRegistrationSchema = z.object({
     errorMap: () => ({ message: "Availabilyty is required" })
   }),
   streetAddress: z.string().min(1, "Street Address is required"),
-  city: z.string().min(1, "City is required"),
-  stateProvince: z.string().min(1, "State/Province is required"),
+  // city: z.string().min(1, "City is required"),
+  // stateProvince: z.string().min(1, "State/Province is required"),
   brandName: z.string().min(1,"Brand Name is required"),
 });
 

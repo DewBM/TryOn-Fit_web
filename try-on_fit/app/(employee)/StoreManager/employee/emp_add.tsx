@@ -160,7 +160,7 @@ const EmpAddForm = ({
               />
               <div className="text-xs text-red-400">{fields.streetAddress.errors}</div>
             </div>
-            <div className="lg:col-span-4 lg:col-start-2 sm:col-span-2 mt-3">
+            {/* <div className="lg:col-span-4 lg:col-start-2 sm:col-span-2 mt-3">
               <TextBox
                 labelName="City"
                 name={fields.city.name}
@@ -170,8 +170,8 @@ const EmpAddForm = ({
                 placeholder="Enter City"
               />
               <div className="text-xs text-red-400">{fields.city.errors}</div>
-            </div>
-            <div className="lg:col-span-4 lg:col-start-7 sm:col-span-2 mt-3">
+            </div> */}
+            {/* <div className="lg:col-span-4 lg:col-start-7 sm:col-span-2 mt-3">
               <TextBox
                 labelName="Province"
                 name={fields.stateProvince.name}
@@ -181,7 +181,7 @@ const EmpAddForm = ({
                 placeholder="Enter Province"
               />
               <div className="text-xs text-red-400">{fields.stateProvince.errors}</div>
-            </div>
+            </div> */}
             <div className="lg:col-span-7 lg:col-start-3 sm:col-span-4 mt-3">
               <Button type="submit" className="py-1.5 px-28 ml-10">
                 Register
